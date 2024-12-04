@@ -58,11 +58,12 @@ export default class testScene extends Phaser.Scene {
         ];
 
         this.dialogueOptions = [
-            "I’m just passing through.",
-            "I’m looking for adventure."
+            "Where the place?",
+            "I come, graymalkin!"
         ];
 
         this.optionTexts = []; // Store the option text objects
+        this.dialogueCompleted = false; 
     }
 
     update() {
@@ -124,6 +125,11 @@ export default class testScene extends Phaser.Scene {
     }
 
     toggleDialogue() {
+        // Do nothing if the dialogue has already been completed
+        if (this.dialogueCompleted) {
+            return;
+        }
+    
         // Start the dialogue and show the first line
         this.isDialogueVisible = true;
         this.dialogueBox.setVisible(true);
@@ -131,7 +137,6 @@ export default class testScene extends Phaser.Scene {
         this.currentDialogueIndex = 0;
         this.dialogueText.setText(this.dialogue[this.currentDialogueIndex]);
     }
-
     advanceDialogue() {
         // Progress through the dialogue or show options
         this.currentDialogueIndex++;
@@ -150,36 +155,57 @@ export default class testScene extends Phaser.Scene {
 
     showDialogueOptions() {
         this.dialogueText.setText("Choose an option:");
-
-        // Display options
+    
+        // Define the options and their positions
+        this.dialogueOptions = [
+            { text: "Where the place?", response: "Upon the heath." },
+            { text: "I come, graymalkin!", response: "Paddock calls!" }
+        ];
+    
         this.dialogueOptions.forEach((option, index) => {
-            const optionText = this.add.text(150, 500 + index * 30, option, {
+            const optionText = this.add.text(150, 500 + index * 30, option.text, {
                 fontSize: "18px",
                 fill: "#ffffff",
                 backgroundColor: "#333333",
                 padding: { x: 10, y: 5 }
             }).setInteractive();
-
+    
             optionText.on("pointerdown", () => {
-                this.handleDialogueOption(index);
+                this.handleDialogueOption(option.response, optionText);
             });
-
+    
             this.optionTexts.push(optionText);
         });
     }
-
-    handleDialogueOption(index) {
-        // Handle the selected dialogue option
-        this.dialogueText.setText(`You chose: "${this.dialogueOptions[index]}"`);
-        this.optionTexts.forEach(optionText => optionText.destroy()); // Remove options
-        this.optionTexts = [];
-        this.currentDialogueIndex++; // Move past options
-    }
-
+    
+    
+    handleDialogueOption(response, optionText) {
+        // Display the response for the selected option
+        this.dialogueText.setText(response);
+    
+        // Remove the selected option text
+        optionText.destroy();
+    
+        // Remove the option from the options list
+        this.optionTexts = this.optionTexts.filter(text => text !== optionText);
+    
+        // If no options are left, end the dialogue
+        if (this.optionTexts.length === 0) {
+            this.time.delayedCall(2000, () => {
+                this.endDialogue();
+                this.dialogueCompleted = true; // Mark the dialogue as completed
+            });
+        }
+    }    
+    
     endDialogue() {
         // Hide dialogue and reset
         this.isDialogueVisible = false;
         this.dialogueBox.setVisible(false);
         this.dialogueText.setVisible(false);
+    
+        // Optionally reset options or dialogue only if required
+        this.optionTexts.forEach(optionText => optionText.destroy());
+        this.optionTexts = [];
     }
 }
