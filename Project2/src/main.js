@@ -9,6 +9,7 @@ import testScene from './scenes/testScene';
 import firebase from 'firebase/app';
 import 'firebase/firestore'; 
 import 'firebase/auth'; 
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -21,6 +22,14 @@ const config = {
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    plugins: {//add ui plugin
+        scene: [{
+            key: 'rexUI',
+            plugin: RexUIPlugin,
+            mapping: 'rexUI'
+        },
+        ]
     },
     physics: {
         default: 'arcade',
@@ -38,7 +47,7 @@ const config = {
         GameOver,
         Leaderboard,
         Settings
-    ]
+    ],
 };
 
 export default new Phaser.Game(config);

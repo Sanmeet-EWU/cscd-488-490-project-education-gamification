@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-const data = { username: 'GravyTrain369' };  
+const data = { username: 'Username123' };  
 import { fetchData } from '../../firebase/firebase.js';
 import  testScene  from "./testScene.js";
 

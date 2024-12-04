@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "firebase": "^11.0.2",
-        "phaser": "^3.86.0"
+        "phaser": "^3.86.0",
+        "phaser3-rex-plugins": "^1.80.12"
     }
 }
