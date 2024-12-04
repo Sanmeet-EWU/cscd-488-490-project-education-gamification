@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -11,6 +12,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 export async function fetchData() {

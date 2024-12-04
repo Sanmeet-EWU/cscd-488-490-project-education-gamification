@@ -5,6 +5,7 @@ import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 import { Leaderboard } from './scenes/Leaderboard';
 import { Settings } from './scenes/Settings';
+import testScene from './scenes/testScene';
 import firebase from 'firebase/app';
 import 'firebase/firestore'; 
 import 'firebase/auth'; 
@@ -21,10 +22,18 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
     scene: [
         Boot,
         Preloader,
         MainMenu,
+        testScene,
         Game,
         GameOver,
         Leaderboard,

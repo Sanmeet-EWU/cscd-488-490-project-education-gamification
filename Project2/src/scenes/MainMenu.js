@@ -1,6 +1,8 @@
 import { Scene } from 'phaser';
 const data = { username: 'GravyTrain369' };  
 import { fetchData } from '../../firebase/firebase.js';
+import  testScene  from "./testScene.js";
+
 export class MainMenu extends Scene
 {
     constructor ()
@@ -79,9 +81,9 @@ export class MainMenu extends Scene
             newGame.setColor('#fff');
             dagger.y = 1000;//get that shit off screen
         })
-        newGame.on('pointerdown', () => {
-            alert('newGame clicked');
-        })
+        newGame.on("pointerdown", () => {
+            this.scene.start("testScene");
+        });
 
         loadGame.on('pointerover', () => {
             loadGame.setColor('#ff0');
