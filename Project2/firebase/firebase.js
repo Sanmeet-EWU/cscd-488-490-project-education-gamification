@@ -17,7 +17,7 @@ const db = getFirestore(app);
 
 export async function fetchData() {
     try {
-        const docRef = doc(db, "Inventorys", "PlayerID-Inventory");
+        const docRef = doc(db, "Players", "Player");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             console.log("Document data:", docSnap.data());

@@ -64,6 +64,8 @@ export default class testScene extends Phaser.Scene {
 
         this.optionTexts = []; // Store the option text objects
         this.dialogueCompleted = false; 
+        this.canProgressDialogue = false; // Dialogue progression is initially disabled
+
 
 
     //  Temporary exit button -----------------------------------------------------------------------
@@ -155,34 +157,48 @@ export default class testScene extends Phaser.Scene {
         this.dialogueText.setVisible(true);
         this.currentDialogueIndex = 0;
         this.dialogueText.setText(this.dialogue[this.currentDialogueIndex]);
+    
+        // Enable dialogue progression
+        this.canProgressDialogue = true;
     }
+    
     advanceDialogue() {
-        // Progress through the dialogue or show options
+        // Prevent progression if not allowed
+        if (!this.canProgressDialogue) {
+            return;
+        }
+    
+        // Disable further progression until the current step is completed
+        this.canProgressDialogue = false;
+    
         this.currentDialogueIndex++;
-
+    
         if (this.currentDialogueIndex < this.dialogue.length) {
             // Show the next line of dialogue
             this.dialogueText.setText(this.dialogue[this.currentDialogueIndex]);
+    
+            // Re-enable progression after a short delay (simulate the time for dialogue display)
+            this.time.delayedCall(500, () => {
+                this.canProgressDialogue = true;
+            });
         } else if (this.currentDialogueIndex === this.dialogue.length) {
             // Show dialogue options
             this.showDialogueOptions();
-        } else {
-            // End dialogue and reset
-            this.endDialogue();
         }
     }
+    
+    
 
     showDialogueOptions() {
         this.dialogueText.setText("Choose an option:");
     
-        // Define the options and their positions
         this.dialogueOptions = [
             { text: "Where the place?", response: "Upon the heath." },
             { text: "I come, graymalkin!", response: "Paddock calls!" }
         ];
     
         this.dialogueOptions.forEach((option, index) => {
-            const optionText = this.add.text(150, 500 + index * 30, option.text, {
+            const optionText = this.add.text(150, 520 + index * 30, option.text, {
                 fontSize: "18px",
                 fill: "#ffffff",
                 backgroundColor: "#333333",
@@ -198,6 +214,7 @@ export default class testScene extends Phaser.Scene {
     }
     
     
+    
     handleDialogueOption(response, optionText) {
         // Display the response for the selected option
         this.dialogueText.setText(response);
@@ -208,23 +225,31 @@ export default class testScene extends Phaser.Scene {
         // Remove the option from the options list
         this.optionTexts = this.optionTexts.filter(text => text !== optionText);
     
-        // If no options are left, end the dialogue
+        // If no options are left, wait before closing the dialogue
         if (this.optionTexts.length === 0) {
             this.time.delayedCall(2000, () => {
                 this.endDialogue();
-                this.dialogueCompleted = true; // Mark the dialogue as completed
             });
         }
-    }    
+    }
+    
+    
+     
     
     endDialogue() {
-        // Hide dialogue and reset
-        this.isDialogueVisible = false;
+        // Hide dialogue box and text
         this.dialogueBox.setVisible(false);
         this.dialogueText.setVisible(false);
     
-        // Optionally reset options or dialogue only if required
+        // Destroy any remaining option texts
         this.optionTexts.forEach(optionText => optionText.destroy());
         this.optionTexts = [];
+    
+        // Reset dialogue flags
+        this.isDialogueVisible = false;
+        this.canProgressDialogue = false;
+        this.dialogueCompleted = true; // Mark the dialogue as completed
     }
+    
+    
 }
