@@ -64,6 +64,25 @@ export default class testScene extends Phaser.Scene {
 
         this.optionTexts = []; // Store the option text objects
         this.dialogueCompleted = false; 
+
+
+    //  Temporary exit button -----------------------------------------------------------------------
+        const closeOut = this.add.text(50, 50, 'X', {// temp X button to close the settings menu
+            fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'right'
+        }).setInteractive().setOrigin(0.5);
+
+        closeOut.on('pointerover', () => {
+            closeOut.setColor('#ff0');
+        })
+        closeOut.on('pointerout', () => {
+            closeOut.setColor('#fff');
+        })
+        closeOut.on('pointerdown', () => {//Return to main menu
+            this.scene.start('MainMenu');
+        });
+    //  End of temporary exit button -----------------------------------------------------------------------
     }
 
     update() {
