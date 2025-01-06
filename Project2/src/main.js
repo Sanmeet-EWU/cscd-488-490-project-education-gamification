@@ -6,13 +6,15 @@ import { Preloader } from './scenes/Preloader';
 import { Leaderboard } from './scenes/Leaderboard';
 import { Settings } from './scenes/Settings';
 import testScene from './scenes/testScene';
-import firebase from 'firebase/app';
-import 'firebase/firestore'; 
-import 'firebase/auth'; 
+import { completeLogin } from '../firebase/firebase.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
-//  Find out more information about the Game Config at:
-//  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
+// Call completeLogin when the page loads to handle email-based login
+window.onload = () => {
+    completeLogin();
+};
+
+// Phaser Game Configuration
 const config = {
     type: Phaser.AUTO,
     width: 1024,
@@ -23,12 +25,13 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    plugins: {//add ui plugin
-        scene: [{
-            key: 'rexUI',
-            plugin: RexUIPlugin,
-            mapping: 'rexUI'
-        },
+    plugins: {
+        scene: [
+            {
+                key: 'rexUI',
+                plugin: RexUIPlugin,
+                mapping: 'rexUI'
+            }
         ]
     },
     physics: {

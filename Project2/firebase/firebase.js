@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -26,5 +26,38 @@ export async function fetchData() {
         }
     } catch (error) {
         console.error("Error getting document:", error);
+    }
+}
+
+export function sendLoginLink(email) {
+    const actionCodeSettings = {
+        url: 'http://localhost:8080',
+        handleCodeInApp: true,
+    };
+
+    return sendSignInLinkToEmail(auth, email, actionCodeSettings)
+        .then(() => {
+            window.localStorage.setItem('emailForSignIn', email);
+            alert('Login link sent! Check your email.');
+        })
+        .catch(error => {
+            console.error("Error sending login link:", error);
+        });
+}
+
+export function completeLogin() {
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+        let email = window.localStorage.getItem('emailForSignIn');
+        if (!email) {
+            email = window.prompt('Please provide your email for confirmation');
+        }
+        signInWithEmailLink(auth, email, window.location.href)
+            .then(result => {
+                console.log('User signed in:', result.user);
+                window.localStorage.removeItem('emailForSignIn');
+            })
+            .catch(error => {
+                console.error('Error signing in:', error);
+            });
     }
 }

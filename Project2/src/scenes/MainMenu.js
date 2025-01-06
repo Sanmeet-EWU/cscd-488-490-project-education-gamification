@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 const data = { username: 'Username123' };  
 import { fetchData } from '../../firebase/firebase.js';
 import  testScene  from "./testScene.js";
+import { sendLoginLink } from '../../firebase/firebase.js';
 
 export class MainMenu extends Scene
 {
@@ -18,6 +19,18 @@ export class MainMenu extends Scene
 
     create ()
     {
+        // Add a login button
+        const loginButton = this.add.text(500, 600, 'Login with Email', {
+            fontFamily: 'Arial', fontSize: 32, color: '#ffffff',
+        }).setInteractive();
+
+        // Handle button click
+        loginButton.on('pointerdown', () => {
+            const email = prompt('Enter your email:');
+            if (email) {
+                sendLoginLink(email);
+            }
+        });
         this.add.image(350, 230, 'Macbeth');
 
         this.add.image(770, 320, 'crown');
