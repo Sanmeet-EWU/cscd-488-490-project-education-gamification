@@ -3,6 +3,7 @@ const data = { username: 'Username123' };
 import { fetchData } from '../../firebase/firebase.js';
 import  testScene  from "./testScene.js";
 import { sendLoginLink } from '../../firebase/firebase.js';
+import { registerUser } from '../../firebase/firebase.js';
 
 export class MainMenu extends Scene
 {
@@ -19,18 +20,6 @@ export class MainMenu extends Scene
 
     create ()
     {
-        // Add a login button
-        const loginButton = this.add.text(500, 600, 'Login with Email', {
-            fontFamily: 'Arial', fontSize: 32, color: '#ffffff',
-        }).setInteractive();
-
-        // Handle button click
-        loginButton.on('pointerdown', () => {
-            const email = prompt('Enter your email:');
-            if (email) {
-                sendLoginLink(email);
-            }
-        });
         this.add.image(350, 230, 'Macbeth');
 
         this.add.image(770, 320, 'crown');
@@ -78,11 +67,18 @@ export class MainMenu extends Scene
             stroke: '#000000', strokeThickness: 8,
             align: 'right'
         }).setInteractive().setOrigin(0.5);
-        const testButton = this.add.text(425, 570,'Run Firebase Test',{ 
+        const loginButton = this.add.text(450, 600, 'Login with Email', {
             fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
-            align: 'left'}
-          ).setInteractive().setOrigin(0.5);
+            align: 'left'
+        }).setInteractive().setOrigin(0.5);
+        const registerButton = this.add.text(375, 550, 'Register', {
+            fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'left'
+        }).setInteractive().setOrigin(0.5);
+
+
 
     // menu interactions
         newGame.on('pointerover', () => {
@@ -146,10 +142,27 @@ export class MainMenu extends Scene
         credits.on('pointerdown', () => {
             alert('credis clicked');
         })
-        testButton.on('pointerdown', () => {
-            fetchData();
-        })
-
+        registerButton.on('pointerdown', async () => {
+            const email = prompt('Enter your school email to register:');
+            if (email) {
+                const success = await registerUser(email);
+                if (success) {
+                    console.log("User registered successfully!");
+                }
+            }
+        });
+        loginButton.on('pointerdown', async () => {
+            const email = prompt('Enter your email:');
+            if (email) {
+                await sendLoginLink(email);
+            }
+        });
+        loginButton.on('pointerdown', () => {
+            const email = prompt('Enter your email:');
+            if (email) {
+                sendLoginLink(email);
+            }
+        });
         
         // Start bgMusic
         this.audioController = this.sys.game.globals.audioController;

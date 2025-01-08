@@ -6,14 +6,9 @@ import { Preloader } from './scenes/Preloader';
 import { Leaderboard } from './scenes/Leaderboard';
 import { Settings } from './scenes/Settings';
 import testScene from './scenes/testScene';
-import { completeLogin } from '../firebase/firebase.js';
 import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
-// Call completeLogin when the page loads to handle email-based login
-window.onload = () => {
-    completeLogin();
-};
 
 // Phaser Game Configuration
 const config = {
