@@ -7,6 +7,7 @@ import { Leaderboard } from './scenes/Leaderboard';
 import { Settings } from './scenes/Settings';
 import testScene from './scenes/testScene';
 import { completeLogin } from '../firebase/firebase.js';
+import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 // Call completeLogin when the page loads to handle email-based login
@@ -53,4 +54,12 @@ const config = {
     ],
 };
 
-export default new Phaser.Game(config);
+class Project extends Phaser.Game {
+    constructor () {
+      super(config);
+      const audioController = new AudioController();
+      this.globals = { audioController, bgMusic: null };
+    }
+  }
+
+export default new Project();
