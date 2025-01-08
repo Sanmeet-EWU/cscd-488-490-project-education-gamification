@@ -31,15 +31,22 @@ export class Preloader extends Scene
     {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
-
         this.load.image('bg', 'background.png');
-
         this.load.image('Macbeth', 'macbethTitle.png');
-
         this.load.image('crown', 'crown.png');
-
         this.load.image('dagger', 'daggerSelector.png');
         
+        // Load the audio
+        this,this.load.setPath('assets/audio');
+        this.load.audio('testMusic', 'TownTheme.mp3');//temp music we should pick something together
+        
+        // Load ui elements
+        this.load.setPath('assets/ui');
+        this.load.image('backButton', 'backButton.png');
+        this.load.image('checkedBox', 'checkedBox.png');
+        this.load.image('options', 'options.png');
+        this.load.image('playButton', 'playButton.png');
+        this.load.image('uncheckedBox', 'uncheckedBox.png');
     }
 
     create ()
