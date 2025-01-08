@@ -34,7 +34,6 @@ export function sendLoginLink(email) {
         url: 'http://localhost:8080',
         handleCodeInApp: true,
     };
-
     return sendSignInLinkToEmail(auth, email, actionCodeSettings)
         .then(() => {
             window.localStorage.setItem('emailForSignIn', email);
