@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, addDoc, setDoc } from "firebase/firestore";
 
 
 const firebaseConfig = {

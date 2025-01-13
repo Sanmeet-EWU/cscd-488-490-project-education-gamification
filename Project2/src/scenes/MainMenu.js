@@ -157,12 +157,6 @@ export class MainMenu extends Scene
                 await sendLoginLink(email);
             }
         });
-        loginButton.on('pointerdown', () => {
-            const email = prompt('Enter your email:');
-            if (email) {
-                sendLoginLink(email);
-            }
-        });
         
         // Start bgMusic
         this.audioController = this.sys.game.globals.audioController;
