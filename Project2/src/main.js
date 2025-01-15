@@ -8,7 +8,7 @@ import { Settings } from './scenes/Settings';
 import testScene from './scenes/testScene';
 import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-
+import { completeLogin } from '../firebase/firebase.js';
 
 // Phaser Game Configuration
 const config = {
@@ -58,3 +58,8 @@ class Project extends Phaser.Game {
   }
 
 export default new Project();
+
+// Handle login completion on page load
+window.onload = () => {
+    completeLogin();
+};

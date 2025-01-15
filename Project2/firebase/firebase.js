@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged} from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs, addDoc, setDoc } from "firebase/firestore";
 
 
@@ -107,3 +107,34 @@ export async function sendLoginLink(email) {
             console.error("Error sending login link:", error);
         });
 }
+
+export function completeLogin() {
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+        let email = window.localStorage.getItem('emailForSignIn');
+
+        // If email is not found in local storage, prompt the user for it
+        if (!email) {
+            email = window.prompt('Please provide your email for confirmation:');
+        }
+
+        signInWithEmailLink(auth, email, window.location.href)
+            .then((result) => {
+                console.log('User signed in:', result.user);
+                window.localStorage.removeItem('emailForSignIn');
+                alert('Login successful!');
+            })
+            .catch((error) => {
+                console.error('Error signing in:', error);
+                alert('Failed to log in. Please try again.');
+            });
+    } else {
+        console.log('Not a sign-in email link.');
+    }
+}
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log('User is signed in:', user.email);
+    } else {
+        console.log('No user is signed in.');
+    }
+});
