@@ -18,10 +18,12 @@ export class GameScene extends Phaser.Scene
         
     }
 
+    //TODO: still needs to lock out player movment when the options menu is open
+
     initializeOptions(){
         this.makeOptionsButton();
         this.optionsModal = this.makeOptionsModal();
-        this.optionsModal.bringToTop();//idk how yet but it needs to be the top layer
+        this.optionsModal.depth = 10;//This may need tweaking later, but depth controls the order of rendering
         this.optionsModal.setVisible(false);
     }
 
