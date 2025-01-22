@@ -47,14 +47,7 @@ export async function registerUser(email) {
         alert("Username cannot be empty.");
         return false;
     }
-        
     try {
-        const user = auth.currentUser; // Get the currently signed-in user
-        if (!user) {
-            alert("User must be signed in to register.");
-            return false;
-        }
-
         // Create a document in the Players collection with the UID as the document ID
         const docRef = doc(db, "Players", user.uid);
         await setDoc(docRef, {
