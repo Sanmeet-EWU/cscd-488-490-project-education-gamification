@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
-const data = { username: 'Username123' };  
+import { getUsername } from '../../firebase/firebase.js';
+// const data = { username:getUsername() };  
 import { fetchData } from '../../firebase/firebase.js';
 import  testScene  from "./testScene.js";
 import { sendLoginLink } from '../../firebase/firebase.js';
@@ -18,7 +19,7 @@ export class MainMenu extends Scene
         this.add.image(512, 384, 'bg');
     }
 
-    create ()
+    async create ()
     {
         this.add.image(350, 230, 'Macbeth');
 
@@ -28,8 +29,7 @@ export class MainMenu extends Scene
 
 
     // Grab the username from the data object to displayed in top right corner
-        const username = data.username;
-
+        const username = await getUsername();
         this.add.text(750, 100, username, {
             fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,

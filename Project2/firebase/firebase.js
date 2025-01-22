@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged} from "firebase/auth";
-import { getFirestore, collection, query, where, getDocs, addDoc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -15,6 +15,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
 
 export async function fetchData() {
     try {
@@ -58,33 +59,74 @@ export async function registerUser(email) {
     //     alert(`Invalid email. Only emails ending with ${allowedDomain} are allowed.`);
     //     return false;
     // }
-
-    const db = getFirestore();
-    const playersRef = collection(db, "Players");
-
+    const username = prompt("Create your username:");
+    
+        if (!username || username.trim() === "") {
+            alert("Username cannot be empty.");
+            return false;
+        }
+    
+        
     try {
-        // Add the new user to Firestore with an auto-generated document ID
-        const docRef = await addDoc(playersRef, {
+        const user = auth.currentUser; // Get the currently signed-in user
+        if (!user) {
+            alert("User must be signed in to register.");
+            return false;
+        }
+
+        // Create a document in the Players collection with the UID as the document ID
+        const docRef = doc(db, "Players", user.uid);
+        await setDoc(docRef, {
+            PlayerID: user.uid,
             SchoolEmail: email,
-            SaveData: null // Initialize with no save data
+            SaveData: null,
+            Username: username
         });
-    
-        // Use the auto-generated document ID as the PlayerID
-        const playerId = docRef.id;
-    
-        // Optionally update the document to include the PlayerID field
-        await setDoc(docRef, { PlayerID: playerId }, { merge: true });
-    
+
         alert("Registration successful!");
-        console.log("Registered user with PlayerID:", playerId);
+        console.log("Registered user with PlayerID:", user.uid);
         return true;
     } catch (error) {
         console.error("Error registering user:", error);
         alert("An error occurred during registration. Please try again.");
         return false;
-    }    
+    }
 }
-
+export function isUserSignedIn(){
+    let user = auth.currentUser;
+        if(user){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+export async function getUsername(){
+    let user = auth.currentUser;
+    if(user){
+        try{
+            const docRef = doc(db, "Players", user.uid);
+            const docSnap = await getDoc(docRef);
+            if(docSnap.exists()){
+                const userName = docSnap.data().Username;
+                console.log("Username: ", userName);
+                return userName
+            }
+            else{
+                console.error("No document found for user ID: ", user.uid);
+                return null
+            }
+        }
+        catch(error){
+            console.error("Error fetching username from Firestore: ", error);
+            return null
+        }
+    }
+    else{
+        console.log("Not signed in");
+        return null;
+    }
+}
 export async function sendLoginLink(email) {
     const emailExists = await isEmailRegistered(email);
 
@@ -94,7 +136,7 @@ export async function sendLoginLink(email) {
     }
 
     const actionCodeSettings = {
-        url: 'http://localhost:8080', // Replace with your domain in production
+        url: 'http://localhost:8080', // Replace with domain in production
         handleCodeInApp: true,
     };
 
