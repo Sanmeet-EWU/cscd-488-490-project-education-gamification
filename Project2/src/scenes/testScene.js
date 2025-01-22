@@ -1,9 +1,14 @@
-export default class testScene extends Phaser.Scene {
+import { GameScene } from "./GameScene";
+
+export default class testScene extends GameScene {
     constructor() {
         super("testScene"); // Scene key
     }
 
     create() {
+        // Add the options/pause menu
+        this.initializeOptions();
+
         // Set the background color
         this.cameras.main.setBackgroundColor("#808080");
 
