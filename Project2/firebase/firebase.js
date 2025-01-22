@@ -3,18 +3,20 @@ import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailL
 import { getFirestore, collection, query, where, getDocs, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDRzsA9k8nv5MfsBXFUCSXzGmNHp8rXTvM",
-    authDomain: "education-gamification.firebaseapp.com",
-    projectId: "education-gamification",
-    storageBucket: "education-gamification.firebasestorage.app",
-    messagingSenderId: "481951042794",
-    appId: "1:481951042794:web:42696d9447acf377771b93"
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+
+export default app;
 // Fetch player data
 export async function fetchData() {
     try {

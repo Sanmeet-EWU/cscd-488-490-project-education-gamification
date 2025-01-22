@@ -1,5 +1,6 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack"); // Add this import
 const path = require("path");
 const webpack = require("webpack");
 
@@ -8,7 +9,7 @@ module.exports = {
     devtool: "eval-source-map",
     entry: "./src/main.js",
     output: {
-        path: path.resolve(process.cwd(), 'dist'),
+        path: path.resolve(process.cwd(), "dist"),
         filename: "bundle.min.js"
     },
     module: {
@@ -31,6 +32,10 @@ module.exports = {
         ]
     },
     plugins: [
+        new Dotenv({
+            path: "./.env", // Path to your .env file
+            safe: true
+        }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: [path.join(__dirname, "dist/**/*")]
         }),

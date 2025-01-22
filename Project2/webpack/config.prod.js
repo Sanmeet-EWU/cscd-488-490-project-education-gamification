@@ -1,19 +1,16 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack"); // Add this import
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
-
-const line = "---------------------------------------------------------";
-const msg = `❤️❤️❤️ Tell us about your game! - games@phaser.io ❤️❤️❤️`;
-process.stdout.write(`${line}\n${msg}\n${line}\n`);
 
 module.exports = {
     mode: "production",
     entry: "./src/main.js",
     output: {
-        path: path.resolve(process.cwd(), 'dist'),
+        path: path.resolve(process.cwd(), "dist"),
         filename: "./bundle.min.js"
     },
     devtool: false,
@@ -53,6 +50,10 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
+        new Dotenv({ // Add dotenv-webpack here
+            path: "./.env",
+            safe: true
+        }),
         new webpack.DefinePlugin({
             "typeof CANVAS_RENDERER": JSON.stringify(true),
             "typeof WEBGL_RENDERER": JSON.stringify(true),
@@ -68,10 +69,10 @@ module.exports = {
         }),
         new CopyPlugin({
             patterns: [
-                { from: 'public/assets', to: 'assets' },
-                { from: 'public/favicon.png', to: 'favicon.png' },
-                { from: 'public/style.css', to: 'style.css' }
-            ],
-        }),
+                { from: "public/assets", to: "assets" },
+                { from: "public/favicon.png", to: "favicon.png" },
+                { from: "public/style.css", to: "style.css" }
+            ]
+        })
     ]
 };
