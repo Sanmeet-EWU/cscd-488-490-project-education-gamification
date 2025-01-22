@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged} from "firebase/auth";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
-
 
 const firebaseConfig = {
     apiKey: "AIzaSyDRzsA9k8nv5MfsBXFUCSXzGmNHp8rXTvM",
@@ -16,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-
+// Fetch player data
 export async function fetchData() {
     try {
         const docRef = doc(db, "Players", "Player");
@@ -30,6 +29,8 @@ export async function fetchData() {
         console.error("Error getting document:", error);
     }
 }
+
+// Check if email is registered
 export async function isEmailRegistered(email) {
     const playersRef = collection(db, "Players");
     const q = query(playersRef, where("SchoolEmail", "==", email)); // Match SchoolEmail field
@@ -37,35 +38,15 @@ export async function isEmailRegistered(email) {
 
     return !querySnapshot.empty; // Return true if email exists
 }
-// export function isValidSchoolEmail(email, allowedDomain = null) {
-//     // Basic email format validation
-//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//     if (!emailRegex.test(email)) {
-//         return false;
-//     }
 
-//     // Optional domain restriction
-//     if (allowedDomain && !email.endsWith(allowedDomain)) {
-//         return false;
-//     }
-
-//     return true;
-// }
- 
+// Register a new user
 export async function registerUser(email) {
-    // const allowedDomain = "@school.edu"; // Replace with your desired domain, or set to null to allow all domains
-
-    // if (!isValidSchoolEmail(email, allowedDomain)) {
-    //     alert(`Invalid email. Only emails ending with ${allowedDomain} are allowed.`);
-    //     return false;
-    // }
     const username = prompt("Create your username:");
     
-        if (!username || username.trim() === "") {
-            alert("Username cannot be empty.");
-            return false;
-        }
-    
+    if (!username || username.trim() === "") {
+        alert("Username cannot be empty.");
+        return false;
+    }
         
     try {
         const user = auth.currentUser; // Get the currently signed-in user
@@ -92,41 +73,39 @@ export async function registerUser(email) {
         return false;
     }
 }
-export function isUserSignedIn(){
+
+// Check if the user is signed in
+export function isUserSignedIn() {
     let user = auth.currentUser;
-        if(user){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-export async function getUsername(){
+    return !!user;
+}
+
+// Get the username of the signed-in user
+export async function getUsername() {
     let user = auth.currentUser;
-    if(user){
-        try{
+    if (user) {
+        try {
             const docRef = doc(db, "Players", user.uid);
             const docSnap = await getDoc(docRef);
-            if(docSnap.exists()){
+            if (docSnap.exists()) {
                 const userName = docSnap.data().Username;
                 console.log("Username: ", userName);
-                return userName
-            }
-            else{
+                return userName;
+            } else {
                 console.error("No document found for user ID: ", user.uid);
-                return null
+                return null;
             }
-        }
-        catch(error){
+        } catch (error) {
             console.error("Error fetching username from Firestore: ", error);
-            return null
+            return null;
         }
-    }
-    else{
+    } else {
         console.log("Not signed in");
         return null;
     }
 }
+
+// Send login link to the provided email
 export async function sendLoginLink(email) {
     const emailExists = await isEmailRegistered(email);
 
@@ -150,33 +129,54 @@ export async function sendLoginLink(email) {
         });
 }
 
+// Complete the login process
 export function completeLogin() {
-    if (isSignInWithEmailLink(auth, window.location.href)) {
-        let email = window.localStorage.getItem('emailForSignIn');
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("User is already signed in:", user.email);
+            // Perform any setup for the authenticated user
+        } else if (isSignInWithEmailLink(auth, window.location.href)) {
+            let email = window.localStorage.getItem('emailForSignIn');
 
-        // If email is not found in local storage, prompt the user for it
-        if (!email) {
-            email = window.prompt('Please provide your email for confirmation:');
+            if (!email) {
+                alert("No email found for login. Please use a new login link.");
+                return;
+            }
+
+            signInWithEmailLink(auth, email, window.location.href)
+                .then((result) => {
+                    console.log("User signed in:", result.user);
+                    window.localStorage.removeItem('emailForSignIn');
+                    alert("Login successful!");
+                })
+                .catch((error) => {
+                    console.error("Error signing in:", error);
+                    alert("The sign-in link is invalid or expired. Please try logging in again.");
+                });
+        } else {
+            console.log("Not a sign-in email link.");
         }
-
-        signInWithEmailLink(auth, email, window.location.href)
-            .then((result) => {
-                console.log('User signed in:', result.user);
-                window.localStorage.removeItem('emailForSignIn');
-                alert('Login successful!');
-            })
-            .catch((error) => {
-                console.error('Error signing in:', error);
-                alert('Failed to log in. Please try again.');
-            });
-    } else {
-        console.log('Not a sign-in email link.');
-    }
+    });
 }
+
+// Set persistence for authentication
+setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+        console.log("Auth persistence is set to local storage.");
+    })
+    .catch((error) => {
+        console.error("Error setting auth persistence:", error);
+    });
+
+// Monitor authentication state
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        console.log('User is signed in:', user.email);
+        console.log("User is already logged in:", user.email);
+        //Uncomment this during testing to force logout on refresh
+        // signOut(auth).then(() => {
+        //     console.log("Signed out successfully.");
+        // });
     } else {
-        console.log('No user is signed in.');
+        console.log("No user is signed in.");
     }
 });
