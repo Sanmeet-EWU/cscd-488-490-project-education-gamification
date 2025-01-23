@@ -1,10 +1,11 @@
 import { Scene } from 'phaser';
 import { getUsername } from '../../firebase/firebase.js';
-// const data = { username:getUsername() };  
+import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { fetchData } from '../../firebase/firebase.js';
 import  testScene  from "./testScene.js";
 import { sendLoginLink } from '../../firebase/firebase.js';
 import { registerUser } from '../../firebase/firebase.js';
+const auth = getAuth();
 
 export class MainMenu extends Scene
 {
@@ -29,13 +30,28 @@ export class MainMenu extends Scene
 
 
     // Grab the username from the data object to displayed in top right corner
-        const username = await getUsername();
-        this.add.text(750, 100, username, {
-            fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'right'
-        }).setOrigin(0.5);
+    const usernameText = this.add.text(750, 100, "Loading...", {
+        fontFamily: 'Inknut Antiqua',
+        fontSize: 40,
+        color: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 8,
+        align: 'right',
+    }).setOrigin(0.5);
 
+    // Listen for authentication state changes
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            console.log("User is signed in:", user.email);
+
+            // Fetch the username and update the text
+            const username = await getUsername();
+            usernameText.setText(username || "Guest");
+        } else {
+            console.log("No user is signed in.");
+            usernameText.setText("Guest");
+        }
+    });
 
     // The selectable menu objects
         const newGame = this.add.text(400, 330, 'New Game', {

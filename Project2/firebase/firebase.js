@@ -41,26 +41,39 @@ export async function isEmailRegistered(email) {
     return !querySnapshot.empty; // Return true if email exists
 }
 
-// Register a new user
+//Register User
 export async function registerUser(email) {
-    const username = prompt("Create your username:");
-    
-    if (!username || username.trim() === "") {
+    // const allowedDomain = "@school.edu"; // Replace with your desired domain or set to null to allow all domains
+
+    // if (!email.endsWith(allowedDomain)) {
+    //     alert(`Invalid email. Only emails ending with ${allowedDomain} are allowed.`);
+    //     return false;
+    // }
+
+    const username = prompt('Enter your desired username:');
+    if (!username || username.trim() === '') {
         alert("Username cannot be empty.");
         return false;
     }
+
+    const db = getFirestore();
+    const playersRef = collection(db, "Players");   
+
     try {
-        // Create a document in the Players collection with the UID as the document ID
-        const docRef = doc(db, "Players", user.uid);
-        await setDoc(docRef, {
-            PlayerID: user.uid,
+        // Add the new user to Firestore with an auto-generated document ID
+        const docRef = await addDoc(playersRef, {
             SchoolEmail: email,
-            SaveData: null,
-            Username: username
+            Username: username, // Add username field
+            SaveData: null // Initialize with no save data
         });
 
+        // Use the auto-generated document ID as the PlayerID
+        const playerId = docRef.id;
+
+        await setDoc(docRef, { PlayerID: playerId }, { merge: true });
+
         alert("Registration successful!");
-        console.log("Registered user with PlayerID:", user.uid);
+        console.log("Registered user with PlayerID:", playerId, "and Username:", username);
         return true;
     } catch (error) {
         console.error("Error registering user:", error);
@@ -68,6 +81,7 @@ export async function registerUser(email) {
         return false;
     }
 }
+
 
 // Check if the user is signed in
 export function isUserSignedIn() {
@@ -78,16 +92,21 @@ export function isUserSignedIn() {
 // Get the username of the signed-in user
 export async function getUsername() {
     let user = auth.currentUser;
+
     if (user) {
         try {
-            const docRef = doc(db, "Players", user.uid);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
+            const email = user.email; // Get the logged-in user's email
+            const playersRef = collection(db, "Players");
+            const q = query(playersRef, where("SchoolEmail", "==", email)); // Query Firestore using email
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                const docSnap = querySnapshot.docs[0]; // Get the first matching document
                 const userName = docSnap.data().Username;
                 console.log("Username: ", userName);
                 return userName;
             } else {
-                console.error("No document found for user ID: ", user.uid);
+                console.error("No document found for email: ", email);
                 return null;
             }
         } catch (error) {
@@ -125,29 +144,44 @@ export async function sendLoginLink(email) {
 }
 
 // Complete the login process
-export function completeLogin() {
-    onAuthStateChanged(auth, (user) => {
+export async function completeLogin() {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log("User is already signed in:", user.email);
-            // Perform any setup for the authenticated user
+
+            try {
+                const email = user.email;
+                const playersRef = collection(db, "Players");
+                const q = query(playersRef, where("SchoolEmail", "==", email));
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    const docSnap = querySnapshot.docs[0];
+                    console.log("Matching Firestore record found for email:", email, "with document ID:", docSnap.id);
+                } else {
+                    console.log("No matching Firestore record found for email:", email);
+                }
+            } catch (error) {
+                console.error("Error retrieving Firestore record:", error);
+            }
         } else if (isSignInWithEmailLink(auth, window.location.href)) {
-            let email = window.localStorage.getItem('emailForSignIn');
+            let email = window.localStorage.getItem("emailForSignIn");
 
             if (!email) {
                 alert("No email found for login. Please use a new login link.");
                 return;
             }
 
-            signInWithEmailLink(auth, email, window.location.href)
-                .then((result) => {
-                    console.log("User signed in:", result.user);
-                    window.localStorage.removeItem('emailForSignIn');
-                    alert("Login successful!");
-                })
-                .catch((error) => {
-                    console.error("Error signing in:", error);
-                    alert("The sign-in link is invalid or expired. Please try logging in again.");
-                });
+            try {
+                const result = await signInWithEmailLink(auth, email, window.location.href);
+                console.log("User signed in:", result.user);
+
+                window.localStorage.removeItem("emailForSignIn");
+                alert("Login successful!");
+            } catch (error) {
+                console.error("Error signing in:", error);
+                alert("The sign-in link is invalid or expired. Please try logging in again.");
+            }
         } else {
             console.log("Not a sign-in email link.");
         }
