@@ -83,16 +83,19 @@ export class MainMenu extends Scene
             stroke: '#000000', strokeThickness: 8,
             align: 'right'
         }).setInteractive().setOrigin(0.5);
-        const loginButton = this.add.text(450, 600, 'Login with Email', {
+
+        // Testing placeholder for login and register =====================================================
+        const loginButton = this.add.text(450, 650, 'Login with Email', {
             fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'left'
         }).setInteractive().setOrigin(0.5);
-        const registerButton = this.add.text(375, 550, 'Register', {
+        const registerButton = this.add.text(375, 600, 'Register', {
             fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'left'
         }).setInteractive().setOrigin(0.5);
+        // =================================================================================================
 
 
 
@@ -122,6 +125,7 @@ export class MainMenu extends Scene
         loadGame.on('pointerdown', () => {
             //alert('loadGame clicked');
             this.scene.start('Act1Scene1');
+            //this.scene.launch('Act1Scene1');// ---------------------------> LAUNCH OPENS SCENE IN PARELLEL 
         })
 
         leaderboard.on('pointerover', () => {
@@ -159,6 +163,8 @@ export class MainMenu extends Scene
         credits.on('pointerdown', () => {
             alert('credis clicked');
         })
+
+        //  Testing placeholder for login and register =====================================================
         registerButton.on('pointerdown', async () => {
             const email = prompt('Enter your school email to register:');
             if (email) {
@@ -174,6 +180,7 @@ export class MainMenu extends Scene
                 await sendLoginLink(email);
             }
         });
+        // =================================================================================================
         
         // Start bgMusic
         this.audioController = this.sys.game.globals.audioController;

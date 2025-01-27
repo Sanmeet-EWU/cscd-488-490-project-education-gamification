@@ -23,11 +23,17 @@ export class Leaderboard extends Scene
     create ()
     {
 
-        const closeOut = this.add.text(50, 50, 'X', {// temp X button to close the settings menu
-            fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'right'
-        }).setInteractive().setOrigin(0.5);
+        //  Button for returning to the main menu
+        this.backButton = this.add.image(50, 50, 'backButton').setInteractive();
+        this.backButton.on('pointerover', () => {
+            this.backButton.setScale(1.1);
+        });
+        this.backButton.on('pointerout', () => {
+            this.backButton.setScale(1);
+        });
+        this.backButton.on('pointerdown', () => {
+            this.scene.start('MainMenu');
+        });
 
         this.add.text(500, 100, 'Leaderboard', {// Title of page
             fontFamily: 'Inknut Antiqua', fontSize: 60, color: '#ffffff',
@@ -54,19 +60,6 @@ export class Leaderboard extends Scene
             align: 'center'
         }).setOrigin(0.5);  
 
-    //  Add a hover effect to the closeOut button
-        closeOut.on('pointerover', () => {
-            closeOut.setColor('#ff0');
-        })
-        closeOut.on('pointerout', () => {
-            closeOut.setColor('#fff');
-        })
-        closeOut.on('pointerdown', () => {//Return to main menu
-            this.scene.start('MainMenu');
-        });
-        
-
-        
     }
 
     update ()

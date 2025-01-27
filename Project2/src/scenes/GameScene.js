@@ -43,6 +43,7 @@ export class GameScene extends Phaser.Scene
         this.optionsButton.on('pointerdown', () => {
             this.optionsModal.setVisible(true);
             this.optionsButton.setVisible(false);
+            //this.scene.pause();//This will need to grab the current scene running in parallel and pause it
         });
         this.optionsButton.on('pointerover', () => {
             this.optionsButton.setScale(1.1);

@@ -35,12 +35,6 @@ export class Settings extends Scene {
             align: 'center'
         }).setOrigin(0.5);
 
-        const changeUsername = this.add.text(340, 475, 'Change Username', {
-            fontFamily: 'Inknut Antiqua', fontSize: 30, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'left'
-        }).setInteractive().setOrigin(0.5);
-
         //  Button for returning to the main menu
         this.backButton = this.add.image(50, 50, 'backButton').setInteractive();
         this.backButton.on('pointerover', () => {
@@ -52,13 +46,23 @@ export class Settings extends Scene {
         this.backButton.on('pointerdown', () => {
             this.scene.start('MainMenu');
         });
+
+        //  Change username logic
+        const changeUsername = this.add.text(512, 520, 'Change Username', {
+            fontFamily: 'Inknut Antiqua', fontSize: 30, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'left'
+        }).setInteractive().setOrigin(0.5);
         changeUsername.on('pointerover', () => {
             changeUsername.setColor('#ff0');
-            dagger.y = changeUsername.y;
+            dagger.x = changeUsername.x - 190;
+            dagger.y = changeUsername.y + 2.5;
+            dagger.setVisible(true);
         });
         changeUsername.on('pointerout', () => {
             changeUsername.setColor('#fff');
-            dagger.y = 1000;
+            //dagger.y = 1000;
+            dagger.setVisible(false);
         });
         changeUsername.on('pointerdown', async () => {
             const user = auth.currentUser;
@@ -87,11 +91,11 @@ export class Settings extends Scene {
         this.audioController = this.sys.game.globals.audioController;
 
         //  Check boxes for music and sound
-        this.musicButton = this.add.image(200, 200, 'checkedBox').setInteractive();
-        this.musicText = this.add.text(250, 190, 'Music Enabled', { fontSize: 30 });
+        this.musicButton = this.add.image(200, 250, 'checkedBox').setInteractive();
+        this.musicText = this.add.text(250, this.musicButton.y-10, 'Music Enabled', { fontSize: 30 });
     
-        this.soundButton = this.add.image(200, 300, 'checkedBox').setInteractive();
-        this.soundText = this.add.text(250, 290, 'Sound Enabled', { fontSize: 30 });
+        this.soundButton = this.add.image(200, 350, 'checkedBox').setInteractive();
+        this.soundText = this.add.text(250, this.soundButton.y-10, 'Sound Enabled', { fontSize: 30 });
     
         this.musicButton.on('pointerdown', function () {
             this.audioController.musicOn = !this.audioController.musicOn;
@@ -106,7 +110,7 @@ export class Settings extends Scene {
         //  Add a slider for the music volume
         var musicSlider = this.rexUI.add.numberBar({
             x: 700,
-            y: 200,
+            y: 250,
             width: 300, // Fixed width
             background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_DARK),
             icon: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
@@ -130,6 +134,8 @@ export class Settings extends Scene {
             },
         }).layout();
 
+        this.musicSliderLabel = this.add.text(musicSlider.x - 140, musicSlider.y - 45, 'Music Volume:', { fontSize: 20 });
+
         //  Set music volume to the current musicSlider value
         musicSlider.setValue(this.audioController.bgVolume * 100, 0, 100);
         musicSlider.on('valuechange', function () {
@@ -139,7 +145,7 @@ export class Settings extends Scene {
         //  Add a slider for the SFX volume
         var soundSlider = this.rexUI.add.numberBar({
             x: 700,
-            y: 300,
+            y: 350,
             width: 300, // Fixed width
             background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_DARK),
             icon: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
@@ -169,9 +175,11 @@ export class Settings extends Scene {
             this.updateSoundVolume(soundSlider.getValue());
         }.bind(this));
 
+        this.soundSliderLabel = this.add.text(soundSlider.x - 140, soundSlider.y - 45, 'SFX Volume:', { fontSize: 20 });
+
         //  Play button for testing SFX volume
-        this.playButton = this.add.image(500, 400, 'playButton').setInteractive();
-        this.playButtonText = this.add.text(200, 400, 'Test SFX Volume', { fontSize: 30 });
+        this.playButton = this.add.image(soundSlider.x+50, soundSlider.y+60, 'playButton').setInteractive();//690, 360,
+        this.playButtonText = this.add.text(this.playButton.x-160, this.playButton.y-10, 'Play SFX', { fontSize: 24 });
         this.playButton.on('pointerdown', () => {
             if (this.audioController.soundOn === false) {
                 return;
