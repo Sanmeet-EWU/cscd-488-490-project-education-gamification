@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 // Color pallet for sliders
@@ -70,16 +70,30 @@ export class Settings extends Scene {
                 alert("You need to be logged in to change your username.");
                 return;
             }
-
+        
             const newUsername = prompt("Enter your new username:");
             if (!newUsername || newUsername.trim() === '') {
                 alert("Username cannot be empty.");
                 return;
             }
-
+        
             try {
-                const docRef = doc(db, "Players", user.uid); // Use the user's UID as the document ID
-                await updateDoc(docRef, { Username: newUsername }); // Update the Username field
+                // Query the Players collection to find the document for the logged-in user
+                const playersRef = collection(db, "Players");
+                const q = query(playersRef, where("SchoolEmail", "==", user.email));
+                const querySnapshot = await getDocs(q);
+        
+                if (querySnapshot.empty) {
+                    alert("No player data found for the current user.");
+                    console.error("No document found for email:", user.email);
+                    return;
+                }
+        
+                // Assume only one document matches (email should be unique)
+                const docRef = querySnapshot.docs[0].ref;
+        
+                // Update the Username field
+                await updateDoc(docRef, { Username: newUsername });
                 alert("Username updated successfully!");
                 console.log("Updated Username to:", newUsername);
             } catch (error) {
@@ -87,7 +101,6 @@ export class Settings extends Scene {
                 alert("An error occurred while updating your username.");
             }
         });
-
         this.audioController = this.sys.game.globals.audioController;
 
         //  Check boxes for music and sound
