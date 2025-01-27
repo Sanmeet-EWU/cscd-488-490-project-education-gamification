@@ -173,12 +173,13 @@ export async function completeLogin() {
 
     onAuthStateChanged(auth, async (user) => {
         console.log("onAuthStateChanged triggered:", user);
-
+        console.log("current email: " + user.email)
         if (user) {
             console.log("User is already signed in:", user.email);
 
             // If the current user doesn't match the email in the login link, sign them out
             const emailForSignIn = window.localStorage.getItem('emailForSignIn');
+            console.log("email for sign in: " + window.localStorage.getItem('emailForSignIn'))
             if (emailForSignIn && user.email !== emailForSignIn) {
                 console.log("Current user does not match email in login link. Signing out...");
                 await signOut(auth);
