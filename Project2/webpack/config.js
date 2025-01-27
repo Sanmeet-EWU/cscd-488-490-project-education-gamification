@@ -3,14 +3,17 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack"); // Add this import
 const path = require("path");
 const webpack = require("webpack");
-
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
     mode: "development",
     devtool: "eval-source-map",
-    entry: "./src/main.js",
+    entry:{ 
+        main: "./src/main.js",
+        auth: "./src/auth.js",
+    },
     output: {
         path: path.resolve(process.cwd(), "dist"),
-        filename: "bundle.min.js"
+        filename: "[name].bundle.js" // Output separate bundles for each entry
     },
     module: {
         rules: [
@@ -32,8 +35,15 @@ module.exports = {
         ]
     },
     plugins: [
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: "game.html", to: "game.html"
+                }
+            ]
+        }),
         new Dotenv({
-            path: "./.env", // Path to your .env file
+            path: "./.env",
             safe: true
         }),
         new CleanWebpackPlugin({

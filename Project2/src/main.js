@@ -54,17 +54,24 @@ const config = {
     ],
 };
 
-class Project extends Phaser.Game {
-    constructor () {
-      super(config);
-      const audioController = new AudioController();
-      this.globals = { audioController, bgMusic: null };
-    }
-  }
+// Initialize the Phaser Game in `game.html`
+if (window.location.pathname.endsWith('game.html')) {
+    console.log('Processing login link...');
+    completeLogin().then(() => {
+        console.log('Login completed, initializing game...');
+        
+        // Initialize the Phaser game
+        class Project extends Phaser.Game {
+            constructor() {
+                super(config);
+                const audioController = new AudioController();
+                this.globals = { audioController, bgMusic: null };
+            }
+        }
 
-export default new Project();
-
-// Handle login completion on page load
-window.onload = () => {
-    completeLogin();
-};
+        new Project(); // Start the game after login
+    }).catch((error) => {
+        console.error('Error processing login:', error);
+        alert('Failed to log in. Please try again.');
+    });
+}

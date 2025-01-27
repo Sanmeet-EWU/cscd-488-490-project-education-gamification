@@ -5,13 +5,24 @@
     <link rel="icon" type="image/png" href="./favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css">
-    <title>Phaser - Template</title>
+    <title>Login/Register</title>
+    <script type="module" src="./auth.bundle.js"></script> <!-- Link to authentication script -->
 </head>
-
 <body>
-    <div id="app">
-        <div id="game-container"></div>
+    <h1>Welcome</h1>
+    <div>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Enter your email" required />
+            <button type="submit">Login</button>
+        </form>
     </div>
-    <!-- <script type="module" src="src/main.js"></script> -->
+    <div>
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="email" id="registerEmail" placeholder="Enter your email" required />
+            <button type="submit">Register</button>
+        </form>
+    </div>
 </body>
 </html>

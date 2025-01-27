@@ -3,8 +3,6 @@ import { getUsername } from '../../firebase/firebase.js';
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { fetchData } from '../../firebase/firebase.js';
 import  testScene  from "./testScene.js";
-import { sendLoginLink } from '../../firebase/firebase.js';
-import { registerUser } from '../../firebase/firebase.js';
 const auth = getAuth();
 
 export class MainMenu extends Scene
@@ -84,21 +82,6 @@ export class MainMenu extends Scene
             align: 'right'
         }).setInteractive().setOrigin(0.5);
 
-        // Testing placeholder for login and register =====================================================
-        const loginButton = this.add.text(450, 650, 'Login with Email', {
-            fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'left'
-        }).setInteractive().setOrigin(0.5);
-        const registerButton = this.add.text(375, 600, 'Register', {
-            fontFamily: 'Inknut Antiqua', fontSize: 40, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'left'
-        }).setInteractive().setOrigin(0.5);
-        // =================================================================================================
-
-
-
     // menu interactions
         newGame.on('pointerover', () => {
             newGame.setColor('#ff0');
@@ -163,24 +146,6 @@ export class MainMenu extends Scene
         credits.on('pointerdown', () => {
             alert('credis clicked');
         })
-
-        //  Testing placeholder for login and register =====================================================
-        registerButton.on('pointerdown', async () => {
-            const email = prompt('Enter your school email to register:');
-            if (email) {
-                const success = await registerUser(email);
-                if (success) {
-                    console.log("User registered successfully!");
-                }
-            }
-        });
-        loginButton.on('pointerdown', async () => {
-            const email = prompt('Enter your email:');
-            if (email) {
-                await sendLoginLink(email);
-            }
-        });
-        // =================================================================================================
         
         // Start bgMusic
         this.audioController = this.sys.game.globals.audioController;
