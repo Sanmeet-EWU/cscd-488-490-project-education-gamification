@@ -67,14 +67,22 @@ export async function registerUser(email) {
     //     return false;
     // }
 
+    // Check if the email already exists in the Players collection
+    const playersRef = collection(db, "Players");
+    const q = query(playersRef, where("SchoolEmail", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+        alert("This email is already registered. Please use a different email.");
+        console.error("Registration failed: Email already exists in Firestore:", email);
+        return false; // Prevent duplicate registration
+    }
+
     const username = prompt('Enter your desired username:');
     if (!username || username.trim() === '') {
         alert("Username cannot be empty.");
         return false;
     }
-
-    const db = getFirestore();
-    const playersRef = collection(db, "Players");   
 
     try {
         // Add the new user to Firestore with an auto-generated document ID
@@ -84,12 +92,12 @@ export async function registerUser(email) {
             SaveData: null // Initialize with no save data
         });
 
-        // Use the auto-generated document ID as the PlayerID
         const playerId = docRef.id;
 
         await setDoc(docRef, { PlayerID: playerId }, { merge: true });
 
         console.log("Registered user with PlayerID:", playerId, "and Username:", username);
+        alert("Registration successful!");
         return true;
     } catch (error) {
         console.error("Error registering user:", error);
