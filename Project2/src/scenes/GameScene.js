@@ -28,6 +28,11 @@ export class GameScene extends Phaser.Scene
 
     //TODO: still needs to lock out player movment when the options menu is open
 
+    /**
+     * Creates the pause menu overlay for game scenes.
+     *  - Literally just pass the _this_ keyword. _-Trevor_
+     * @param {GameScene} scene - The game scene that is playing.
+     */
     initializePauseMenu(scene){
         this.scene.launch('PauseMenu', scene);
     }
