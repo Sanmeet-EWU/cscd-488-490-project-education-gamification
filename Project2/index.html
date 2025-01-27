@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css">
+    <title>Login/Register</title>
+    <script type="module" src="./auth.bundle.js"></script> <!-- Link to authentication script -->
+</head>
+<body>
+    <h1>Welcome</h1>
+    <div>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Enter your email" required />
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div>
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="email" id="registerEmail" placeholder="Enter your email" required />
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>
