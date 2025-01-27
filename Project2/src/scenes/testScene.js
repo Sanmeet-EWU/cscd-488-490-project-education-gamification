@@ -7,7 +7,8 @@ export default class testScene extends GameScene {
 
     create() {
         // Add the options/pause menu
-        this.initializeOptions();
+        //this.initializeOptions();
+        this.initializePauseMenu(this);
 
         // Set the background color
         this.cameras.main.setBackgroundColor("#808080");

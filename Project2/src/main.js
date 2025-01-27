@@ -11,6 +11,7 @@ import testScene from './scenes/testScene';
 import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { completeLogin } from '../firebase/firebase.js';
+import { PauseMenu } from './scenes/PauseMenu.js';
 
 
 // Phaser Game Configuration
@@ -50,7 +51,8 @@ const config = {
         Leaderboard,
         Settings,
         GameScene,
-        Act1Scene1
+        Act1Scene1,
+        PauseMenu
     ],
 };
 
