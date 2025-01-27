@@ -50,6 +50,7 @@ export class Preloader extends Scene
         this.load.image('closeMenuButton', 'closeMenuButton.png');
         this.load.image('settingsMenuButton', 'settingsMenuButton.png');
         this.load.image('toMainMenuButton', 'toMainMenuButton.png');
+        this.load.image('saveGameButton', 'saveGameButton.png');
     }
 
     create ()
