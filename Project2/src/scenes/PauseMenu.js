@@ -23,6 +23,7 @@ export class PauseMenu extends Scene
         this.optionsModal = this.makeOptionsModal(this.gameScene);
         this.optionsModal.depth = DEPTH;//This may need tweaking later, but depth controls the order of rendering
         this.optionsModal.setVisible(false);
+        
     }
 
     update ()
@@ -33,8 +34,6 @@ export class PauseMenu extends Scene
     // Makes a button for opening the options menu modal in the corner of the screen
     makeOptionsButton(gameScene){
         this.optionsButton = this.add.image(1000, 24, 'options').setInteractive();
-        //this.escapeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
         this.optionsButton.on('pointerdown', () => {
             this.optionsModal.setVisible(true);
             this.optionsButton.setVisible(false);
@@ -57,6 +56,48 @@ export class PauseMenu extends Scene
 
         this.optionsTitle = this.add.text(-50, -160, 'Options:', { fontFamily: 'Inknut Antiqua', fontSize: '24px', fill: '#fff' });
 
+        let subMenu = null;
+
+        this.escapeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        this.escapeKey.on('down', () => {
+            console.log("Escape key pressed" + gameScene.scene.isPaused()); 
+
+            if(this.optionsButton.visible){
+                this.optionsModal.setVisible(true);
+                this.optionsButton.setVisible(false);
+                gameScene.scene.pause();
+                console.log("Game paused");
+            }
+            else{
+                this.optionsModal.setVisible(false);
+                this.optionsButton.setVisible(true);
+                gameScene.scene.resume();
+                console.log("Game resumed");
+            }
+            // if(gameScene.scene.isPaused()){//gameScene.scene.isPaused()
+            //     if(this.optionsModal.visible){
+            //         this.optionsModal.setVisible(false);
+            //         this.optionsButton.setVisible(true);
+            //         gameScene.scene.resume();
+            //         console.log("Game resumed");
+            //     }
+            //     else{//A different menu is open
+
+            //     }
+            //     this.optionsModal.setVisible(false);
+            //     this.optionsButton.setVisible(true);
+            //     gameScene.scene.resume();
+            //     console.log("Game resumed");
+            // } else {
+            //     this.optionsModal.setVisible(true);
+            //     this.optionsButton.setVisible(false);
+            //     gameScene.scene.pause();
+            //     console.log("Game paused");
+            // }
+        });
+
+        
+
         this.closeButton = this.add.image(120, -180, 'closeMenuButton').setInteractive();
         this.closeButton.on('pointerdown', () => {
             this.optionsModal.setVisible(false);
@@ -75,8 +116,8 @@ export class PauseMenu extends Scene
         this.settingsMenuButton.on('pointerdown', () => {
             //Swap which one is visable
             this.optionsModal.setVisible(false);
-            var mainPanel = CreateMainPanel(this, 512, 400);
-            mainPanel.layout().popUp(500);
+            subMenu = CreateSettingsPanel(this, 512, 400);
+            subMenu.layout().popUp(500);
         });
         this.settingsMenuButton.on('pointerover', () => {
             this.settingsMenuButton.setScale(1.1);
@@ -96,7 +137,25 @@ export class PauseMenu extends Scene
             this.saveGameButton.setScale(1);
         });
 
-        this.toMainMenuButton = this.add.image(0, 150, 'toMainMenuButton').setInteractive();
+        this.controlsButton = this.add.image(0, 80, 'controlsButton').setInteractive();
+        this.controlsButton.on('pointerdown', () => {
+            console.log("Controls button pressed");
+            //Move with WASD
+            //E to interact
+            //tab to open inventory
+            //esc to pause
+            this.optionsModal.setVisible(false);
+            subMenu = CreateControlsPanel(this, 512, 400);
+            subMenu.layout().popUp(500);
+        });
+        this.controlsButton.on('pointerover', () => {
+            this.controlsButton.setScale(1.1);
+        });
+        this.controlsButton.on('pointerout', () => {
+            this.controlsButton.setScale(1);
+        });
+
+        this.toMainMenuButton = this.add.image(0, 160, 'toMainMenuButton').setInteractive();
         this.toMainMenuButton.on('pointerdown', () => {
             this.gameScene.scene.stop();//Need to remove the gameScene from the scene list
             this.scene.start('MainMenu');
@@ -114,6 +173,7 @@ export class PauseMenu extends Scene
         container.add(this.closeButton);
         container.add(this.settingsMenuButton);
         container.add(this.saveGameButton);
+        container.add(this.controlsButton);
         container.add(this.toMainMenuButton);
 
         return container;
@@ -158,7 +218,7 @@ export class PauseMenu extends Scene
     }
 }
 
-var CreateMainPanel = function (scene, x, y) {
+var CreateSettingsPanel = function (scene, x, y) {
     // Create elements
     var background = scene.rexUI.add.roundRectangle(1000, 1000, 0, 0, 20, 0x260e04);//Dark brown
     var backButton = createBackButton(scene);
@@ -190,13 +250,19 @@ var CreateMainPanel = function (scene, x, y) {
     var soundSlider = createSlider(scene);
 
     // Compose elemets
-    var mainPanel = scene.rexUI.add.sizer({
+    var settingsPanel = scene.rexUI.add.sizer({
         orientation: 'y',
         x: x,
         y: y,
     })
+
+        /**
+        * @todo Comeback and fix this bs trevor.
+        * https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ui-sizer/
+        */
+
         .addBackground(background)
-        .add(backButton, 0, 'center', { top: 20, left: 20, right: 340, bottom: 10}, true)
+        .add(backButton, 0, 'left', { top: 20, left: 20, bottom: 10 }, false)
         .add(menuTittle, 0, 'center', { top: 0, left: 100, right: 20, bottom: 20 }, true)
         .add(musicToggleLabel, 0, 'center', { top: 10, left: 80, right: 20, bottom: 0 }, true)
         .add(musicCheckBox, 0, 'center', { top: -25, left: 250, right: 100, bottom: 10 }, true)
@@ -206,6 +272,7 @@ var CreateMainPanel = function (scene, x, y) {
         .add(musicSlider, 0, 'center', { top: 0, left: 20, right: 20, bottom: 10 }, true)
         .add(soundSliderLabel, 0, 'center', { top: 10, left: 20, right: 20, bottom: 10 }, true)
         .add(soundSlider, 0, 'center', { top: 0, left: 20, right: 20, bottom: 20 }, true)
+    ;//end of panel
 
     //  Music check box toggle
     musicCheckBox.on('pointerdown', function () {
@@ -235,10 +302,56 @@ var CreateMainPanel = function (scene, x, y) {
     backButton.setScale(0.7);//make it fit the menu scale better
     backButton.on('pointerdown', () => {
         scene.optionsModal.setVisible(true);
-        mainPanel.hide();
+        settingsPanel.hide();
+    });
+    scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC).on('down', function () {
+        settingsPanel.hide();
     });
 
-    return mainPanel;
+    return settingsPanel;
+}
+
+var CreateControlsPanel = function (scene, x, y) {
+    // Create elements
+    var background = scene.rexUI.add.roundRectangle(1000, 1000, 0, 0, 20, 0x260e04);//Dark brown
+    var backButton = createBackButton(scene);
+    var menuTittle = scene.add.text(0, 0, 'Controls:', { fontSize: 28 });
+
+    /**
+    * @todo Add the controls text here
+    */
+    var controlsText = scene.add.text(0, 0, 'Move with WASD\n \nE to interact\n \nTab to open inventory\n\nEsc to pause', { fontSize: 20 });
+
+    //max height and width
+    var w = 300;
+    //var h = 600;
+
+    // Compose elemets
+    var controlsPanel = scene.rexUI.add.sizer({
+        orientation: 'y',
+        x: x,
+        y: y,
+        width: w,
+        //height: h,
+        
+    })
+        .addBackground(background)
+        .add(backButton, 0, 'left', { top: 20, left: 20 }, false)
+        .add(menuTittle, 0, 'center', { top: 20, left: w/2, right: w/2, bottom: 30 }, false)
+        .add(controlsText, 0, 'left', { top: 20, left: w/3, bottom: 30 }, true)
+    ;//end of panel
+
+    //  Close the audio settings and go back to options menu
+    backButton.setScale(0.7);//make it fit the menu scale better
+    backButton.on('pointerdown', () => {
+        scene.optionsModal.setVisible(true);
+        controlsPanel.hide();
+    });
+    scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC).on('down', function () {
+        controlsPanel.hide();
+    });
+
+    return controlsPanel;
 }
 
 var createCheckBox = function (scene, checked) {
