@@ -3,6 +3,9 @@ body {
     padding: 0;
     color: rgba(255, 255, 255, 0.87);
     background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #app {
@@ -12,4 +15,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.loginPage{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: url('./assets/bg.png') no-repeat center center fixed;
 }
