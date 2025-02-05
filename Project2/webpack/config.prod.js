@@ -71,6 +71,8 @@ module.exports = {
             patterns: [
                 { from: "public/assets", to: "assets" },
                 { from: "public/favicon.png", to: "favicon.png" },
+                { from: "public", to: "public" }, // ✅ Copies everything inside /public
+                { from: "game.html", to: "game.html" },
                 { from: "public/style.css", to: "style.css" }
             ]
         })
