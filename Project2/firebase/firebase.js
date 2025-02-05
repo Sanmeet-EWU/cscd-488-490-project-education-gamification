@@ -59,6 +59,7 @@ export async function isEmailRegistered(email) {
 
 //Register User
 export async function registerUser(email) {
+    console.log("Register button clicked, email:", email);
     console.trace("registerUser called with email:", email)
     // const allowedDomain = "@school.edu"; // Replace with domain or set to null to allow all domains
 
