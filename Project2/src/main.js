@@ -1,5 +1,6 @@
 import { Boot } from './scenes/Boot';
 import { Game } from './scenes/Game';
+import "../firebase/firebase.js";
 import { GameOver } from './scenes/GameOver';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
