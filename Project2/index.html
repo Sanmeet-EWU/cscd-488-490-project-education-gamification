@@ -28,19 +28,28 @@
     </div>
     </div>
     <script type="module">
-        document.getElementById("loginForm").addEventListener("submit", (event) => {
-            event.preventDefault();
-            const email = document.getElementById("loginEmail").value;
-            sendLoginLink(email);
-        });
+        // Remove any existing event listeners before adding new ones
+        document.getElementById("loginForm").removeEventListener("submit", loginHandler);
+        document.getElementById("registerForm").removeEventListener("submit", registerHandler);
     
-        document.getElementById("registerForm").addEventListener("submit", (event) => {
+        function loginHandler(event) {
             event.preventDefault();
+            console.log("Login form submitted");
+            const email = document.getElementById("loginEmail").value;
+            window.sendLoginLink(email);
+        }
+    
+        function registerHandler(event) {
+            event.preventDefault();
+            console.log("Register form submitted");
             const email = document.getElementById("registerEmail").value;
-            registerUser(email);
-        });
+            window.registerUser(email);
+        }
+    
+        document.getElementById("loginForm").addEventListener("submit", loginHandler);
+        document.getElementById("registerForm").addEventListener("submit", registerHandler);
     
         console.log("Login and Register buttons are now functional.");
-    </script>
+    </script>    
 </body>
 </html>

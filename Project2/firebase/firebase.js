@@ -59,7 +59,6 @@ export async function isEmailRegistered(email) {
 
 //Register User
 export async function registerUser(email) {
-    console.log("Register button clicked, email:", email);
     console.trace("registerUser called with email:", email)
     // const allowedDomain = "@school.edu"; // Replace with domain or set to null to allow all domains
 
@@ -74,9 +73,8 @@ export async function registerUser(email) {
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-        alert("This email is already registered. Please use a different email.");
-        console.error("Registration failed: Email already exists in Firestore:", email);
-        return false; // Prevent duplicate registration
+        console.warn("Email already registered, preventing duplicate registration:", email);
+        return false; 
     }
 
     const username = prompt('Enter your desired username:');
@@ -86,18 +84,13 @@ export async function registerUser(email) {
     }
 
     try {
-        // Add the new user to Firestore with an auto-generated document ID
         const docRef = await addDoc(playersRef, {
             SchoolEmail: email,
-            Username: username, // Add username field
-            SaveData: null // Initialize with no save data
+            Username: username,
+            SaveData: null
         });
 
-        const playerId = docRef.id;
-
-        await setDoc(docRef, { PlayerID: playerId }, { merge: true });
-
-        console.log("Registered user with PlayerID:", playerId, "and Username:", username);
+        console.log("User registered successfully with ID:", docRef.id);
         alert("Registration successful!");
         return true;
     } catch (error) {
@@ -215,3 +208,5 @@ export async function completeLogin() {
     });
 }
 
+window.registerUser = registerUser;
+window.sendLoginLink = sendLoginLink;
