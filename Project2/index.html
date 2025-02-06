@@ -28,22 +28,18 @@
     </div>
     </div>
     <script type="module">
-        import { sendLoginLink, registerUser } from "./firebase/firebase.js";  
-
-        // Handle login button click
         document.getElementById("loginForm").addEventListener("submit", (event) => {
-            event.preventDefault();  // Prevent form refresh
+            event.preventDefault();
             const email = document.getElementById("loginEmail").value;
             sendLoginLink(email);
         });
-
-        // Handle register button click
+    
         document.getElementById("registerForm").addEventListener("submit", (event) => {
-            event.preventDefault();  // Prevent form refresh
+            event.preventDefault();
             const email = document.getElementById("registerEmail").value;
             registerUser(email);
         });
-
+    
         console.log("Login and Register buttons are now functional.");
     </script>
 </body>
