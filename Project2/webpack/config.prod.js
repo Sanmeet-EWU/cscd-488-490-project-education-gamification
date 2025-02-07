@@ -1,7 +1,7 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const Dotenv = require("dotenv-webpack"); // Add this import
+const Dotenv = require("dotenv-webpack");
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
@@ -11,7 +11,7 @@ module.exports = {
     entry: "./src/main.js",
     output: {
         path: path.resolve(process.cwd(), "dist"),
-        filename: "./bundle.min.js"
+        filename: "bundle.min.js"
     },
     devtool: false,
     performance: {
@@ -23,9 +23,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader"
-                }
+                use: { loader: "babel-loader" }
             },
             {
                 test: [/\.vert$/, /\.frag$/],
@@ -38,22 +36,18 @@ module.exports = {
         ]
     },
     optimization: {
+        minimize: true,
         minimizer: [
             new TerserPlugin({
                 terserOptions: {
-                    output: {
-                        comments: false
-                    }
+                    output: { comments: false }
                 }
             })
         ]
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new Dotenv({ // Add dotenv-webpack here
-            path: "./.env",
-            safe: true
-        }),
+        new Dotenv({ path: "./.env", safe: true }),
         new webpack.DefinePlugin({
             "typeof CANVAS_RENDERER": JSON.stringify(true),
             "typeof WEBGL_RENDERER": JSON.stringify(true),
@@ -64,16 +58,13 @@ module.exports = {
             "typeof PLUGIN_FBINSTANT": JSON.stringify(false),
             "typeof FEATURE_SOUND": JSON.stringify(true)
         }),
-        new HtmlWebpackPlugin({
-            template: "./index.html"
-        }),
+        new HtmlWebpackPlugin({ template: "./index.html" }),
         new CopyPlugin({
             patterns: [
                 { from: "public/assets", to: "assets" },
                 { from: "public/favicon.png", to: "favicon.png" },
-                { from: "public", to: "public" }, // ✅ Copies everything inside /public
-                { from: "game.html", to: "game.html" },
-                { from: "public/style.css", to: "style.css" }
+                { from: "public/style.css", to: "style.css" },
+                { from: "game.html", to: "game.html" }
             ]
         })
     ]

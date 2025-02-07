@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css">
     <title>Login/Register</title>
-    <script type="module" src="./bundle.min.js"></script> <!-- Link to authentication script -->
+    <script type="module">
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = window.location.hostname === "localhost" ? "/main.bundle.js" : "/bundle.min.js"; //checks if we are in production or development
+        document.head.appendChild(script);
+    </script>
 </head>
 <body>
     <div class="loginPage">

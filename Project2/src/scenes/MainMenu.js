@@ -4,6 +4,13 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { fetchData } from '../../firebase/firebase.js';
 import  testScene  from "./testScene.js";
 const auth = getAuth();
+// Default SaveData to check for resets
+const DEFAULT_SAVE_DATA = {
+    level: 1,
+    score: 0,
+    inventory: [],
+    position: { x: 100, y: 100 }
+};
 
 export class MainMenu extends Scene
 {
