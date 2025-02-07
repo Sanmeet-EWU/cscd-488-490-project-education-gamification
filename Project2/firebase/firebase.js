@@ -137,7 +137,6 @@ export async function getUsername() {
     }
 }
 
-// Send login link to the provided email
 export async function sendLoginLink(email) {
     const user = auth.currentUser;
     if (user) {
@@ -152,68 +151,60 @@ export async function sendLoginLink(email) {
     }
 
     const actionCodeSettings = {
-        url: "https://macbethrpg.netlify.app/game.html",
+        url: "https://macbethrpg.netlify.app/game.html", // ✅ Ensure this matches Firebase Console
         handleCodeInApp: true,
     };
 
     try {
+        window.localStorage.setItem("emailForSignIn", email);  // ✅ Store email before sending link
         await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-        window.localStorage.setItem("emailForSignIn", email);
         console.log("✅ Login link sent successfully!");
         alert("Check your email for the login link.");
         return true;
     } catch (error) {
-        console.error("Error sending login link:", error);
+        console.error("❌ Error sending login link:", error);
         alert("Error sending login link. Please check console.");
         return false;
     }
 }
 
+
 export async function completeLogin() {
-    console.log("completeLogin called");
+    console.log("Processing login link...");
 
+    // Ensure Firebase is ready before processing
     onAuthStateChanged(auth, async (user) => {
-        console.log("onAuthStateChanged triggered:", user);
-        console.log("current email: " + user.email)
         if (user) {
-            console.log("User is already signed in:", user.email);
-
-            // If the current user doesn't match the email in the login link, sign them out
-            const emailForSignIn = window.localStorage.getItem('emailForSignIn');
-            console.log("email for sign in: " + window.localStorage.getItem('emailForSignIn'))
-            if (emailForSignIn && user.email !== emailForSignIn) {
-                console.log("Current user does not match email in login link. Signing out...");
-                await signOut(auth);
-            } else {
-                return; // User is already signed in correctly
-            }
+            console.log("✅ User is already signed in:", user.email);
+            window.location.href = "game.html"; // ✅ Redirect to game
+            return;
         }
 
         if (isSignInWithEmailLink(auth, window.location.href)) {
-            console.log("Processing sign-in with email link...");
+            console.log("✅ Detected valid sign-in email link.");
             let email = window.localStorage.getItem("emailForSignIn");
 
             if (!email) {
+                console.error("❌ No email stored for sign-in. Cannot complete login.");
                 alert("No email found for login. Please use a new login link.");
                 return;
             }
 
             try {
                 const result = await signInWithEmailLink(auth, email, window.location.href);
-                console.log("User signed in successfully:", result.user);
+                console.log("✅ User signed in successfully:", result.user);
 
                 window.localStorage.removeItem("emailForSignIn");
                 alert("Login successful!");
-                window.location.href = "game.html"; // Redirect to the game page
+                window.location.href = "game.html"; // ✅ Redirect to game
             } catch (error) {
-                console.error("Error during sign-in:", error);
+                console.error("❌ Error during sign-in:", error);
                 alert("The sign-in link is invalid or expired. Please try logging in again.");
             }
         } else {
-            console.log("Not a valid sign-in email link.");
+            console.log("❌ Not a valid sign-in email link.");
         }
     });
 }
-
 window.registerUser = registerUser;
 window.sendLoginLink = sendLoginLink;
