@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence,browserSessionPersistence } from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -23,7 +23,7 @@ let persistenceSet = false; // Prevent multiple persistence calls
 
 if (!persistenceSet) {
     try {
-        setPersistence(auth, browserLocalPersistence).then(() => {
+        setPersistence(auth, browserSessionPersistence).then(() => {
             console.log("Auth persistence is set to local storage.");
             persistenceSet = true; // Mark as set
         });
@@ -139,6 +139,12 @@ export async function getUsername() {
 
 // Send login link to the provided email
 export async function sendLoginLink(email) {
+    const user = auth.currentUser;
+    if (user) {
+        console.log("Logging out previous user before sending login link...");
+        await signOut(auth);  // ✅ Forces logout before sending login link
+    }
+
     const emailExists = await isEmailRegistered(email);
 
     if (!emailExists) {
@@ -147,7 +153,7 @@ export async function sendLoginLink(email) {
     }
 
     const actionCodeSettings = {
-        url: 'http://localhost:8080/game.html', // Replace with the correct redirect URL
+        url: window.location.origin + "/game.html",
         handleCodeInApp: true,
     };
 
