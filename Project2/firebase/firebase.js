@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence,browserSessionPersistence } from "firebase/auth";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence, browserSessionPersistence, serverTimestamp } from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
