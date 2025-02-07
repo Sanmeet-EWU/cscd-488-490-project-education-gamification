@@ -87,7 +87,13 @@ export async function registerUser(email) {
         const docRef = await addDoc(playersRef, {
             SchoolEmail: email,
             Username: username,
-            SaveData: null
+            SaveData: {
+                level: 1,
+                score: 0,
+                inventory: [],
+                position: { x: 100, y: 100 },
+                lastSaved: serverTimestamp()
+            }
         });
 
         console.log("User registered successfully with ID:", docRef.id);
