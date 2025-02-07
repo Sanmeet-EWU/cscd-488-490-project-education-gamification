@@ -172,11 +172,15 @@ export async function sendLoginLink(email) {
 export async function completeLogin() {
     console.log("Processing login link...");
 
-    // Ensure Firebase is ready before processing
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            console.log("✅ User is already signed in:", user.email);
-            window.location.href = "game.html"; // ✅ Redirect to game
+            console.log("✅ User is signed in:", user.email);
+
+            // ✅ Prevent infinite redirect loop
+            if (!window.location.pathname.includes("game.html")) {
+                console.log("Redirecting to game.html...");
+                window.location.href = "game.html";  
+            }
             return;
         }
 
@@ -193,10 +197,14 @@ export async function completeLogin() {
             try {
                 const result = await signInWithEmailLink(auth, email, window.location.href);
                 console.log("✅ User signed in successfully:", result.user);
-
                 window.localStorage.removeItem("emailForSignIn");
                 alert("Login successful!");
-                window.location.href = "game.html"; // ✅ Redirect to game
+
+                // ✅ Only redirect if not already on game.html
+                if (!window.location.pathname.includes("game.html")) {
+                    console.log("Redirecting to game.html...");
+                    window.location.href = "game.html";
+                }
             } catch (error) {
                 console.error("❌ Error during sign-in:", error);
                 alert("The sign-in link is invalid or expired. Please try logging in again.");
@@ -206,5 +214,6 @@ export async function completeLogin() {
         }
     });
 }
+
 window.registerUser = registerUser;
 window.sendLoginLink = sendLoginLink;
