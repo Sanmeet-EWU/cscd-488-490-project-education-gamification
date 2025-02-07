@@ -142,30 +142,31 @@ export async function sendLoginLink(email) {
     const user = auth.currentUser;
     if (user) {
         console.log("Logging out previous user before sending login link...");
-        await signOut(auth);  // ✅ Forces logout before sending login link
+        await signOut(auth);
     }
 
     const emailExists = await isEmailRegistered(email);
-
     if (!emailExists) {
         alert("This email is not registered.");
         return;
     }
 
     const actionCodeSettings = {
-        url: window.location.origin + "/game.html",
+        url: "https://macbethrpg.netlify.app/game.html",
         handleCodeInApp: true,
     };
 
-    return sendSignInLinkToEmail(auth, email, actionCodeSettings)
-        .then(() => {
-            window.localStorage.setItem('emailForSignIn', email);
-            return true;
-        })
-        .catch(error => {
-            console.error("Error sending login link:", error);
-            return false;
-        });
+    try {
+        await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+        window.localStorage.setItem("emailForSignIn", email);
+        console.log("✅ Login link sent successfully!");
+        alert("Check your email for the login link.");
+        return true;
+    } catch (error) {
+        console.error("Error sending login link:", error);
+        alert("Error sending login link. Please check console.");
+        return false;
+    }
 }
 
 export async function completeLogin() {
