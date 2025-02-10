@@ -153,11 +153,51 @@ export class PauseMenu extends BaseScene {
       this.dimBackground.setSize(width, height);
     }
   }
+
+  // Volume updates ========================================================
+  updateMusicVolume(value) {
+    console.log("updateVolume: " + value);
+    this.audioController.bgVolume = value;
+    this.sys.game.globals.bgMusic.setVolume(this.audioController.bgVolume);
+  }
+
+  updateSoundVolume(value) {
+      this.audioController.soundVolume = value;
+  }
+
+  updateMusic(scene,musicButton) {
+      if (scene.audioController.musicOn === false) {
+          musicButton.setTexture('uncheckedBox');
+          scene.sys.game.globals.bgMusic.pause();
+          scene.audioController.bgMusicPlaying = false;
+          console.log(scene.audioController.bgMusicPlaying);
+      } else {
+          musicButton.setTexture('checkedBox');
+
+          if (scene.audioController.bgMusicPlaying === false) {
+              scene.sys.game.globals.bgMusic.resume();
+              scene.audioController.bgMusicPlaying = true;
+              console.log(scene.audioController.bgMusicPlaying);
+          }
+          
+      }
+
+  }
+
+  updateSound(scene,soundButton) {
+      if (scene.audioController.soundOn === false) {
+          soundButton.setTexture('uncheckedBox');
+      } else {
+          soundButton.setTexture('checkedBox');
+      }
+  }
 }
 
 /* ----------------------------------------------------------------------------
    Helper Functions
 ---------------------------------------------------------------------------- */
+
+
 
 var CreateSettingsPanel = function (scene, x, y) {
   const { width, height } = scene.scale;
