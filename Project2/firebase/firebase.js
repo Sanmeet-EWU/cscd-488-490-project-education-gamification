@@ -163,9 +163,9 @@ export async function sendLoginLink(email) {
     };
 
     try {
-        window.localStorage.setItem("emailForSignIn", email);  //  Store email before sending link
+        window.localStorage.setItem("emailForSignIn", email);  // ✅ Store email before sending link
         await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-        console.log(" Login link sent successfully!");
+        console.log("✅ Login link sent successfully!");
         alert("Check your email for the login link.");
         return true;
     } catch (error) {
@@ -181,9 +181,9 @@ export async function completeLogin() {
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            console.log(" User is signed in:", user.email);
+            console.log("✅ User is signed in:", user.email);
 
-            //  Prevent infinite redirect loop
+            // ✅ Prevent infinite redirect loop
             if (!window.location.pathname.includes("game.html")) {
                 console.log("Redirecting to game.html...");
                 window.location.href = "game.html";  
@@ -192,7 +192,7 @@ export async function completeLogin() {
         }
 
         if (isSignInWithEmailLink(auth, window.location.href)) {
-            console.log(" Detected valid sign-in email link.");
+            console.log("✅ Detected valid sign-in email link.");
             let email = window.localStorage.getItem("emailForSignIn");
 
             if (!email) {
@@ -203,11 +203,11 @@ export async function completeLogin() {
 
             try {
                 const result = await signInWithEmailLink(auth, email, window.location.href);
-                console.log(" User signed in successfully:", result.user);
+                console.log("✅ User signed in successfully:", result.user);
                 window.localStorage.removeItem("emailForSignIn");
                 alert("Login successful!");
 
-                //  Only redirect if not already on game.html
+                // ✅ Only redirect if not already on game.html
                 if (!window.location.pathname.includes("game.html")) {
                     console.log("Redirecting to game.html...");
                     window.location.href = "game.html";

@@ -1,3 +1,4 @@
+    /* Inline CSS for demonstration; ideally move these rules into your style.css file */
     body, html {
         margin: 0;
         padding: 0;
@@ -27,6 +28,7 @@
         width: 100%;
         height: 100%;
         z-index: 1;
+        /* Optionally add additional decorative images here */
       }
       .loginPage .title-image {
         z-index: 2;
