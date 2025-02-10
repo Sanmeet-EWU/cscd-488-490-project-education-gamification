@@ -68,6 +68,7 @@ module.exports = {
                 { from: "public/assets/audio", to: "assets/audio" }, // Ensure audio files are copied
                 { from: "public/style.css", to: "style.css" }, // Copy CSS separately
                 { from: "public/site.webmanifest", to: "site.webmanifest" }, // Ensure webmanifest is included
+                { from: "game.html", to: "game.html" },
                 { from: "public/assets/fonts", to: "font" } // Ensure fonts are copied properly
             ]
         })        
