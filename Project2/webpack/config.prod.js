@@ -67,7 +67,7 @@ module.exports = {
                 { from: "public/style.css", to: "style.css" },
                 { from: "game.html", to: "game.html" },
                 { from: "public/site.webmanifest", to: "site.webmanifest" }, // Copy webmanifest
-                { from: "public/font", to: "font" } // Ensure fonts are copied properly
+                { from: "public/fonts", to: "font" } // Ensure fonts are copied properly
             ]
         })        
     ]
