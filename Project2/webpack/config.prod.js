@@ -48,6 +48,7 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.DefinePlugin({
+            "process.env": JSON.stringify(process.env), // Expose environment variables
             "typeof CANVAS_RENDERER": JSON.stringify(true),
             "typeof WEBGL_RENDERER": JSON.stringify(true),
             "typeof WEBGL_DEBUG": JSON.stringify(false),
