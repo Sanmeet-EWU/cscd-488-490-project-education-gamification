@@ -47,7 +47,6 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new Dotenv({ path: "./.env", safe: true }),
         new webpack.DefinePlugin({
             "typeof CANVAS_RENDERER": JSON.stringify(true),
             "typeof WEBGL_RENDERER": JSON.stringify(true),
