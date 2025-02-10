@@ -62,9 +62,13 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "public", to: "public" }, // Copy entire public folder
-                { from: "game.html", to: "game.html" },
-                { from: "public/style.css", to: "style.css" },
-                { from: "public/site.webmanifest", to: "site.webmanifest" } // Ensure site.webmanifest is included
+                { from: "public/assets", to: "assets" }, // Ensure all assets are copied
+                { from: "public/assets/ui", to: "assets/ui" }, // UI elements
+                { from: "public/assets/StartScreen", to: "assets/StartScreen" }, // Start screen images
+                { from: "public/assets/audio", to: "assets/audio" }, // Ensure audio files are copied
+                { from: "public/style.css", to: "style.css" }, // Copy CSS separately
+                { from: "public/site.webmanifest", to: "site.webmanifest" }, // Ensure webmanifest is included
+                { from: "public/assets/fonts", to: "font" } // Ensure fonts are copied properly
             ]
         })        
     ]
