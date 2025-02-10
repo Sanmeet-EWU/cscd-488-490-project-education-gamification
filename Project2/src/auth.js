@@ -3,7 +3,7 @@ import { getAuth, signOut } from "firebase/auth";
 
 const auth = getAuth();
 
-// ✅ Force Logout of Previous User
+//  Force Logout of Previous User
 async function forceLogout() {
     if (auth.currentUser) {
         console.log("Logging out previous user before new login...");
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loginForm.hasListener = true;
         }
     } else {
-        console.warn("⚠️ Warning: `loginForm` not found. This may happen if `auth.js` runs before the DOM is ready.");
+        console.warn("Warning: `loginForm` not found. This may happen if `auth.js` runs before the DOM is ready.");
     }
 
     if (registerForm) {
@@ -87,6 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
             registerForm.hasListener = true;
         }
     } else {
-        console.warn("⚠️ Warning: `registerForm` not found. This may happen if `auth.js` runs before the DOM is ready.");
+        console.warn("Warning: `registerForm` not found. This may happen if `auth.js` runs before the DOM is ready.");
     }
 });

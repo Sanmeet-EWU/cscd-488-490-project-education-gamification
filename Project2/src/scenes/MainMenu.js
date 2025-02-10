@@ -144,7 +144,6 @@ export class MainMenu extends BaseScene {
 
     /**
      * Repositions and scales UI elements based on new dimensions.
-     * @param {object} dimensions - { width, height }
      */
     repositionUI({ width, height }) {
         console.log(`Repositioning UI: ${width} x ${height}`);

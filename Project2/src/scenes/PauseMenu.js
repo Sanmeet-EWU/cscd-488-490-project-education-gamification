@@ -32,8 +32,7 @@ export class PauseMenu extends BaseScene {
     this.optionsBg.setStrokeStyle(3, 0x674F49);
 
     // --- Close Button (Resume) ---
-    // Place the close button in the top-right area of the container.
-    // (With a 340x440 container, the top right corner is roughly at (170, -220).  
+    // Place the close button in the top-right area of the container. 
     // We move it left and down so it appears at (130, -180).)
     this.closeButton = this.add.image(130, -180, 'closeMenuButton')
       .setInteractive();
@@ -48,7 +47,6 @@ export class PauseMenu extends BaseScene {
     });
 
     // --- Main Buttons (Vertical Column) ---
-    // Arrange buttons at y-positions: Settings (-120), Save (-40), Controls (40), To Main Menu (120).
     this.settingsMenuButton = this.add.image(0, -120, 'settingsMenuButton')
       .setInteractive();
     this.settingsMenuButton.on('pointerdown', () => {
@@ -200,7 +198,6 @@ export class PauseMenu extends BaseScene {
 
 /* ----------------------------------------------------------------------------
    Helper Functions
-   (Below are your helper functions, updated to refer to scene.container instead of scene.optionsModal.)
 ---------------------------------------------------------------------------- */
 
 
