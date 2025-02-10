@@ -215,7 +215,6 @@ export class Settings extends BaseScene {
 
     /**
      * Repositions UI elements on window resize.
-     * @param {object} dimensions - An object with { width, height }.
      */
     repositionUI({ width, height }) {
         setTimeout(() => {

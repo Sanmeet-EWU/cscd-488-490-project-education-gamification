@@ -98,8 +98,6 @@ export class BaseScene extends Scene {
 
     /**
      * Helper: Scales an image while maintaining its aspect ratio.
-     * @param {Phaser.GameObjects.Image} image - The image to scale.
-     * @param {number} scaleFactor - A scale factor (relative value) to adjust the size.
      */
     fitToScreen(image, scaleFactor) {
         if (!image.texture || image.width === 0 || image.height === 0) return;
@@ -111,10 +109,6 @@ export class BaseScene extends Scene {
 
     /**
      * Helper: Creates a menu button with consistent styling.
-     * @param {string} text - The text for the button.
-     * @param {number} positionFactor - A multiplier to determine vertical position.
-     * @param {Function} callback - The function to call on button press.
-     * @returns {Phaser.GameObjects.Text} The created button.
      */
     createButton(text, positionFactor, callback) {
         const button = this.add.text(
@@ -141,7 +135,6 @@ export class BaseScene extends Scene {
     /**
      * Placeholder for repositioning UI elements on window resize.
      * Child scenes should override this method to update positions and sizes.
-     * @param {object} dimensions - An object containing { width, height }.
      */
     repositionUI({ width, height }) {
         // To be overridden by child scenes.

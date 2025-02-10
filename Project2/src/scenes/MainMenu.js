@@ -37,7 +37,6 @@ export class MainMenu extends BaseScene {
         this.setupMusic();
 
         // Create username text in the top-right corner.
-        // We position it at (width - 20, 20) with setOrigin(1, 0) so that its right edge is 20px from the right.
         this.usernameText = this.add.text(width - 20, 20, "Loading...", {
             fontFamily: 'Inknut Antiqua',
             fontSize: `${Math.floor(height * 0.05)}px`,
@@ -144,7 +143,6 @@ export class MainMenu extends BaseScene {
 
     /**
      * Repositions and scales UI elements based on new dimensions.
-     * @param {object} dimensions - { width, height }
      */
     repositionUI({ width, height }) {
         console.log(`Repositioning UI: ${width} x ${height}`);
