@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'Canterbury';
+    src: url('/assets/fonts/Canterbury.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 body {
     margin: 0;
     padding: 0;
@@ -9,7 +15,7 @@ body {
 }
 
 #app {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -25,3 +31,106 @@ body {
     flex-direction: column;
     background: url('./assets/bg.png')  center center fixed;
 }
+.sword{
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+}
+.macbeth{
+    font-size: 15em;
+    font-family: 'Canterbury';
+    color: white;
+    background: linear-gradient(to bottom, #8B0000 0%, #B22222 50%, #FF0000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 0 0;
+}
+/* 
+#game-container {
+    width: 1920px !important;
+    height: 1080px !important;
+    max-width: 100vw;
+    max-height: 100vh;
+    display: block;
+    margin: auto;
+    overflow: hidden;
+}
+
+canvas {
+    width: 1920px !important;
+    height: 1080px !important;
+    display: block;
+} */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    font-family: 'Canterbury', sans-serif;
+    overflow: hidden;
+  }
+  .loginPage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+  }
+  .loginPage .background-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .loginPage .background-elements img {
+    position: absolute;
+  }
+  .loginPage .title-image {
+    z-index: 2;
+    max-width: 80%;
+    margin-bottom: 20px;
+  }
+  .loginPage .form-container {
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px 30px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+  }
+  .loginPage .form-container h2 {
+    margin-top: 0;
+    font-size: 3em;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 5px;
+  }
+  .loginPage input[type="email"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+  .loginPage button {
+    width: 95%;
+    padding: 10px;
+    background: #8B0000;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  .loginPage button:hover {
+    background: #B22222;
+  }

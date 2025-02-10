@@ -16,73 +16,77 @@ if (isUserSignedIn()) {
     window.location.href = '../game.html';
 }
 
-const loginForm = document.getElementById('loginForm');
+document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
 
-if (!loginForm.hasListener) {
-    console.log("Adding event listener to loginForm");
+    if (loginForm) {
+        if (!loginForm.hasListener) {
+            console.log("Adding event listener to loginForm");
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Prevent default form submission
-        e.stopPropagation(); // Stop the event from bubbling up
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
 
-        console.log("Login form submitted");
+                console.log("Login form submitted");
 
-        const email = document.getElementById('loginEmail').value;
-        const button = e.target.querySelector("button");
+                const email = document.getElementById('loginEmail').value;
+                const button = e.target.querySelector("button");
 
-        // Disable the button to prevent multiple submissions
-        button.disabled = true;
+                button.disabled = true;
 
-        try {
-            await forceLogout();  // ✅ Log out previous user before logging in a new one
+                try {
+                    const success = await sendLoginLink(email);
+                    if (success) {
+                        alert('Login link sent! Check your email.');
+                    } else {
+                        alert('Login failed. Please try again.');
+                    }
+                } catch (error) {
+                    console.error("Error during login:", error);
+                    alert("An error occurred. Please try again.");
+                } finally {
+                    button.disabled = false;
+                }
+            });
 
-            const success = await sendLoginLink(email);
-            if (success) {
-                alert('Login link sent! Check your email.');
-            } else {
-                alert('Login failed. Please try again.');
-            }
-        } catch (error) {
-            console.error("Error during login:", error);
-            alert("An error occurred. Please try again.");
-        } finally {
-            button.disabled = false;
+            loginForm.hasListener = true;
         }
-    });
+    } else {
+        console.warn("⚠️ Warning: `loginForm` not found. This may happen if `auth.js` runs before the DOM is ready.");
+    }
 
-    loginForm.hasListener = true;
-}
+    if (registerForm) {
+        if (!registerForm.hasListener) {
+            console.log("Adding event listener to registerForm");
 
-const registerForm = document.getElementById('registerForm');
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
 
-if (!registerForm.hasListener) {
-    console.log("Adding event listener to registerForm");
+                console.log("Register form submitted");
+                const email = document.getElementById('registerEmail').value;
+                const button = e.target.querySelector("button");
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+                button.disabled = true;
 
-        console.log("Register form submitted");
-        const email = document.getElementById('registerEmail').value;
-        const button = e.target.querySelector("button");
+                try {
+                    const success = await registerUser(email);
+                    if (success) {
+                        alert('Registration successful!');
+                    } else {
+                        alert('Registration failed. Please try again.');
+                    }
+                } catch (error) {
+                    console.error("Error during registration:", error);
+                } finally {
+                    button.disabled = false;
+                }
+            });
 
-        button.disabled = true;
-
-        try {
-            await forceLogout();  // ✅ Log out previous user before registering a new one
-
-            const success = await registerUser(email);
-            if (success) {
-                alert('Registration successful!');
-            } else {
-                alert('Registration failed. Please try again.');
-            }
-        } catch (error) {
-            console.error("Error during registration:", error);
-        } finally {
-            button.disabled = false;
+            registerForm.hasListener = true;
         }
-    });
-
-    registerForm.hasListener = true;
-}
+    } else {
+        console.warn("⚠️ Warning: `registerForm` not found. This may happen if `auth.js` runs before the DOM is ready.");
+    }
+});

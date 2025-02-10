@@ -34,7 +34,7 @@ export class GameScene extends Phaser.Scene
      * @param {GameScene} scene - The game scene that is playing.
      */
     initializePauseMenu(scene){
-        this.scene.launch('PauseMenu', scene);
+        // this.scene.launch('PauseMenu', scene);
     }
 
 //     initializeOptions(){

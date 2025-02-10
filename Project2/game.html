@@ -2,17 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="./favicon.png" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Macbeth" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css">
     <title>Macbeth</title>
+    <script type="module">
+        const script = document.createElement("script");
+        script.type = "module";
+    
+        // Use local files in dev mode, bundle.min.js in production
+        script.src = window.location.hostname === "localhost" ? "/main.bundle.js" : "/bundle.min.js";
+    
+        document.head.appendChild(script);
+    </script>
 </head>
 
 <body>
     <div id="app">
         <div id="game-container"></div>
     </div>
-    <script type="module" src="./bundle.min.js"></script> <!-- FOR PRODUCTION -->
-    <script type="module" src="./firebase/firebase.js"></script> <!-- FOR DEVELOPMENT -->
 </body>
 </html>

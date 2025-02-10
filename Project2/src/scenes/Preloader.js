@@ -10,7 +10,6 @@ export class Preloader extends Scene
     init ()
     {
         //  We loaded this image in our Boot Scene, so we can display it here
-        this.add.image(512, 384, 'bg');
 
         //  A simple progress bar. This is the outline of the bar.
         this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
@@ -27,20 +26,26 @@ export class Preloader extends Scene
         });
     }
 
-    preload ()
-    {
-        //  Load the assets for the game - Replace with your own assets
+    preload () {
+        // Set base path to "assets"
         this.load.setPath('assets');
-        this.load.image('bg', 'background.png');
+    
         this.load.image('Macbeth', 'macbethTitle.png');
         this.load.image('crown', 'crown.png');
         this.load.image('dagger', 'daggerSelector.png');
-        
-        // Load the audio
-        this,this.load.setPath('assets/audio');
-        this.load.audio('testMusic', 'TownTheme.mp3');//temp music we should pick something together
-        
-        // Load ui elements
+    
+        this.load.svg('swordandcrown', 'StartScreen/SwordandCrown.svg', { width: 2000, height: 3400 }); 
+        this.load.svg('raven', 'StartScreen/Raven.svg', { width: 1000, height: 1000 });
+        this.load.svg('cloud', 'StartScreen/Cloud.svg', { width: 1500, height: 700 });
+        this.load.svg('cloud2', 'StartScreen/Cloud2.svg', { width: 1500, height: 700 });
+        this.load.svg('cloud3', 'StartScreen/Cloud3.svg', { width: 1500, height: 700 });
+        this.load.svg('cloud4', 'StartScreen/Cloud4.svg', { width: 1500, height: 700 });
+
+        //Load audio
+        this.load.setPath('assets/audio');
+        this.load.audio('testMusic', 'TownTheme.mp3'); // Temp music
+    
+        //Load UI elements
         this.load.setPath('assets/ui');
         this.load.image('backButton', 'backButton.png');
         this.load.image('checkedBox', 'checkedBox.png');
@@ -51,10 +56,9 @@ export class Preloader extends Scene
         this.load.image('settingsMenuButton', 'settingsMenuButton.png');
         this.load.image('toMainMenuButton', 'toMainMenuButton.png');
         this.load.image('saveGameButton', 'saveGameButton.png');
-        //this.load.image('loadGameButton', 'loadGameButton.png');
         this.load.image('controlsButton', 'controlsButton.png');
     }
-
+    
     create ()
     {
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.

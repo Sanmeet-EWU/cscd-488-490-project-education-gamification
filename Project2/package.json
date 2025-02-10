@@ -3,9 +3,9 @@
     "version": "3.2.1",
     "main": "src/main.js",
     "scripts": {
-    "dev": "webpack serve --config webpack/config.js --mode development --open",
-    "build": "webpack --config webpack/config.prod.js",
-    "start": "npm run dev"
+        "dev": "webpack serve --config webpack/config.js --mode development --open",
+        "build": "webpack --config webpack/config.prod.js",
+        "start": "npm run dev"
     },
     "repository": {
         "type": "git",
@@ -37,7 +37,7 @@
     "dependencies": {
         "firebase": "^11.0.2",
         "phaser": "^3.86.0",
-        "phaser3-rex-plugins": "^1.80.12",
+        "phaser3-rex-plugins": "^1.80.13",
         "template-webpack": "file:"
     }
 }

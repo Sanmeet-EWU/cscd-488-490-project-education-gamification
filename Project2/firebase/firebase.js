@@ -156,8 +156,9 @@ export async function sendLoginLink(email) {
         return;
     }
 
+    const isLocal = window.location.hostname === "localhost";
     const actionCodeSettings = {
-        url: "https://macbethrpg.netlify.app/game.html", // ✅ Ensure this matches Firebase Console
+        url: isLocal ? "http://localhost:8080/game.html" : "https://macbethrpg.netlify.app/game.html",
         handleCodeInApp: true,
     };
 
@@ -219,6 +220,65 @@ export async function completeLogin() {
             console.log("❌ Not a valid sign-in email link.");
         }
     });
+}
+
+/**
+ * Saves the player's game progress in Firestore.
+ * @param {Object} saveData - The player's save data (level, score, inventory, position).
+ */
+export async function saveGameData(saveData) {
+    const user = auth.currentUser;
+    if (!user) {
+        console.error("User not logged in, cannot save data.");
+        return false;
+    }
+
+    try {
+        const playerRef = doc(db, "Players", user.uid);  // Use UID instead of auto-generated ID
+        await updateDoc(playerRef, {
+            SaveData: {
+                ...saveData,
+                lastSaved: serverTimestamp()
+            }
+        });
+        console.log("Game data saved successfully:", saveData);
+        return true;
+    } catch (error) {
+        console.error("Error saving game data:", error);
+        return false;
+    }
+}
+/**
+ * Loads the player's saved game progress from Firestore.
+ * @returns {Object|null} The save data or null if not found.
+ */
+export async function loadGameData() {
+    const user = auth.currentUser;
+    if (!user) {
+        console.error("User not logged in, cannot load data.");
+        return null;
+    }
+
+    try {
+        const playerRef = doc(db, "Players", user.uid);
+        const docSnap = await getDoc(playerRef);
+
+        if (docSnap.exists() && docSnap.data().SaveData) {
+            console.log("Loaded game data:", docSnap.data().SaveData);
+            return docSnap.data().SaveData;
+        } else {
+            console.warn("No saved game data found. Using default values.");
+            return {
+                level: 1,
+                score: 0,
+                inventory: [],
+                position: { x: 100, y: 100 }
+            };
+        }
+    } catch (error) {
+        console.error("Error loading game data:", error);
+        return null;
+    }
 }
 
 window.registerUser = registerUser;

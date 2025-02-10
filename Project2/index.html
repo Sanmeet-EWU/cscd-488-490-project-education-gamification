@@ -2,35 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="./favicon.png" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Macbeth" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css">
     <title>Login/Register</title>
     <script type="module">
         const script = document.createElement("script");
         script.type = "module";
-        script.src = window.location.hostname === "localhost" ? "/main.bundle.js" : "/bundle.min.js"; //checks if we are in production or development
+    
+        // Use local files in dev mode, bundle.min.js in production
+        script.src = window.location.hostname === "localhost" ? "/main.bundle.js" : "/bundle.min.js";
+    
         document.head.appendChild(script);
     </script>
 </head>
 <body>
     <div class="loginPage">
-    <img src="/assets/crown.png" alt="Crown">   
-    <img src="/assets/macbethTitle.png" alt="Macbeth">
-    <div>
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="email" id="loginEmail" placeholder="Enter your email" required />
-            <button type="submit">Login</button>
-        </form>
-    </div>
-    <div>
-        <h2>Register</h2>
-        <form id="registerForm">
-            <input type="email" id="registerEmail" placeholder="Enter your email" required />
-            <button type="submit">Register</button>
-        </form>
-    </div>
+        <!-- Background decorative elements (if any) -->
+        <div class="background-elements">
+            <!-- Sword and Crown (adjust path if necessary) -->
+            <img src="./public/assets/StartScreen/SwordandCrown.svg" alt="Sword & Crown" style="top:10%; left:10%; max-width:20%;">
+            <!-- Raven image added to mimic MainMenu style -->
+            <img src="./public/assets/StartScreen/Raven.svg" alt="Raven" style="bottom:5%; right:5%; max-width:20%;">
+        </div>
+        
+        <!-- Title image similar to MainMenu -->
+    <h1 class="macbeth">Macbeth</h1>
+        
+        <!-- Login Form -->
+        <div class="form-container">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Enter your email" required />
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        
+        <!-- Register Form -->
+        <div class="form-container">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="email" id="registerEmail" placeholder="Enter your email" required />
+                <button type="submit">Register</button>
+            </form>
+        </div>
     </div>
     <script type="module">
         // Remove any existing event listeners before adding new ones

@@ -13,17 +13,21 @@ import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { completeLogin } from '../firebase/firebase.js';
 import { PauseMenu } from './scenes/PauseMenu.js';
+import Base from 'phaser3-rex-plugins/templates/transitionimagepack/TransitionImagePack.js';
+import { BaseGameScene } from './scenes/BaseGameScene.js';
 
+// Declare game variable at a global scope
+let game;
 
 // Phaser Game Configuration
 const config = {
     type: Phaser.AUTO,
-    width: 1024,
-    height: 768,
+    width: window.innerWidth,
+    height: window.innerHeight,
     parent: 'game-container',
-    backgroundColor: '#028af8',
+    backgroundColor: '#000000',
     scale: {
-        mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     plugins: {
@@ -53,26 +57,34 @@ const config = {
         Settings,
         GameScene,
         Act1Scene1,
-        PauseMenu
+        PauseMenu,
+        BaseGameScene
     ],
 };
 
-// Initialize the Phaser Game in `game.html`
+// Initialize the Phaser Game only on `game.html`
 if (window.location.pathname.endsWith('game.html')) {
     console.log('Processing login link...');
     completeLogin().then(() => {
         console.log('Login completed, initializing game...');
-        
-        // Initialize the Phaser game
-        class Project extends Phaser.Game {
-            constructor() {
-                super(config);
-                const audioController = new AudioController();
-                this.globals = { audioController, bgMusic: null };
-            }
-        }
 
-        new Project(); // Start the game after login
+        // Initialize the Phaser game and assign it to `game`
+        game = new Phaser.Game(config);
+
+        // Store audio globally
+        game.globals = {
+            audioController: new AudioController(),
+            bgMusic: null
+        };
+
+        // Ensure the game resizes properly
+        window.addEventListener("resize", () => {
+            if (game && game.scale) {
+                console.log("Resizing game...");
+                game.scale.resize(window.innerWidth, window.innerHeight);
+            }
+        });
+
     }).catch((error) => {
         console.error('Error processing login:', error);
         alert('Failed to log in. Please try again.');
