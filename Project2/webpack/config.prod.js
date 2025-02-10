@@ -63,6 +63,8 @@ module.exports = {
             patterns: [
                 { from: "public", to: "public" }, // Copy entire public folder
                 { from: "game.html", to: "game.html" },
+                { from: "public/style.css", to: "style.css" },
+                { from: "public/site.webmanifest", to: "site.webmanifest" } // Ensure site.webmanifest is included
             ]
         })        
     ]
