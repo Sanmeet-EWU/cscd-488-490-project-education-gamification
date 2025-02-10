@@ -61,11 +61,13 @@ module.exports = {
         new HtmlWebpackPlugin({ template: "./index.html" }),
         new CopyPlugin({
             patterns: [
-                { from: "public/assets", to: "assets" }, // Copy entire assets folder
-                { from: "public/favicon", to: "favicon" }, // Ensure full favicon directory is copied
-                { from: "public/style.css", to: "style.css" },
-                { from: "game.html", to: "game.html" },
-                { from: "public/site.webmanifest", to: "site.webmanifest" } // Ensure webmanifest is included
+                { from: "public", to: "dist/public" }, // Copy all public assets
+                { from: "public/assets", to: "dist/assets" }, // Ensure assets folder is copied
+                { from: "public/assets/StartScreen", to: "dist/assets/StartScreen" }, // Copy StartScreen folder explicitly
+                { from: "public/favicon", to: "dist/favicon" }, // Ensure full favicon directory is copied
+                { from: "public/style.css", to: "dist/style.css" },
+                { from: "game.html", to: "dist/game.html" },
+                { from: "public/site.webmanifest", to: "dist/site.webmanifest" } // Ensure webmanifest is included
             ]
         })        
     ]
