@@ -30,7 +30,7 @@ module.exports = {
                 use: "raw-loader"
             },
             {
-                test: /\.(gif|png|jpe?g|svg|xml|glsl)$/i,
+                test: /\.(gif|png|jpe?g|svg|xml|glsl|woff2|woff|ttf|eot)$/i,
                 use: "file-loader"
             }
         ]
@@ -61,13 +61,13 @@ module.exports = {
         new HtmlWebpackPlugin({ template: "./index.html" }),
         new CopyPlugin({
             patterns: [
-                { from: "public", to: "dist/public" }, // Copy all public assets
-                { from: "public/assets", to: "dist/assets" }, // Ensure assets folder is copied
-                { from: "public/assets/StartScreen", to: "dist/assets/StartScreen" }, // Copy StartScreen folder explicitly
-                { from: "public/favicon", to: "dist/favicon" }, // Ensure full favicon directory is copied
-                { from: "public/style.css", to: "dist/style.css" },
-                { from: "game.html", to: "dist/game.html" },
-                { from: "public/site.webmanifest", to: "dist/site.webmanifest" } // Ensure webmanifest is included
+                { from: "public/assets", to: "assets" }, // Copy assets folder
+                { from: "public/assets/StartScreen", to: "assets/StartScreen" }, // Ensure StartScreen assets are included
+                { from: "public/favicon", to: "favicon" }, // Ensure favicon directory is copied
+                { from: "public/style.css", to: "style.css" },
+                { from: "game.html", to: "game.html" },
+                { from: "public/site.webmanifest", to: "site.webmanifest" }, // Copy webmanifest
+                { from: "public/font", to: "font" } // Ensure fonts are copied properly
             ]
         })        
     ]
