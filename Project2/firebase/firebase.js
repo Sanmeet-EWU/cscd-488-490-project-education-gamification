@@ -87,10 +87,10 @@ export async function registerUser(email) {
     try {
         const normalizedEmail = email.toLowerCase(); // Normalize email to lowercase
         const docRef = await addDoc(playersRef, {
-            SchoolEmail: email,
+            SchoolEmail: normalizedEmail,
             Username: username,
             SaveData: {
-                scene: 1,
+                scene: "Act1Scene1",
                 score: 0,
                 inventory: [],
                 position: { x: 100, y: 100 },
