@@ -88,7 +88,7 @@ export async function registerUser(email) {
             SchoolEmail: email,
             Username: username,
             SaveData: {
-                level: 1,
+                scene: 1,
                 score: 0,
                 inventory: [],
                 position: { x: 100, y: 100 },
@@ -169,7 +169,7 @@ export async function sendLoginLink(email) {
         alert("Check your email for the login link.");
         return true;
     } catch (error) {
-        console.error("❌ Error sending login link:", error);
+        console.error(" Error sending login link:", error);
         alert("Error sending login link. Please check console.");
         return false;
     }
@@ -196,7 +196,7 @@ export async function completeLogin() {
             let email = window.localStorage.getItem("emailForSignIn");
 
             if (!email) {
-                console.error("❌ No email stored for sign-in. Cannot complete login.");
+                console.error(" No email stored for sign-in. Cannot complete login.");
                 alert("No email found for login. Please use a new login link.");
                 return;
             }
@@ -213,71 +213,15 @@ export async function completeLogin() {
                     window.location.href = "game.html";
                 }
             } catch (error) {
-                console.error("❌ Error during sign-in:", error);
+                console.error(" Error during sign-in:", error);
                 alert("The sign-in link is invalid or expired. Please try logging in again.");
             }
         } else {
-            console.log("❌ Not a valid sign-in email link.");
+            console.log(" Not a valid sign-in email link.");
         }
     });
 }
 
-/**
- * Saves the player's game progress in Firestore.
- */
-export async function saveGameData(saveData) {
-    const user = auth.currentUser;
-    if (!user) {
-        console.error("User not logged in, cannot save data.");
-        return false;
-    }
-
-    try {
-        const playerRef = doc(db, "Players", user.uid);  // Use UID instead of auto-generated ID
-        await updateDoc(playerRef, {
-            SaveData: {
-                ...saveData,
-                lastSaved: serverTimestamp()
-            }
-        });
-        console.log("Game data saved successfully:", saveData);
-        return true;
-    } catch (error) {
-        console.error("Error saving game data:", error);
-        return false;
-    }
-}
-/**
- * Loads the player's saved game progress from Firestore.
- */
-export async function loadGameData() {
-    const user = auth.currentUser;
-    if (!user) {
-        console.error("User not logged in, cannot load data.");
-        return null;
-    }
-
-    try {
-        const playerRef = doc(db, "Players", user.uid);
-        const docSnap = await getDoc(playerRef);
-
-        if (docSnap.exists() && docSnap.data().SaveData) {
-            console.log("Loaded game data:", docSnap.data().SaveData);
-            return docSnap.data().SaveData;
-        } else {
-            console.warn("No saved game data found. Using default values.");
-            return {
-                level: 1,
-                score: 0,
-                inventory: [],
-                position: { x: 100, y: 100 }
-            };
-        }
-    } catch (error) {
-        console.error("Error loading game data:", error);
-        return null;
-    }
-}
 
 window.registerUser = registerUser;
 window.sendLoginLink = sendLoginLink;

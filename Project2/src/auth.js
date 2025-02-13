@@ -56,37 +56,5 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("Warning: `loginForm` not found. This may happen if `auth.js` runs before the DOM is ready.");
     }
 
-    if (registerForm) {
-        if (!registerForm.hasListener) {
-            console.log("Adding event listener to registerForm");
 
-            registerForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                console.log("Register form submitted");
-                const email = document.getElementById('registerEmail').value;
-                const button = e.target.querySelector("button");
-
-                button.disabled = true;
-
-                try {
-                    const success = await registerUser(email);
-                    if (success) {
-                        alert('Registration successful!');
-                    } else {
-                        alert('Registration failed. Please try again.');
-                    }
-                } catch (error) {
-                    console.error("Error during registration:", error);
-                } finally {
-                    button.disabled = false;
-                }
-            });
-
-            registerForm.hasListener = true;
-        }
-    } else {
-        console.warn("Warning: `registerForm` not found. This may happen if `auth.js` runs before the DOM is ready.");
-    }
 });
