@@ -85,6 +85,7 @@ export async function registerUser(email) {
     }
 
     try {
+        const normalizedEmail = email.toLowerCase(); // Normalize email to lowercase
         const docRef = await addDoc(playersRef, {
             SchoolEmail: email,
             Username: username,
@@ -145,13 +146,14 @@ export async function getUsername() {
 }
 
 export async function sendLoginLink(email) {
+    const normalizedEmail = email.toLowerCase(); // Normalize email to lowercase
     const user = auth.currentUser;
     if (user) {
         console.log("Logging out previous user before sending login link...");
         await signOut(auth);
     }
 
-    const emailExists = await isEmailRegistered(email);
+    const emailExists = await isEmailRegistered(normalizedEmail);
     if (!emailExists) {
         alert("This email is not registered.");
         return;
@@ -164,8 +166,8 @@ export async function sendLoginLink(email) {
     };
 
     try {
-        window.localStorage.setItem("emailForSignIn", email);  // Store email before sending link
-        await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+        window.localStorage.setItem("emailForSignIn", normalizedEmail);  // Store email before sending link
+        await sendSignInLinkToEmail(auth, normalizedEmail, actionCodeSettings);
         console.log(" Login link sent successfully!");
         alert("Check your email for the login link.");
         return true;
