@@ -51,13 +51,17 @@ module.exports = {
 
         new CopyWebpackPlugin({
             patterns: [
-                { from: "public", to: "public" },
-                { from: "public/style.css", to: "style.css" },
-                { from: "public/style.css", to: "index.css" },
-                { from: "public/assets", to: "assets" },
-                { from: "public/favicon", to: "favicon" },
-                { from: "public/site.webmanifest", to: "site.webmanifest" },
-                { from: "public/assets/StartScreen", to: "assets/StartScreen" }
+                { from: "public", to: "public" }, // Copy entire public folder
+                { from: "public/assets", to: "assets" }, // Ensure all assets are copied
+                { from: "public/assets/ui", to: "assets/ui" }, // UI elements
+                { from: "public/assets/StartScreen", to: "assets/StartScreen" }, // Start screen images
+                { from: "public/assets/audio", to: "assets/audio" }, // Ensure audio files are copied
+                { from: "public/style.css", to: "style.css" }, // Copy CSS separately
+                { from: "public/site.webmanifest", to: "site.webmanifest" }, // Ensure webmanifest is included
+                {from: "public/favicon", to: "favicon"},
+                { from: "public/assets/fonts", to: "font" }, // Ensure fonts are copied properly
+                { from: "src/SceneDialogue", to: "SceneDialogue" } // Copies to public folder
+
             ]
         }),
 

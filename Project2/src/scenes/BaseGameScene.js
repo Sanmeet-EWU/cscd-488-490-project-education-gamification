@@ -1,152 +1,262 @@
 import { BaseScene } from './BaseScene';
 import { saveGameData, loadGameData } from "../../firebase/firebase.js";
+
 export class BaseGameScene extends BaseScene {
-  constructor(key = 'BaseGameScene') {
-    super(key);
+    constructor(key = 'BaseGameScene') {
+        super(key);
+    }
+
+    init(data) {
+        if (data.position) {
+            this.startingPosition = data.position;
+        }
+    }
+
+    create() {
+        super.create();
+        this.createDialogueUI();
+
+        // Ensure the keyboard captures ESC
+        this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.ESC]);
+
+        // Force the game canvas to have focus
+        if (this.game.canvas) {
+            this.game.canvas.focus();
+        }
+
+        // Setup keyboard inputs: WASD for movement, E for interact
+        this.keys = this.input.keyboard.addKeys({
+            up: Phaser.Input.Keyboard.KeyCodes.W,
+            down: Phaser.Input.Keyboard.KeyCodes.S,
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            right: Phaser.Input.Keyboard.KeyCodes.D,
+            interact: Phaser.Input.Keyboard.KeyCodes.E,
+            pause: Phaser.Input.Keyboard.KeyCodes.ESC
+        });
+
+        // Create the player
+        this.player = this.physics.add.sprite(
+            this.startingPosition ? this.startingPosition.x : 100,
+            this.startingPosition ? this.startingPosition.y : 100,
+            "player"
+        );
+        this.player.setCollideWorldBounds(true);
+        this.cameras.main.startFollow(this.player);
+
+        // ✅ Create the interaction box
+        this.createInteractBox();
+
+        // Create NPCs
+        this.npcs = {
+            "Witch2": this.add.sprite(500, 300, "witch2").setInteractive(),
+            "Witch3": this.add.sprite(700, 300, "witch3").setInteractive()
+        };
+
+        Object.keys(this.npcs).forEach(npcKey => {
+            this.npcs[npcKey].on("pointerdown", () => {
+                this.handleInteraction(npcKey);
+            });
+        });
+
+        // Flag to indicate whether the game is paused
+        this.isPaused = false;
+    }
+
+    update(time, delta) {
+      if (this.isPaused) return;
+      super.update();
+  
+      // ✅ Restore Player Movement
+      const speed = 200;
+      let vx = 0, vy = 0;
+  
+      if (this.keys.left.isDown) {
+          vx = -speed;
+      } else if (this.keys.right.isDown) {
+          vx = speed;
+      }
+      if (this.keys.up.isDown) {
+          vy = -speed;
+      } else if (this.keys.down.isDown) {
+          vy = speed;
+      }
+  
+      this.player.setVelocity(vx, vy);
+  
+      // ✅ Ensure Interaction Logic Still Runs
+      this.checkForInteraction();
   }
-  init(data) {
-    // If loading a save, set the player's position
-    if (data.position) {
-        this.startingPosition = data.position;
-    }
-}
-  create() {
-    // Call BaseScene's create to set up common functionality.
-    super.create();
+  
+    // ✅ Create a reusable interaction box
+    createInteractBox() {
+        const { width, height } = this.scale;
 
-    // Ensure that the keyboard captures ESC so it isn’t handled by the browser.
-    this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.ESC]);
+        this.interactBox = this.add.rectangle(width / 2, height * 0.2, 200, 80, 0x666666, 0.5)
+            .setOrigin(0.5)
+            .setInteractive();
 
-    // Force the game canvas to have focus so that keyboard events (like ESC) are detected.
-    if (this.game.canvas) {
-      this.game.canvas.focus();
-    }
-
-    // Setup keyboard inputs: WASD for movement, E for interact, and ESC for pause.
-    this.keys = this.input.keyboard.addKeys({
-      up: Phaser.Input.Keyboard.KeyCodes.W,
-      down: Phaser.Input.Keyboard.KeyCodes.S,
-      left: Phaser.Input.Keyboard.KeyCodes.A,
-      right: Phaser.Input.Keyboard.KeyCodes.D,
-      interact: Phaser.Input.Keyboard.KeyCodes.E,
-      pause: Phaser.Input.Keyboard.KeyCodes.ESC
-    });
-
-    // Create a player sprite with arcade physics.
-    this.player = this.physics.add.sprite(
-      this.startingPosition ? this.startingPosition.x : 100,
-      this.startingPosition ? this.startingPosition.y : 100,
-      "player"
-  );
-  this.player.setCollideWorldBounds(true);
-
-  this.cameras.main.startFollow(this.player);
-    // Set the camera to follow the player.
-    this.cameras.main.startFollow(this.player);
-
-    // --- Create a Persistent Pause Button in the Top Right ---
-    const { width, height } = this.scale;
-    const pauseButtonX = width * 0.95;
-    const pauseButtonY = height * 0.05;
-    this.pauseButton = this.add.image(pauseButtonX, pauseButtonY, 'pauseButton')
-      .setInteractive()
-      .setScrollFactor(0);
-    this.pauseButton.setScale(width / 1920 * 0.8);
-    this.pauseButton.on('pointerdown', () => {
-      this.togglePause();
-    });
-    this.pauseButton.on('pointerover', () => {
-      this.pauseButton.setScale(width / 1920 * 0.8 * 1.1);
-    });
-    this.pauseButton.on('pointerout', () => {
-      this.pauseButton.setScale(width / 1920 * 0.8);
-    });
-
-    // Flag to indicate whether the game is paused.
-    this.isPaused = false;
-  }
-
-  update(time, delta) {
-    if (this.isPaused) {
-      return;
+        this.interactText = this.add.text(width / 2, height * 0.15, "[E] Start Dialogue", {
+            fontSize: "18px",
+            fill: "#ffffff",
+            backgroundColor: "#000000",
+            padding: { x: 5, y: 5 }
+        }).setOrigin(0.5);
+        
+        this.interactText.setVisible(false);
+        this.physics.add.existing(this.interactBox, true);
     }
 
-    // Handle player movement.
-    const speed = 200;
-    let vx = 0, vy = 0;
-    if (this.keys.left.isDown) {
-      vx = -speed;
-    } else if (this.keys.right.isDown) {
-      vx = speed;
-    }
-    if (this.keys.up.isDown) {
-      vy = -speed;
-    } else if (this.keys.down.isDown) {
-      vy = speed;
-    }
-    this.player.setVelocity(vx, vy);
+    // 🔍 Check if Player is Near the Interaction Box
+    checkForInteraction() {
+        if (!this.interactBox) return;
 
-    // Handle interaction.
-    if (Phaser.Input.Keyboard.JustDown(this.keys.interact)) {
-      this.handleInteraction();
+        const distance = Phaser.Math.Distance.Between(
+            this.player.x, this.player.y,
+            this.interactBox.x, this.interactBox.y
+        );
+
+        if (distance < 150) {
+            this.interactText.setVisible(true);
+
+            if (Phaser.Input.Keyboard.JustDown(this.keys.interact)) {
+                this.startDialogue();
+            }
+        } else {
+            this.interactText.setVisible(false);
+        }
     }
 
-    // Toggle pause if ESC is pressed.
-    if (Phaser.Input.Keyboard.JustDown(this.keys.pause)) {
-      this.togglePause();
+    // 🗣 Start Dialogue (Can Be Overridden in Child Scenes)
+    startDialogue() {
+        console.log("Starting Dialogue...");
+        this.interactBox.setVisible(false);
+        this.interactText.setVisible(false);
+        this.toggleDialogue("Witch2"); // Default to Witch2, can be overridden
     }
-  }
 
-  handleInteraction() {
-    console.log("Interaction triggered!");
-    // Additional interaction logic here.
-  }
-  async saveProgress() {
-    const saveData = {
-        scene: this.scene.key,  // Save the current scene key
-        position: { x: this.player.x, y: this.player.y },  // Save player position
-        score: this.score || 0,  // Save score (if exists)
-        inventory: this.inventory || [],  // Save inventory (if exists)
-    };
+    toggleDialogue(npcKey) {
+        if (!this.dialogueData || !this.dialogueData[npcKey]) return;
 
-    const success = await saveGameData(saveData);
-    if (success) {
-        console.log("Game saved successfully.");
-    } else {
-        console.error("Failed to save game.");
+        let npcDialogue = this.dialogueData[npcKey];
+        this.dialogueBox.setVisible(true);
+        this.dialogueText.setVisible(true);
+        this.dialogueText.setText(npcDialogue.intro);
+        this.optionTexts.forEach(text => text.destroy());
+        this.optionTexts = [];
+
+        if (npcDialogue.responses) {
+            this.showDialogueOptions(npcDialogue.responses);
+        } else {
+            this.time.delayedCall(2000, () => {
+                this.endDialogue();
+            });
+        }
     }
-}
 
-async loadProgress() {
-    const saveData = await loadGameData();
-    if (saveData) {
-        this.scene.start(saveData.scene, { position: saveData.position });
-        console.log("Game loaded successfully:", saveData);
-    } else {
-        console.error("No saved game found.");
-    }
-}
+    createDialogueUI() {
+        const { width, height } = this.scale;
 
-  // togglePause() launches or stops the PauseMenu scene.
-  togglePause() {
-    if (this.ignoreNextESC) return;
-    if (this.isPaused) {
-      // Unpause the game.
-      this.isPaused = false;
-      this.physics.world.resume();
-      this.scene.stop('PauseMenu');
-      this.pauseButton.setVisible(true);
-      // Ignore the next ESC for 300ms.
-      this.ignoreNextESC = true;
-      this.time.delayedCall(300, () => { this.ignoreNextESC = false; });
-    } else {
-      // Pause the game.
-      this.isPaused = true;
-      this.physics.world.pause();
-      this.player.setVelocity(0);
-      this.scene.launch('PauseMenu', { gameScene: this });
-      this.pauseButton.setVisible(false);
+        this.dialogueBox = this.add.rectangle(
+            width / 2, height * 0.8, width * 0.9, height * 0.15, 0x000000, 0.8
+        ).setOrigin(0.5).setVisible(false);
+
+        this.dialogueText = this.add.text(
+            width * 0.1, height * 0.75, '', {
+                fontSize: '20px',
+                fill: '#ffffff',
+                wordWrap: { width: width * 0.8 }
+            }
+        ).setVisible(false);
+
+        this.optionTexts = [];
     }
+
+    showDialogueOptions(options) {
+        options.forEach((option, index) => {
+            const optionText = this.add.text(
+                this.dialogueBox.x - this.dialogueBox.width / 2 + 20,
+                this.dialogueBox.y - this.dialogueBox.height / 2 + 40 + index * 30,
+                option.text,
+                { fontSize: '18px', fill: '#ffffff', backgroundColor: '#333333', padding: { x: 10, y: 5 } }
+            ).setInteractive();
+
+            optionText.on('pointerdown', () => {
+                this.handleDialogueOption(option);
+            });
+
+            this.optionTexts.push(optionText);
+        });
+    }
+
+    handleDialogueOption(option) {
+        this.dialogueText.setText(option.nextDialogue || "...");
+        this.optionTexts.forEach(text => text.destroy());
+        this.optionTexts = [];
+
+        this.time.delayedCall(2000, () => {
+            this.endDialogue();
+        });
+    }
+
+    endDialogue() {
+        this.dialogueBox.setVisible(false);
+        this.dialogueText.setVisible(false);
+        this.optionTexts.forEach(text => text.destroy());
+        this.optionTexts = [];
+    }
+
+    async saveProgress() {
+        const saveData = {
+            scene: this.scene.key,
+            position: { x: this.player.x, y: this.player.y },
+            score: this.score || 0,
+            inventory: this.inventory || []
+        };
+
+        const success = await saveGameData(saveData);
+        if (success) {
+            console.log("Game saved successfully.");
+        } else {
+            console.error("Failed to save game.");
+        }
+    }
+
+    async loadProgress() {
+        const saveData = await loadGameData();
+        if (saveData) {
+            this.scene.start(saveData.scene, { position: saveData.position });
+            console.log("Game loaded successfully:", saveData);
+        } else {
+            console.error("No saved game found.");
+        }
+    }
+
+    togglePause() {
+        if (this.ignoreNextESC) return;
+        if (this.isPaused) {
+            this.isPaused = false;
+            this.physics.world.resume();
+            this.scene.stop('PauseMenu');
+            this.pauseButton.setVisible(true);
+            this.ignoreNextESC = true;
+            this.time.delayedCall(300, () => { this.ignoreNextESC = false; });
+        } else {
+            this.isPaused = true;
+            this.physics.world.pause();
+            this.player.setVelocity(0);
+            this.scene.launch('PauseMenu', { gameScene: this });
+            this.pauseButton.setVisible(false);
+        }
+    }
+    handleInteraction(npcKey) {
+      console.log(`Interacting with ${npcKey}`);
+  
+      if (!this.dialogueData || !this.dialogueData[npcKey]) {
+          console.warn(`No dialogue found for NPC: ${npcKey}`);
+          return;
+      }
+  
+      this.toggleDialogue(npcKey);
   }
   
 }

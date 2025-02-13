@@ -70,7 +70,8 @@ module.exports = {
                 { from: "public/site.webmanifest", to: "site.webmanifest" }, // Ensure webmanifest is included
                 { from: "game.html", to: "game.html" },
                 {from: "public/favicon", to: "favicon"},
-                { from: "public/assets/fonts", to: "font" } // Ensure fonts are copied properly
+                { from: "public/assets/fonts", to: "font" }, // Ensure fonts are copied properly
+                { from: "src/SceneDialogue", to: "SceneDialogue" } // Copies to public folder
 
             ]
         })        
