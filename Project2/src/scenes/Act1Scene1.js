@@ -16,7 +16,7 @@ export class Act1Scene1 extends BaseGameScene {
 
         const { width, height } = this.scale;
 
-        // ✅ White Background (Ensures it's behind everything)
+        // White Background (Ensures it's behind everything)
         this.whiteBg = this.add.rectangle(0, 0, width, height, 0xffffff).setOrigin(0, 0).setDepth(-1);
 
         this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);

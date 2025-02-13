@@ -1,16 +1,9 @@
 {
-    "Witch2": { 
-        "name": "Second Witch",
+    "Witch2": {
         "intro": "When the hurly-burly’s done, when the battle’s lost and won.",
         "responses": [
-            { 
-                "text": "What battle?", 
-                "next": "response1" 
-            },
-            { 
-                "text": "We should prepare!", 
-                "next": "response2" 
-            }
+        { "text": "What battle?", "next": "response1" },
+        { "text": "We should prepare!", "next": "response2" }
         ],
         "response1": "The war for the throne rages on, but soon it will be over.",
         "response2": "Indeed, the storm brews in our favor."
