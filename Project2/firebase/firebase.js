@@ -73,6 +73,7 @@ export async function registerUser(email) {
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
+        alert("This email is already registered.");
         console.warn("Email already registered, preventing duplicate registration:", email);
         return false; 
     }
