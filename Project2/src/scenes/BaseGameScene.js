@@ -4,7 +4,12 @@ export class BaseGameScene extends BaseScene {
   constructor(key = 'BaseGameScene') {
     super(key);
   }
-
+  init(data) {
+    // If loading a save, set the player's position
+    if (data.position) {
+        this.startingPosition = data.position;
+    }
+}
   create() {
     // Call BaseScene's create to set up common functionality.
     super.create();
@@ -28,9 +33,14 @@ export class BaseGameScene extends BaseScene {
     });
 
     // Create a player sprite with arcade physics.
-    this.player = this.physics.add.sprite(100, 100, 'player');
-    this.player.setCollideWorldBounds(true);
+    this.player = this.physics.add.sprite(
+      this.startingPosition ? this.startingPosition.x : 100,
+      this.startingPosition ? this.startingPosition.y : 100,
+      "player"
+  );
+  this.player.setCollideWorldBounds(true);
 
+  this.cameras.main.startFollow(this.player);
     // Set the camera to follow the player.
     this.cameras.main.startFollow(this.player);
 
@@ -93,10 +103,10 @@ export class BaseGameScene extends BaseScene {
   }
   async saveProgress() {
     const saveData = {
-        scene: this.scene.key,  // The current scene
-        //score: this.score,  // Player's score
-        //inventory: this.inventory,  // Player's inventory
-        position: { x: this.player.x, y: this.player.y },  // Player’s position
+        scene: this.scene.key,  // Save the current scene key
+        position: { x: this.player.x, y: this.player.y },  // Save player position
+        score: this.score || 0,  // Save score (if exists)
+        inventory: this.inventory || [],  // Save inventory (if exists)
     };
 
     const success = await saveGameData(saveData);

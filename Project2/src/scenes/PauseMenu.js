@@ -1,4 +1,5 @@
 import { BaseScene } from './BaseScene';
+import { saveGameData } from '../../firebase/firebase';
 
 const DEPTH = 20;
 
@@ -61,18 +62,20 @@ export class PauseMenu extends BaseScene {
       this.settingsMenuButton.setScale(1);
     });
 
-    this.saveGameButton = this.add.image(0, -40, 'saveGameButton')
-      .setInteractive();
-    this.saveGameButton.on('pointerdown', () => {
-      console.log("Save game button pressed.");
-      // Implement save game functionality here.
-    });
-    this.saveGameButton.on('pointerover', () => {
-      this.saveGameButton.setScale(1.1);
-    });
-    this.saveGameButton.on('pointerout', () => {
-      this.saveGameButton.setScale(1);
-    });
+    this.saveGameButton = this.add.image(0, -40, "saveGameButton")
+    .setInteractive()
+    .on("pointerdown", async () => {
+        if (this.gameScene && this.gameScene.saveProgress) {
+            console.log("📝 Saving game progress...");
+            await this.gameScene.saveProgress();  //Call saveProgress() from the game scene
+            alert("Game saved!");
+        } else {
+            console.error("Error: No active game scene found or saveProgress() not defined.");
+            alert("Could not save game. Try again.");
+        }
+    })
+    .on("pointerover", () => this.saveGameButton.setScale(1.1))
+    .on("pointerout", () => this.saveGameButton.setScale(1));
 
     this.controlsButton = this.add.image(0, 40, 'controlsButton')
       .setInteractive();

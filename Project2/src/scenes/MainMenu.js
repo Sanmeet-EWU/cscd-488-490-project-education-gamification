@@ -1,5 +1,5 @@
 import { BaseScene } from './BaseScene';
-import { getUsername } from '../../firebase/firebase.js';
+import { getUsername, loadGameData } from '../../firebase/firebase.js';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const auth = getAuth();
@@ -119,7 +119,17 @@ export class MainMenu extends BaseScene {
 
     createMenuButtons(width, height) {
         this.newGame = this.createButton("New Game", 0.35, () => this.switchScene('Act1Scene1'));
-        this.loadGame = this.createButton("Load Game", 0.45, () => this.switchScene('LoadGame'));
+        this.loadGame = this.createButton("Load Game", 0.45, async () => {
+            console.log("Loading saved game...");
+    
+            const saveData = await loadGameData();
+            if (saveData) {
+                console.log("Starting game from save:", saveData);
+                this.scene.start(saveData.scene, { position: saveData.position });
+            } else {
+                alert("No saved game data found.");
+            }
+        });
         this.leaderboard = this.createButton("Leaderboard", 0.55, () => this.switchScene('Leaderboard'));
         this.settings = this.createButton("Settings", 0.65, () => this.switchScene('Settings'));
     }

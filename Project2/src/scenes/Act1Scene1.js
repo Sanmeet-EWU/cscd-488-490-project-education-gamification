@@ -10,7 +10,7 @@ export class Act1Scene1 extends BaseGameScene {
     this.load.svg('background', 'assets/act1/act1scene1.svg', { width: 2560, height: 1440 });
   }
 
-  create() {
+  create(data) {
     const { width, height } = this.scale;
 
     // --- Add a Full-Screen White Background ---
@@ -35,16 +35,17 @@ export class Act1Scene1 extends BaseGameScene {
 
     // Call BaseGameScene's create (sets up pause functionality, player, etc.)
     super.create();
-
+    const startX = data.position ? data.position.x : 100;
+    const startY = data.position ? data.position.y : 100;
     // --- Override the Default Player ---
     if (this.player) {
       this.player.destroy();
     }
-    this.player = this.physics.add.sprite(300, 300, null)
+      this.player = this.physics.add.sprite(startX, startY, null)
       .setDisplaySize(100, 100)
       .setOrigin(0.5);
-    this.player.body.setCollideWorldBounds(true);
-    this.cameras.main.startFollow(this.player);
+  this.player.body.setCollideWorldBounds(true);
+  this.cameras.main.startFollow(this.player);
 
     // --- Scene-Specific Elements ---
     this.box2 = this.add.rectangle(600, 300, 100, 100, 0x666666);
