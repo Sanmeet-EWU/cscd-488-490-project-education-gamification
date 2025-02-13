@@ -108,7 +108,68 @@ export async function registerUser(email) {
     }
 }
 
+/**
+ * Saves the player's game progress in Firestore using their SchoolEmail.
+ */
+export async function saveGameData(saveData) {
+    const user = auth.currentUser;
+    if (!user) {
+        console.error("User not logged in, cannot save data.");
+        return false;
+    }
 
+    try {
+        const normalizedEmail = user.email.toLowerCase(); // Ensure consistency
+        const playersRef = doc(db, "Players", normalizedEmail);
+
+        await updateDoc(playersRef, {
+            SaveData: {
+                ...saveData,
+                lastSaved: serverTimestamp(),
+            },
+        });
+
+        console.log("Game data saved successfully:", saveData);
+        return true;
+    } catch (error) {
+        console.error("Error saving game data:", error);
+        return false;
+    }
+}
+
+/**
+ * Loads the player's saved game progress from Firestore using their SchoolEmail.
+ * @returns {Object|null} The save data or null if not found.
+ */
+export async function loadGameData() {
+    const user = auth.currentUser;
+    if (!user) {
+        console.error("User not logged in, cannot load data.");
+        return null;
+    }
+
+    try {
+        const normalizedEmail = user.email.toLowerCase();
+        const playersRef = doc(db, "Players", normalizedEmail);
+        const docSnap = await getDoc(playersRef);
+
+        if (docSnap.exists() && docSnap.data().SaveData) {
+            console.log("Loaded game data:", docSnap.data().SaveData);
+            return docSnap.data().SaveData;
+        } else {
+            console.warn("No saved game data found. Using default values.");
+            return {
+                scene: "Act1Scene1",
+                score: 0,
+                inventory: [],
+                position: { x: 100, y: 100 },
+            };
+        }
+    } catch (error) {
+        console.error("Error loading game data:", error);
+        return null;
+    }
+}
 // Check if the user is signed in
 export function isUserSignedIn() {
     let user = auth.currentUser;

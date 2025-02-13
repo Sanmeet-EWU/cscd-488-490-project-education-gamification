@@ -1,5 +1,5 @@
 import { BaseScene } from './BaseScene';
-
+import { saveGameData, loadGameData } from "../../firebase/firebase.js";
 export class BaseGameScene extends BaseScene {
   constructor(key = 'BaseGameScene') {
     super(key);
@@ -91,6 +91,31 @@ export class BaseGameScene extends BaseScene {
     console.log("Interaction triggered!");
     // Additional interaction logic here.
   }
+  async saveProgress() {
+    const saveData = {
+        scene: this.scene.key,  // The current scene
+        //score: this.score,  // Player's score
+        //inventory: this.inventory,  // Player's inventory
+        position: { x: this.player.x, y: this.player.y },  // Player’s position
+    };
+
+    const success = await saveGameData(saveData);
+    if (success) {
+        console.log("Game saved successfully.");
+    } else {
+        console.error("Failed to save game.");
+    }
+}
+
+async loadProgress() {
+    const saveData = await loadGameData();
+    if (saveData) {
+        this.scene.start(saveData.scene, { position: saveData.position });
+        console.log("Game loaded successfully:", saveData);
+    } else {
+        console.error("No saved game found.");
+    }
+}
 
   // togglePause() launches or stops the PauseMenu scene.
   togglePause() {
