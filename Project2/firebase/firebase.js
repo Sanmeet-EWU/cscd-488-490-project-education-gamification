@@ -114,7 +114,7 @@ export async function registerUser(email) {
 export async function saveGameData(saveData) {
     const user = auth.currentUser;
     if (!user) {
-        console.error("❌ User not logged in, cannot save data.");
+        console.error("User not logged in, cannot save data.");
         return false;
     }
 
@@ -122,22 +122,22 @@ export async function saveGameData(saveData) {
         const normalizedEmail = user.email.toLowerCase();
         const playersRef = collection(db, "Players");
 
-        // ✅ Query Firestore to find the correct document ID
+        // Query Firestore to find the correct document ID
         const q = query(playersRef, where("SchoolEmail", "==", normalizedEmail));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-            console.error("❌ No player document found for email:", normalizedEmail);
+            console.error("No player document found for email:", normalizedEmail);
             return false;
         }
 
-        // ✅ Get the correct document ID (UID-style string)
+        // Get the correct document ID (UID-style string)
         const playerDoc = querySnapshot.docs[0]; // Assume only one match
         const playerDocId = playerDoc.id;
 
-        console.log(`✅ Found player document: ${playerDocId}`);
+        console.log(`Found player document: ${playerDocId}`);
 
-        // ✅ Use the correct document ID to update Firestore
+        // Use the correct document ID to update Firestore
         const playerRef = doc(db, "Players", playerDocId);
         await updateDoc(playerRef, {
             SaveData: {
@@ -146,10 +146,10 @@ export async function saveGameData(saveData) {
             },
         });
 
-        console.log("✅ Game data saved successfully:", saveData);
+        console.log("Game data saved successfully:", saveData);
         return true;
     } catch (error) {
-        console.error("❌ Error saving game data:", error);
+        console.error("Error saving game data:", error);
         return false;
     }
 }
