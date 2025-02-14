@@ -7,12 +7,11 @@ export class Act1Scene1 extends BaseGameScene {
 
     preload() {
         this.load.svg('background', 'assets/act1/act1scene1.svg', { width: 2560, height: 1440 });
-        this.load.json('act1scene1-dialogue', 'SceneDialogue/Act1Scene1.json');
+        this.load.json('Act1Scene1Dialog', 'SceneDialog/Act1Scene1.json');
     }
 
     create(data) {
         super.create();
-        this.dialogueData = this.cache.json.get('act1scene1-dialogue') || {};
 
         const { width, height } = this.scale;
 
@@ -47,51 +46,6 @@ export class Act1Scene1 extends BaseGameScene {
             .setOrigin(0.5);
         this.player.body.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.player);
-
-        this.createInteractBox();
     }
 
-    update() {
-        super.update();
-
-        const distance = Phaser.Math.Distance.Between(
-            this.player.x, this.player.y,
-            this.interactBox.x, this.interactBox.y
-        );
-
-        if (distance < 150) {
-            this.interactText.setVisible(true);
-
-            if (Phaser.Input.Keyboard.JustDown(this.keys.interact)) {
-                this.startDialogue();
-            }
-        } else {
-            this.interactText.setVisible(false);
-        }
-    }
-
-    createInteractBox() {
-        const { width, height } = this.scale;
-        
-        this.interactBox = this.add.rectangle(width / 2, height * 0.2, 200, 80, 0x666666, 0.5)
-            .setOrigin(0.5)
-            .setInteractive();
-
-        this.interactText = this.add.text(width / 2, height * 0.15, "[E] Start Dialogue", {
-            fontSize: "18px",
-            fill: "#ffffff",
-            backgroundColor: "#000000",
-            padding: { x: 5, y: 5 }
-        }).setOrigin(0.5);
-
-        this.interactText.setVisible(false);
-        this.physics.add.existing(this.interactBox, true);
-    }
-
-    startDialogue() {
-        console.log("Starting Dialogue in Act1Scene1...");
-        this.interactBox.setVisible(false);
-        this.interactText.setVisible(false);
-        this.toggleDialogue("Witch2");
-    }
 }

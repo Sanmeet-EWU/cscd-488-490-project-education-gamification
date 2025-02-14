@@ -71,7 +71,7 @@ module.exports = {
                 { from: "game.html", to: "game.html" },
                 {from: "public/favicon", to: "favicon"},
                 { from: "public/assets/fonts", to: "font" }, // Ensure fonts are copied properly
-                { from: "src/SceneDialogue", to: "SceneDialogue" } // Copies to public folder
+                { from: "src/SceneDialog", to: "SceneDialog" } // Copies to public folder
 
             ]
         })        
