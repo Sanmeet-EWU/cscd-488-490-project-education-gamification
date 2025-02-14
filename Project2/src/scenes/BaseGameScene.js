@@ -42,9 +42,6 @@ export class BaseGameScene extends BaseScene {
         this.player.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.player);
 
-        // Create the interaction box
-        this.createInteractBox();
-
         // Create NPCs
         this.npcs = {
             "Witch2": this.add.sprite(500, 300, "witch2").setInteractive(),
@@ -66,7 +63,7 @@ export class BaseGameScene extends BaseScene {
       
       if (Phaser.Input.Keyboard.JustDown(this.keys.pause)) {
         this.togglePause();
-        return;  // ✅ Prevents movement/pause conflicts
+        return; 
     }
       const speed = 500;
       let vx = 0, vy = 0;
@@ -83,7 +80,6 @@ export class BaseGameScene extends BaseScene {
       }
   
       this.player.setVelocity(vx, vy);
-      this.checkForInteraction();
   }
   
   
