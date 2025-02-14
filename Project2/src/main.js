@@ -64,9 +64,7 @@ const config = {
 
 // Initialize the Phaser Game only on `game.html`
 if (window.location.pathname.endsWith('game.html')) {
-    console.log('Processing login link...');
     completeLogin().then(() => {
-        console.log('Login completed, initializing game...');
 
         // Initialize the Phaser game and assign it to `game`
         game = new Phaser.Game(config);
@@ -80,7 +78,6 @@ if (window.location.pathname.endsWith('game.html')) {
         // Ensure the game resizes properly
         window.addEventListener("resize", () => {
             if (game && game.scale) {
-                console.log("Resizing game...");
                 game.scale.resize(window.innerWidth, window.innerHeight);
             }
         });

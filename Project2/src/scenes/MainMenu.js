@@ -50,18 +50,15 @@ export class MainMenu extends BaseScene {
         // Listen for authentication state changes.
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                console.log("User is signed in:", user.email);
                 const username = await getUsername();
                 this.usernameText.setText(username || "Guest");
             } else {
-                console.log("No user is signed in.");
                 this.usernameText.setText("Guest");
             }
         });
 
         // Cleanup resize listener when leaving MainMenu.
         this.events.on('shutdown', () => {
-            console.log("MainMenu is shutting down, removing resize listener.");
             this.scale.off('resize', this.repositionUI, this);
         });
     }
@@ -72,7 +69,6 @@ export class MainMenu extends BaseScene {
         // Recalculate layout using the actual window dimensions.
         const width = window.innerWidth;
         const height = window.innerHeight;
-        console.log(`onWake: new dimensions are ${width} x ${height}`);
         this.repositionUI({ width, height });
     }
 
@@ -120,11 +116,9 @@ export class MainMenu extends BaseScene {
     createMenuButtons(width, height) {
         this.newGame = this.createButton("New Game", 0.35, () => this.switchScene('Act1Scene1'));
         this.loadGame = this.createButton("Load Game", 0.45, async () => {
-            console.log("Loading saved game...");
     
             const saveData = await loadGameData();
             if (saveData) {
-                console.log("Starting game from save:", saveData);
                 this.scene.start(saveData.scene, { position: saveData.position });
             } else {
                 alert("No saved game data found.");
@@ -156,7 +150,6 @@ export class MainMenu extends BaseScene {
      * Repositions and scales UI elements based on new dimensions.
      */
     repositionUI({ width, height }) {
-        console.log(`Repositioning UI: ${width} x ${height}`);
         if (!this.scene.isActive('MainMenu')) return;
 
         if (this.cameras && this.cameras.main) {

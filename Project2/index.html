@@ -59,22 +59,18 @@
     
         function loginHandler(event) {
             event.preventDefault();
-            console.log("Login form submitted");
             const email = document.getElementById("loginEmail").value;
             window.sendLoginLink(email);
         }
     
         function registerHandler(event) {
             event.preventDefault();
-            console.log("Register form submitted");
             const email = document.getElementById("registerEmail").value;
             window.registerUser(email);
         }
     
         document.getElementById("loginForm").addEventListener("submit", loginHandler);
         document.getElementById("registerForm").addEventListener("submit", registerHandler);
-    
-        console.log("Login and Register buttons are now functional.");
     </script>    
 </body>
 </html>

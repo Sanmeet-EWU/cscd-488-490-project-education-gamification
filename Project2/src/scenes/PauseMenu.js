@@ -16,7 +16,6 @@ export class PauseMenu extends BaseScene {
   }
 
   create() {
-    console.log("PauseMenu created");
     const { width, height } = this.scale;
 
     // Create a full-screen dim background.
@@ -28,13 +27,11 @@ export class PauseMenu extends BaseScene {
     this.container.setDepth(DEPTH);
 
     // Create a menu background using rexUI's roundRectangle.
-    // (Assuming a container size of 340×440.)
     this.optionsBg = this.rexUI.add.roundRectangle(0, 0, 340, 440, 20, 0x4E342E);
     this.optionsBg.setStrokeStyle(3, 0x674F49);
 
     // --- Close Button (Resume) ---
     // Place the close button in the top-right area of the container. 
-    // We move it left and down so it appears at (130, -180).)
     this.closeButton = this.add.image(130, -180, 'closeMenuButton')
       .setInteractive();
     this.closeButton.on('pointerdown', () => {
@@ -66,7 +63,6 @@ export class PauseMenu extends BaseScene {
     .setInteractive()
     .on("pointerdown", async () => {
         if (this.gameScene && this.gameScene.saveProgress) {
-            console.log("📝 Saving game progress...");
             await this.gameScene.saveProgress();  //Call saveProgress() from the game scene
             alert("Game saved!");
         } else {
@@ -80,7 +76,6 @@ export class PauseMenu extends BaseScene {
     this.controlsButton = this.add.image(0, 40, 'controlsButton')
       .setInteractive();
     this.controlsButton.on('pointerdown', () => {
-      console.log("Controls button pressed");
       this.container.setVisible(false);
       let subMenu = CreateControlsPanel(this, width / 2, height / 2);
       subMenu.layout().popUp(500);
@@ -161,8 +156,7 @@ export class PauseMenu extends BaseScene {
   }
 
   // Volume updates ========================================================
-  updateMusicVolume(value) {
-    console.log("updateVolume: " + value);
+  updateMusicVolume(value) {;
     this.audioController.bgVolume = value;
     this.sys.game.globals.bgMusic.setVolume(this.audioController.bgVolume);
   }
@@ -176,14 +170,12 @@ export class PauseMenu extends BaseScene {
           musicButton.setTexture('uncheckedBox');
           scene.sys.game.globals.bgMusic.pause();
           scene.audioController.bgMusicPlaying = false;
-          console.log(scene.audioController.bgMusicPlaying);
       } else {
           musicButton.setTexture('checkedBox');
 
           if (scene.audioController.bgMusicPlaying === false) {
               scene.sys.game.globals.bgMusic.resume();
               scene.audioController.bgMusicPlaying = true;
-              console.log(scene.audioController.bgMusicPlaying);
           }
           
       }

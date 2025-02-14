@@ -7,8 +7,6 @@ export class BaseScene extends Scene {
     }
 
     create() {
-        console.log(`Entering Scene: ${this.sceneKey}`);
-
         // Listen for Phaser's built-in resize events.
         this.scale.on('resize', this.handleResize, this);
 
@@ -16,7 +14,6 @@ export class BaseScene extends Scene {
         this._onWindowResize = () => {
             const newWidth = window.innerWidth;
             const newHeight = window.innerHeight;
-            console.log(`Global window resize: ${newWidth} x ${newHeight}`);
             // Force the game to use the current window dimensions:
             this.scale.setGameSize(newWidth, newHeight);
             // Call repositionUI so that child scenes can update their layout.
@@ -28,14 +25,12 @@ export class BaseScene extends Scene {
 
         // Remove listeners when the scene shuts down.
         this.events.on('shutdown', () => {
-            console.log(`Exiting Scene: ${this.sceneKey}, removing listeners.`);
             window.removeEventListener('resize', this._onWindowResize);
             this.scale.off('resize', this.handleResize, this);
         });
     }
 
     switchScene(targetScene) {
-        console.log(`Switching from ${this.scene.key} to ${targetScene}`);
         
         if (!this.scene.get(targetScene)) {
             console.error(`Scene "${targetScene}" does not exist!`);
@@ -63,7 +58,6 @@ export class BaseScene extends Scene {
         let newWidth = gameSize?.width ?? window.innerWidth;
         let newHeight = gameSize?.height ?? window.innerHeight;
 
-        console.log(`Phaser resize event: ${newWidth} x ${newHeight}`);
 
         // Ensure we get the actual window dimensions.
         newWidth = Math.max(newWidth, window.innerWidth);
@@ -78,7 +72,6 @@ export class BaseScene extends Scene {
 
         // If dimensions are unchanged, do nothing.
         if (this.scale.width === newWidth && this.scale.height === newHeight) {
-            console.log("Resize ignored (same size)");
             return;
         }
 

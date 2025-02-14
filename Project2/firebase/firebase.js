@@ -97,8 +97,6 @@ export async function registerUser(email) {
                 lastSaved: serverTimestamp()
             }
         });
-
-        console.log("User registered successfully with ID:", docRef.id);
         alert("Registration successful!");
         return true;
     } catch (error) {
@@ -135,8 +133,6 @@ export async function saveGameData(saveData) {
         const playerDoc = querySnapshot.docs[0]; // Assume only one match
         const playerDocId = playerDoc.id;
 
-        console.log(`Found player document: ${playerDocId}`);
-
         // Use the correct document ID to update Firestore
         const playerRef = doc(db, "Players", playerDocId);
         await updateDoc(playerRef, {
@@ -145,8 +141,6 @@ export async function saveGameData(saveData) {
                 lastSaved: serverTimestamp(),
             },
         });
-
-        console.log("Game data saved successfully:", saveData);
         return true;
     } catch (error) {
         console.error("Error saving game data:", error);
@@ -186,7 +180,6 @@ export async function loadGameData() {
         const docSnap = await getDoc(playerRef);
 
         if (docSnap.exists() && docSnap.data().SaveData) {
-            console.log("Loaded game data:", docSnap.data().SaveData);
             return docSnap.data().SaveData;
         } else {
             console.warn("No saved game data found.");
@@ -218,7 +211,6 @@ export async function getUsername() {
             if (!querySnapshot.empty) {
                 const docSnap = querySnapshot.docs[0]; // Get the first matching document
                 const userName = docSnap.data().Username;
-                console.log("Username: ", userName);
                 return userName;
             } else {
                 console.error("No document found for email: ", email);
@@ -229,7 +221,6 @@ export async function getUsername() {
             return null;
         }
     } else {
-        console.log("Not signed in");
         return null;
     }
 }
@@ -238,7 +229,6 @@ export async function sendLoginLink(email) {
     const normalizedEmail = email.toLowerCase(); // Normalize email to lowercase
     const user = auth.currentUser;
     if (user) {
-        console.log("Logging out previous user before sending login link...");
         await signOut(auth);
     }
 
@@ -257,7 +247,6 @@ export async function sendLoginLink(email) {
     try {
         window.localStorage.setItem("emailForSignIn", normalizedEmail);  // Store email before sending link
         await sendSignInLinkToEmail(auth, normalizedEmail, actionCodeSettings);
-        console.log(" Login link sent successfully!");
         alert("Check your email for the login link.");
         return true;
     } catch (error) {
@@ -269,22 +258,16 @@ export async function sendLoginLink(email) {
 
 
 export async function completeLogin() {
-    console.log("Processing login link...");
-
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            console.log("User is signed in:", user.email);
-
             // Prevent infinite redirect loop
             if (!window.location.pathname.includes("game.html")) {
-                console.log("Redirecting to game.html...");
                 window.location.href = "game.html";
             }
             return;
         }
 
         if (isSignInWithEmailLink(auth, window.location.href)) {
-            console.log("Detected valid sign-in email link.");
             let email = window.localStorage.getItem("emailForSignIn");
 
             if (!email) {
@@ -292,7 +275,6 @@ export async function completeLogin() {
                 email = prompt("Please enter your email to complete login:");
 
                 if (!email) {
-                    console.error("No email provided. Cannot complete login.");
                     alert("Email is required to complete login.");
                     return;
                 }
@@ -300,12 +282,10 @@ export async function completeLogin() {
 
             try {
                 const result = await signInWithEmailLink(auth, email, window.location.href);
-                console.log("User signed in successfully:", result.user);
                 window.localStorage.removeItem("emailForSignIn");
 
                 // Redirect to game.html if not already there
                 if (!window.location.pathname.includes("game.html")) {
-                    console.log("Redirecting to game.html...");
                     window.location.href = "game.html";
                 }
             } catch (error) {

@@ -6,7 +6,6 @@ const auth = getAuth();
 //  Force Logout of Previous User
 async function forceLogout() {
     if (auth.currentUser) {
-        console.log("Logging out previous user before new login...");
         await signOut(auth);
     }
 }

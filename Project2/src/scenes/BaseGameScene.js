@@ -70,7 +70,7 @@ export class BaseGameScene extends BaseScene {
         this.togglePause();
         return;  // ✅ Prevents movement/pause conflicts
     }
-      const speed = 200;
+      const speed = 500;
       let vx = 0, vy = 0;
   
       if (this.keys.left.isDown) {
@@ -131,13 +131,9 @@ export class BaseGameScene extends BaseScene {
     // Start Dialogue (Can Be Overridden in Child Scenes)
     startDialogue() {
       if (this.isDialogueVisible) return; // Prevents multiple "E" presses from restarting the dialogue
-  
-      console.log("Starting Dialogue...");
       this.interactBox.setVisible(false);
       this.interactText.setVisible(false);
       this.isDialogueVisible = true; // Now the game knows dialogue is open
-  
-      this.toggleDialogue("Witch2");
   }
   
   toggleDialogue(npcKey) {
