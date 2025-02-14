@@ -1,0 +1,14 @@
+{
+    "SaveData" : {
+        "scene" : "Act1Scene3",
+        "score" : 100,
+        "inventory" : ["key", "eye of newt"],
+        "position" : { 
+            "x": 42, 
+            "y": 20
+        },
+        "lastSaved" : "February 13, 2025 at 4:53:11 PM UTC-8"
+    },
+    "SchoolEmail": "Trevorstew369@gmail.com",
+    "Username" : "Gravytrain"
+}

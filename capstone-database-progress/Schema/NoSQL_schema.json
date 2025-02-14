@@ -1,0 +1,14 @@
+{
+    "SaveData" : {
+        "scene" : { "type" : "string" },
+        "score" : { "type" : "int" },
+        "inventory" : { "type" : "array" },
+        "position" : { 
+            "x": { "type" : "number" }, 
+            "y": { "type" : "number" }
+        },
+        "lastSaved" : { "type" : "timestamp" }
+    },
+    "SchoolEmail": { "type" : "string" },
+    "Username" : { "type" : "string" }
+}
