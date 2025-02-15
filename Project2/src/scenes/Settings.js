@@ -117,6 +117,8 @@ export class Settings extends BaseScene {
                 this.setValue(newValue);
             }, this.musicSlider);
 
+        this.musicSliderLabel = this.add.text(this.musicSlider.x - 300, this.musicSlider.y - 45, 'Music Volume:', {align: 'center', fontSize: 24});
+
         // SFX volume slider.
         this.soundSlider = this.rexUI.add.slider({
             x: width / 2,
@@ -142,6 +144,8 @@ export class Settings extends BaseScene {
                 let newValue = Phaser.Math.Clamp(localX / track.width, 0, 1);
                 this.setValue(newValue);
             }, this.soundSlider);
+
+        this.soundSliderLabel = this.add.text(this.soundSlider.x - 300, this.soundSlider.y - 45, 'Sound Volume:', {align: 'center', fontSize: 24});
     }
 
     createPlaySFXButton(width, height) {
