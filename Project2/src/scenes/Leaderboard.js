@@ -1,10 +1,46 @@
 import { BaseScene } from './BaseScene';
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, query, getDocs, orderBy, limit } from "firebase/firestore";
 
-const leaderboardData = {
-    First: 'GravyTrain369',
-    Second: 'SaucySally',
-    Third: 'ButterBiscuit',
+// Initialize Firebase --- Is this the best way to do this?
+const firebaseConfig = {
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
 };
+
+let app;
+if (!app) {
+    app = initializeApp(firebaseConfig);
+}
+const db = getFirestore(app);
+
+// Initialize the leaderboard data.
+const leaderboardData = {};
+
+// Query our Players collection for the top 10 scores.
+try {
+    const q = query(collection(db, "Players"), orderBy("SaveData.score",'desc'), limit(10));
+    const querySnapshot = await getDocs(q);
+    const docSnapshots = querySnapshot.docs;
+
+    // load the top players into the leaderboardData object
+    for (var i in docSnapshots) {
+        const doc = docSnapshots[i].data();
+        console.log(doc);
+        // let player = { //This might be a better way to do it
+        //     Username: doc.Username,
+        //     Score: doc.SaveData.score
+        // }
+        // leaderboardData[i] = player;
+        leaderboardData[i] = doc.Username + "     " + doc.SaveData.score;
+    }
+} catch (error) {
+    console.error("Error loading the :", error);
+}
 
 export class Leaderboard extends BaseScene {
     constructor() {
@@ -33,10 +69,10 @@ export class Leaderboard extends BaseScene {
             strokeThickness: 8,
             align: 'center'
         }).setOrigin(0.5);
-
-        // Leaderboard entries.
-        this.entries = Object.values(leaderboardData).map((name, index) => {
-            return this.add.text(width / 2, height * (0.3 + index * 0.1), `${index + 1}. ${name}`, {
+        
+        
+        if(Object.keys(leaderboardData).length === 0) {
+            this.add.text(width / 2, height * 0.3, "Failed to load leaderboard...", {
                 fontFamily: 'Inknut Antiqua',
                 fontSize: `${Math.floor(height * 0.05)}px`,
                 color: '#ffffff',
@@ -44,7 +80,23 @@ export class Leaderboard extends BaseScene {
                 strokeThickness: 8,
                 align: 'center'
             }).setOrigin(0.5);
-        });
+             console.log("Leaderboard data is empty")
+        }
+
+        else {// Leaderboard entries.
+            this.entries = Object.values(leaderboardData).map((name, index) => {
+                return this.add.text(width / 2, height * (0.3 + index * 0.1), `${index + 1}. ${name}`, {
+                    fontFamily: 'Inknut Antiqua',
+                    fontSize: `${Math.floor(height * 0.05)}px`,
+                    color: '#ffffff',
+                    stroke: '#000000',
+                    strokeThickness: 8,
+                    align: 'center'
+                }).setOrigin(0.5);
+            });
+
+            console.log("Leaderboard data populated")
+        }
 
         // Register resize event.
         this.scale.on('resize', this.repositionUI, this);

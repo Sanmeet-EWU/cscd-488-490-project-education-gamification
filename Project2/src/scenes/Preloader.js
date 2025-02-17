@@ -30,9 +30,9 @@ export class Preloader extends Scene
         // Set base path to "assets"
         this.load.setPath('assets');
     
-        this.load.image('Macbeth', 'macbethTitle.png');
-        this.load.image('crown', 'crown.png');
-        this.load.image('dagger', 'daggerSelector.png');
+        //this.load.image('Macbeth', 'macbethTitle.png');
+        //this.load.image('crown', 'crown.png');
+        //this.load.image('dagger', 'daggerSelector.png');
     
         this.load.svg('swordandcrown', 'StartScreen/SwordandCrown.svg', { width: 2000, height: 3400 }); 
         this.load.svg('raven', 'StartScreen/Raven.svg', { width: 1000, height: 1000 });
