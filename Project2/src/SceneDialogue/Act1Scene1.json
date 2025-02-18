@@ -2,27 +2,37 @@
     "Witch2": {
         "intro": "When the hurly-burly’s done, when the battle’s lost and won.",
         "responses": [
-        { "text": "What battle?", "next": "response1" },
-        { "text": "We should prepare!", "next": "response2" }
-        ],
-        "response1": "The war for the throne rages on, but soon it will be over.",
-        "response2": "Indeed, the storm brews in our favor."
+            { "text": "What battle?", "next": "Witch1_response1" },
+            { "text": "We should prepare!", "next": "Witch1_response2" }
+        ]
+    },
+    "Witch1_response1": {
+        "name": "First Witch",
+        "text": "The war for the throne rages on, but soon it will be over.",
+        "next": "Witch3"
+    },
+    "Witch1_response2": {
+        "name": "First Witch",
+        "text": "Indeed, the storm brews in our favor.",
+        "next": "Witch3"
     },
     "Witch3": {
         "name": "Third Witch",
         "intro": "That will be ere the set of sun.",
         "responses": [
-            { 
-                "text": "Where shall we meet?", 
-                "next": "response1" 
-            },
-            { 
-                "text": "Macbeth will be there?", 
-                "next": "response2" 
-            }
-        ],
-        "response1": "Upon the heath, as the fates decree.",
-        "response2": "Yes, his fate is sealed."
+            { "text": "Where shall we meet?", "next": "Witch1_response3" },
+            { "text": "Macbeth will be there?", "next": "Witch1_response4" }
+        ]
+    },
+    "Witch1_response3": {
+        "name": "First Witch",
+        "text": "Upon the heath, as the fates decree.",
+        "next": "finale"
+    },
+    "Witch1_response4": {
+        "name": "First Witch",
+        "text": "Yes, his fate is sealed.",
+        "next": "finale"
     },
     "finale": {
         "trigger": "ALL",

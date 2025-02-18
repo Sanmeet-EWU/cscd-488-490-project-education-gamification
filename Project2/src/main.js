@@ -7,7 +7,7 @@ import { Preloader } from './scenes/Preloader';
 import { Leaderboard } from './scenes/Leaderboard';
 import { Settings } from './scenes/Settings';
 import { GameScene } from './scenes/GameScene.js';
-import { Act1Scene1 } from './scenes/Act1Scene1.js';
+import { Act1Scene1 } from './scenes/GameScenes/Act1Scene1.js';
 import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { completeLogin } from '../firebase/firebase.js';
