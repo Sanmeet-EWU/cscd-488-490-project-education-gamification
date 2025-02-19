@@ -68,7 +68,7 @@ export class Act1Scene1 extends BaseGameScene {
         npcPositions.forEach(npc => {
             this.add.rectangle(npc.x, npc.y, 120, 50, 0x333333, 0.8).setOrigin(0.5);
             this.add.text(npc.x, npc.y, npc.key, {
-                font: "20px Arial",
+                font: "20px Inknut Antiqua",
                 fill: "#ffffff",
                 align: "center"
             }).setOrigin(0.5);
@@ -83,7 +83,7 @@ export class Act1Scene1 extends BaseGameScene {
             .setInteractive();
 
         const startText = this.add.text(width / 2, height * 0.8, "Start", {
-            font: "24px Arial",
+            font: "24px Inknut Antiqua",
             fill: "#ffffff"
         }).setOrigin(0.5);
 

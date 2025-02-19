@@ -49,25 +49,26 @@ export class DialogueManager {
 
     createDialogueBox() {
         const cam = this.scene.cameras.main;
-        const boxWidth = cam.width * 0.7;
-        const boxHeight = cam.height * 0.25;
+        const boxWidth = cam.width * 0.5;
+        const boxHeight = cam.height * 0.15;
         const boxX = (cam.width - boxWidth) / 2;
         const boxY = cam.height - boxHeight - 20;
 
         this.bg = this.scene.add.rectangle(0, 0, boxWidth, boxHeight, 0x000000, 0.8).setOrigin(0.5);
         this.portrait = this.scene.add.image(-boxWidth / 2 + 80, 0, "npc").setDisplaySize(96, 96);
 
-        this.nameText = this.scene.add.text(0, -boxHeight / 2 - 30, "???", {
-            font: "26px Arial",
+        this.nameText = this.scene.add.text(this.portrait.x, this.portrait.y - 75, "???", {
+            font: "26px Inknut Antiqua",
             fill: "#ffffff",
             fontWeight: "bold"
         }).setOrigin(0.5);
 
-        this.dialogueText = this.scene.add.text(-boxWidth / 2 + 160, -boxHeight / 2 + 60, "", {
-            font: "20px Arial",
+        this.dialogueText = this.scene.add.text(-boxWidth / 2 + 200, -boxHeight / 2 + 30, "", {
+            font: "26px Inknut Antiqua",
             fill: "#ffffff",
             wordWrap: { width: boxWidth - 180 }
         });
+        
 
         this.dialogueContainer = this.scene.add.container(boxX + boxWidth / 2, boxY + boxHeight / 2, [
             this.bg, this.portrait, this.nameText, this.dialogueText
@@ -157,18 +158,18 @@ export class DialogueManager {
 
     showResponses(responses) {
         const boxWidth = this.bg.displayWidth;
-        const startX = -boxWidth / 2 + 160;
-        const startY = this.dialogueText.y + this.dialogueText.height + 20;
+        const textStartX = this.dialogueText.x;
+        const startY = this.dialogueText.y + this.dialogueText.height + 10;
     
         this.responseTexts = [];
     
         responses.forEach((resp, index) => {
             let option = this.scene.add.text(
-                startX,
+                textStartX,
                 startY + index * 40,
                 `${index + 1}. ${resp.text}`,
                 {
-                    font: "22px Arial",
+                    font: "22px Inknut Antiqua",
                     fill: "#ffff00",
                     padding: { x: 10, y: 5 }
                 }
@@ -191,6 +192,7 @@ export class DialogueManager {
     
             option.on("pointerdown", () => {
                 this.clearResponses();
+                border.destroy(); 
     
                 if (this.scene.scene.key === "Act1Scene1") {
                     this.nextDialogue();
@@ -203,6 +205,7 @@ export class DialogueManager {
             this.responseTexts.push(option);
         });
     }
+    
     
 
     showPlayerResponse(playerText, nextKey) {
@@ -221,8 +224,14 @@ export class DialogueManager {
 
     clearResponses() {
         if (this.responseTexts) {
-            this.responseTexts.forEach(option => option.destroy());
+            this.responseTexts.forEach(option => {
+                option.destroy();
+                if (option.border) {
+                    option.border.destroy();
+                }
+            });
         }
         this.responseTexts = [];
     }
+    
 }
