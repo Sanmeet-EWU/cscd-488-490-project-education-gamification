@@ -1,6 +1,11 @@
 {
     "Act1Scene1": [
-        { "speaker": "First Witch", "text": "When shall we three meet again — In thunder, lightning, or in rain?", "responses": [{ "text": "...", "next": "SecondWitch" }] },
+        {
+            "speaker": "First Witch",
+            "text": "When shall we three meet again — In thunder, lightning, or in rain?",
+            "translation": "This thing really works huh?",
+            "responses": [{ "text": "...", "next": "SecondWitch" }]
+        },
         { "speaker": "Second Witch", "text": "When the hurlyburly’s done, when the battle’s lost and won.", "responses": [{ "text": "...", "next": "ThirdWitch" }] },
         { "speaker": "Third Witch", "text": "That will be ere the set of sun.", "responses": [{ "text": "...", "next": "FirstWitch2" }] },
         { "speaker": "First Witch", "text": "Where the place?", "responses": [{ "text": "...", "next": "SecondWitch2" }] },
