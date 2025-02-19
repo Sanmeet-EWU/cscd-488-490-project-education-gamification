@@ -1,42 +1,14 @@
 {
-    "Witch2": {
-        "intro": "When the hurly-burly’s done, when the battle’s lost and won.",
-        "responses": [
-            { "text": "What battle?", "next": "Witch1_response1" },
-            { "text": "We should prepare!", "next": "Witch1_response2" }
-        ]
-    },
-    "Witch1_response1": {
-        "name": "First Witch",
-        "text": "The war for the throne rages on, but soon it will be over.",
-        "next": "Witch3"
-    },
-    "Witch1_response2": {
-        "name": "First Witch",
-        "text": "Indeed, the storm brews in our favor.",
-        "next": "Witch3"
-    },
-    "Witch3": {
-        "name": "Third Witch",
-        "intro": "That will be ere the set of sun.",
-        "responses": [
-            { "text": "Where shall we meet?", "next": "Witch1_response3" },
-            { "text": "Macbeth will be there?", "next": "Witch1_response4" }
-        ]
-    },
-    "Witch1_response3": {
-        "name": "First Witch",
-        "text": "Upon the heath, as the fates decree.",
-        "next": "finale"
-    },
-    "Witch1_response4": {
-        "name": "First Witch",
-        "text": "Yes, his fate is sealed.",
-        "next": "finale"
-    },
-    "finale": {
-        "trigger": "ALL",
-        "text": "Fair is foul, and foul is fair; Hover through the fog and filthy air.",
-        "endScene": true
-    }
+    "Act1Scene1": [
+        { "speaker": "First Witch", "text": "When shall we three meet again — In thunder, lightning, or in rain?", "responses": [{ "text": "...", "next": "SecondWitch" }] },
+        { "speaker": "Second Witch", "text": "When the hurlyburly’s done, when the battle’s lost and won.", "responses": [{ "text": "...", "next": "ThirdWitch" }] },
+        { "speaker": "Third Witch", "text": "That will be ere the set of sun.", "responses": [{ "text": "...", "next": "FirstWitch2" }] },
+        { "speaker": "First Witch", "text": "Where the place?", "responses": [{ "text": "...", "next": "SecondWitch2" }] },
+        { "speaker": "Second Witch", "text": "Upon the heath.", "responses": [{ "text": "...", "next": "ThirdWitch2" }] },
+        { "speaker": "Third Witch", "text": "There to meet with Macbeth.", "responses": [{ "text": "...", "next": "FirstWitch3" }] },
+        { "speaker": "First Witch", "text": "I come, Graymalkin.", "responses": [{ "text": "...", "next": "SecondWitch3" }] },
+        { "speaker": "Second Witch", "text": "Paddock calls.", "responses": [{ "text": "...", "next": "ThirdWitch3" }] },
+        { "speaker": "Third Witch", "text": "Anon.", "responses": [{ "text": "...", "next": "FinalLine" }] },
+        { "speaker": "All", "text": "Fair is foul, and foul is fair. Hover through the fog and filthy air.", "endScene": true }
+    ]
 }

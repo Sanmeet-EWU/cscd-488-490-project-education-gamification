@@ -1,12 +1,13 @@
 import { BaseScene } from './BaseScene';
 import { saveGameData, loadGameData } from "../../firebase/firebase.js";
-import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+import { DialogueManager } from '../DialogueManager.js';
 export class BaseGameScene extends BaseScene {
     constructor(key = 'BaseGameScene') {
         super(key);
     }
 
     init(data) {
+        this.viewOnly = data?.viewOnly || false;
         if (data.position) {
             this.startingPosition = data.position;
         }
@@ -85,6 +86,11 @@ export class BaseGameScene extends BaseScene {
   
 
   async saveProgress() {
+    if (this.viewOnly) {
+        console.log("Save disabled in viewOnly mode.");
+        return;
+    }
+
     const saveData = {
         scene: this.scene.key,
         position: { x: this.player.x, y: this.player.y },
@@ -98,7 +104,7 @@ export class BaseGameScene extends BaseScene {
     } else {
         console.error("Failed to save game.");
     }
-  }
+}
 
   async loadProgress() {
     const saveData = await loadGameData();

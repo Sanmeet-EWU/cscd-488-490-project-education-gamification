@@ -18,16 +18,25 @@ module.exports = {
     },
     devServer: {
         static: path.resolve(process.cwd(), "dist"),
-        hot: true,
+        hot: false, // Disable hot reloading for full page reload
+        liveReload: true, // Ensure assets fully reload
         open: true,
-        liveReload: true,
+        watchFiles: ['src/**/*', 'public/**/*'], // Ensure asset files are watched
         historyApiFallback: {
             rewrites: [
                 { from: /^\/game.html$/, to: '/game.html' },
                 { from: /./, to: '/index.html' }
             ]
+        },
+        devMiddleware: {
+            writeToDisk: true, // Ensures assets are actually written to disk
+        },
+        headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
         }
-    },
+    },    
     module: {
         rules: [
             {

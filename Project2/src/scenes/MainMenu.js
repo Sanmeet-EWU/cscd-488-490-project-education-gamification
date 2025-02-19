@@ -126,6 +126,7 @@ export class MainMenu extends BaseScene {
         });
         this.leaderboard = this.createButton("Leaderboard", 0.55, () => this.switchScene('Leaderboard'));
         this.settings = this.createButton("Settings", 0.65, () => this.switchScene('Settings'));
+        this.sceneSelector = this.createButton("Scene Selector", 0.75, () => this.switchScene('SceneSelector'));
     }
 
     setupMusic() {
@@ -196,6 +197,10 @@ export class MainMenu extends BaseScene {
         if (this.settings && this.settings.active && this.settings.setFontSize) {
             this.settings.setPosition(width * 0.5, height * 0.65);
             this.settings.setFontSize(`${Math.floor(height * 0.05)}px`);
+        }
+        if(this.sceneSelector && this.sceneSelector.active && this.sceneSelector.setFontSize) {
+            this.sceneSelector.setPosition(width * 0.5, height * 0.75);
+            this.sceneSelector.setFontSize(`${Math.floor(height * 0.05)}px`);
         }
 
         // Reposition clouds.

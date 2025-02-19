@@ -1,6 +1,7 @@
 import { Boot } from './scenes/Boot';
 import { Game } from './scenes/Game';
 import "../firebase/firebase.js";
+import { SceneSelector } from './scenes/SceneSelector.js';
 import { GameOver } from './scenes/GameOver';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
@@ -14,7 +15,6 @@ import { completeLogin } from '../firebase/firebase.js';
 import { PauseMenu } from './scenes/PauseMenu.js';
 import Base from 'phaser3-rex-plugins/templates/transitionimagepack/TransitionImagePack.js';
 import { BaseGameScene } from './scenes/BaseGameScene.js';
-
 // Declare game variable at a global scope
 let game;
 
@@ -52,6 +52,7 @@ const config = {
         Game,
         GameOver,
         Leaderboard,
+        SceneSelector,
         Settings,
         GameScene,
         Act1Scene1,
