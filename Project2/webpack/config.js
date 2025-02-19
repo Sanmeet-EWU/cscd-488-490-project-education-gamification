@@ -67,7 +67,8 @@ module.exports = {
                 { from: "public/assets/audio", to: "assets/audio" }, // Ensure audio files are copied
                 { from: "public/style.css", to: "style.css" }, // Copy CSS separately
                 { from: "public/site.webmanifest", to: "site.webmanifest" }, // Ensure webmanifest is included
-                {from: "public/favicon", to: "favicon"},
+                { from: "public/favicon", to: "favicon" },
+                { from: "public/assets/portraits", to: "assets/portraits" },
                 { from: "public/assets/fonts", to: "font" }, // Ensure fonts are copied properly
                 { from: "src/SceneDialogue", to: "SceneDialogue" } // Copies to public folder
 

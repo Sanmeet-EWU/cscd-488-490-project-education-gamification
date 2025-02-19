@@ -62,36 +62,39 @@ export class DialogueManager {
         this.boxWidth = cam.width * 0.6;
         this.boxHeight = cam.height * 0.15;
         this.boxX = (cam.width - this.boxWidth) / 2;
-        // Calculate container Y so that the bottom of the dialogue box remains fixed at 20px from the bottom.
         const containerY = cam.height - 20 - this.boxHeight / 2;
     
-        // Create background rectangle (centered in container)
+        // Create background rectangle
         this.bg = this.scene.add.rectangle(0, 0, this.boxWidth, this.boxHeight, 0x000000, 0.8)
             .setOrigin(0.5);
     
-        // Position portrait in the top left of the dialogue box.
-        this.portrait = this.scene.add.image(-this.boxWidth / 2 + 20, -this.boxHeight / 2 + 20, "npc")
-            .setDisplaySize(80, 80)
-            .setOrigin(0, 0); // anchor top-left
+        // Create a portrait image with no texture initially, sized 60x60 at top-left
+        this.portrait = this.scene.add.image(
+            -this.boxWidth / 2 + 20,
+            -this.boxHeight / 2 + 20,
+            null
+        )
+        .setOrigin(0, 0)
+        .setDisplaySize(60, 60);
     
-        // Recalculate dynamic font sizes using the camera's height.
+        // Example dynamic font sizes
         const dynamicNameFontSize = Math.round(cam.height * 0.015);
         const dynamicDialogueFontSize = Math.round(cam.height * 0.025);
     
-        // Name text centered under the portrait.
+        // Name text centered under the portrait
         this.nameText = this.scene.add.text(
-            -this.boxWidth / 2 + 20 + 40,
-            -this.boxHeight / 2 + 20 + 80 + 10,
+            this.portrait.x + 30, // 30 = half of 60
+            this.portrait.y + 60 + 10,
             "???",
             {
                 font: `${dynamicNameFontSize}px Inknut Antiqua`,
                 fill: "#ffffff",
                 fontWeight: "bold",
-                wordWrap: { width: 80, useAdvancedWrap: true } // adjust width as needed
+                wordWrap: { width: 60, useAdvancedWrap: true }
             }
         ).setOrigin(0.5, 0);
     
-        // Dialogue text positioned to the right of the portrait.
+        // Dialogue text positioned to the right of the portrait
         this.dialogueText = this.scene.add.text(
             -this.boxWidth / 2 + 160,
             -this.boxHeight / 2 + 20,
@@ -103,19 +106,22 @@ export class DialogueManager {
             }
         );
     
-        // Create container with the background and texts.
+        // Container that holds all elements
         this.dialogueContainer = this.scene.add.container(
             this.boxX + this.boxWidth / 2,
             containerY,
             [this.bg, this.portrait, this.nameText, this.dialogueText]
-        );
-        this.dialogueContainer.setDepth(9999);
+        ).setDepth(9999);
     
-        // Also listen for resize events (in case createDialogueBox is called again)
+        // Listen for resize events
         this.scene.scale.on('resize', (gameSize) => {
             this.adjustBoxSize(gameSize.width, gameSize.height);
         });
     }
+    
+    
+    
+    
     
     nextDialogue() {
         if (this.dialogueQueue.length === 0) {
@@ -160,12 +166,27 @@ export class DialogueManager {
     
         this.nameText.setText(speaker);
     
-        if (this.scene.textures.exists(speaker)) {
-            this.portrait.setTexture(speaker);
+        // Map JSON speaker names to portrait images
+        const portraitMap = {
+            "First Witch": "witch1portrait",
+            "Second Witch": "witch2portrait",
+            "Third Witch": "witch3portrait"
+        };
+    
+        // Default to "npc" if no mapping found (you’d need to load "npc" in preload if you want this fallback)
+        let texKey = portraitMap[speaker] || "npc";
+    
+        // If that texture exists, set it. If not, we just keep whatever’s there
+        if (this.scene.textures.exists(texKey)) {
+            this.portrait.setTexture(texKey);
         } else {
-            this.portrait.setTexture("npc");
+            console.warn(`Texture missing: ${texKey}`);
         }
+    
+        // Force the portrait to be 60×60 again
+        this.portrait.setDisplaySize(80, 80);
     }
+       
     
     typeText(text) {
         this.fullText = text;
