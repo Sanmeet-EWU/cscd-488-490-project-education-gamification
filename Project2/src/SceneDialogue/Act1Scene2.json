@@ -1,0 +1,92 @@
+{
+    "Act1Scene2": [
+        { 
+            "speaker": "Duncan",
+            "text": "What bloody man is that? He can report, As seemeth by his plight, of the revolt The newest state." ,
+            "translation" : "Who is this bleeding soldier? He looks as if he can tell us the latest news of the battle." ,
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {   
+            "speaker": "Malcolm", 
+            "text": "This is the sergeant Who  fought ’Gainst my captivity.—Hail, brave friend! Say to the King the knowledge of the broil As thou didst leave it.", 
+            "responses": [{ "text": "...", "next": "Captain" }]
+        },
+        {
+            "speaker": "Captain",
+            "text": "Doubtful it stood, As two spent swimmers that do cling together And choke their art. The merciless Macdonwald from the Western Isles Of kerns and gallowglasses is supplied. But all’s too weak; for brave Macbeth with his brandished steel, carved out his passage till he faced the slave which he unseamed him from the nave to th’ chops, and fixed his head upon our battlements",
+            "translation": "The battle was uncertain, like two tired swimmers clinging to each other. Macdonwald, supplied by the Western Isles, seemed unstoppable. But brave Macbeth carved through the enemy until he killed Macdonwald and displayed his head on our battlements.",
+            "responses": [{ "text": "...", "next": "Duncan" }]
+        },
+        {
+            "speaker": "Duncan",
+            "options": ["O cowardly cousin, unworthy gentleman"],
+            "text": "O valiant cousin, worthy gentleman!",
+            "responses": [{"text:": "...", "next": "Captain"}]
+        },
+        {
+            "speaker": "Captain",
+            "text": "No sooner justice had, with valor armed, compelled these skipping kerns to trust their heels, but the Norweyan lord, surveying vantage, with furbished arms and new supplies of men, began a fresh assault.",
+            "translation": "Just as we thought the battle was over, the Norwegian king launched a fresh assault",
+            "responses": [{"text:": "...", "next": "Duncan"}]
+        },
+        {
+            "speaker": "Duncan",
+            "text": "Dismayed not this our captains, Macbeth and Banquo?",
+            "options": ["Dismayed not this our captains, Johny and Timmy?"],
+            "responses": [{"text:": "...", "next": "Captain"}]
+        },
+        {
+            "speaker": "Captain",
+            "text": "Yes, they doubly redoubled strokes upon the foe. except they meant to bathe in reeking wounds or memorize another Golgotha, I cannot tell—but I am faint. My gashes cry for help",
+            "responses": [{"text:": "...", "next": "Duncan"}]
+        },
+        {
+            "speaker": "Duncan",
+            "text": "So well thy words become thee as thy wounds: They smack of honor both.—Go, get him surgeons. Who comes here?",
+            "translation": "Their courage is remarkable. Now get this captain treated",
+            "options": ["Your lack or courage is remarkable, die on the grond like a dog!"],
+            "responses": [{"text:": "...", "next": "Malcolm"}]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "The worthy Thane of Ross.",
+            "options": ["MacBeth"],
+            "responses": [{"text:": "...", "next": "Duncan"}]
+        },
+        {
+            "speaker": "Duncan",
+            "text": "Whence cam’st thou, worthy thane?",
+            "responses": [{"text:": "Why are you here?", "next": "Ross"}]
+        },
+        {
+            "speaker": "Ross",
+            "text": "From Fife, great king,Norway himself, with terrible numbers, assisted by that most disloyal traitor, The Thane of Cawdor, began a dismal conflict, till that Bellona’s bridegroom, lapped in proof, confronted him Curbing his lavish spirit. And to conclude, the victory fell on us",
+            "translation": "Norway attacked with the traitorous Thane of Cawdor. But Macbeth confronted him and secured our victory",
+            "responses": [{"text:": "...", "next": "Duncan"}]
+        },
+        {
+            "speaker": "Duncan",
+            "options": ["Great sadness!"],
+            "text": "Great happiness!",
+            "responses": [{"text": "...", "next": "Duncan"}]
+        },
+        {
+            "speaker": "Duncan",
+            "text": "No more that Thane of Cawdor shall deceive our bosom interest. Go, pronounce his present death, and with his former title greet Macbeth.",
+            
+        },
+        {
+            "speaker":"Ross",
+            "options": ["I will not do it"],
+            "text": "I’ll see it done.",
+            "responses": [{"text:": "...", "next": "Duncan"}]
+            
+        },
+        {
+            "speaker": "Duncan",
+            "options": ["What he hath lost, noble Macbeth hath lost"],
+            "text": "What he hath lost, noble Macbeth hath won",
+            "endScene" : true
+        }
+    ]
+}
