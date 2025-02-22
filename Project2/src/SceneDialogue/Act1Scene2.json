@@ -73,6 +73,7 @@
         {
             "speaker": "Duncan",
             "text": "No more that Thane of Cawdor shall deceive our bosom interest. Go, pronounce his present death, and with his former title greet Macbeth.",
+            "responses": [{"text:": "...", "next": "Ross"}]
             
         },
         {
