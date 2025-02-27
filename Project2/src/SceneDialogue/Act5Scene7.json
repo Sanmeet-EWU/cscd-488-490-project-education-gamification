@@ -1,0 +1,62 @@
+{
+    "Act5Scene7": [
+        {
+            "speaker": "Macbeth",
+            "text": "What's he that was not born of woman? Such a one am I to fear, or none.",
+            "translation": "Where is the man who wasn't born from a woman. He is the only one I fear.",
+            "responses": [{ "text": "...", "next": "Young Siward" }]
+        },
+        {
+            "speaker": "Young Siward",
+            "text": "What is thy name?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "My name’s Macbeth.",
+            "responses": [{ "text": "...", "next": "Young Siward" }]
+        },
+        {
+            "speaker": "Young Siward",
+            "text": "The devil himself could not pronounce a title more hateful to mine ear.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "No, nor more fearful.",
+            "translation": "No, nor could the devil's name be more frightening.",
+            "responses": [{ "text": "...", "next": "Young Siward" }]
+        },
+        {
+            "speaker": "Young Siward",
+            "text": "Thou liest, abhorrèd tyrant. With my sword I’ll prove the lie thou speak’st.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Thou wast born of woman. But swords I smile at, weapons laugh to scorn, Brandished by man that’s of a woman born.",
+            "translation": "You were born from a woman. I mock any weapon held by a man born from a woman.",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "That way the noise is. Tyrant, show thy face! Let me find him, Fortune, And more I beg not.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "This way, my lord. The castle’s gently rendered. The day almost itself professes yours, And little is to do.",
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "We have met with foes That strike beside us.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "Enter, sir, the castle.",
+            "endScene": true
+        }
+    ]
+}
