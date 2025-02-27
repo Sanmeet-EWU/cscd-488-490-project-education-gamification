@@ -23,12 +23,12 @@ export class BaseGameScene extends BaseScene {
         }
     }
 
-    create() {
+    create(data) {
         super.create();
-
+    
         this.input.keyboard.addCapture([Phaser.Input.Keyboard.KeyCodes.ESC]);
         if (this.game.canvas) this.game.canvas.focus();
-
+    
         this.keys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
             down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -37,47 +37,72 @@ export class BaseGameScene extends BaseScene {
             interact: Phaser.Input.Keyboard.KeyCodes.E,
             pause: Phaser.Input.Keyboard.KeyCodes.ESC
         });
-
+    
         if (!this.isCutscene) {
             // Create floor for horizontal movement if needed
-            if (this.playerConfig.movementConstraint === 'horizontal') {
+            if (this.playerConfig?.movementConstraint === 'horizontal') {
                 this.createFloor();
             }
             
-            // Create player with specified texture and frame
-            this.player = this.physics.add.sprite(
-                this.startingPosition?.x || 100,
-                this.startingPosition?.y || 100,
-                this.playerConfig.texture,
-                this.playerConfig.frame
-            );
-            
-            // Apply scale if specified
-            if (this.playerConfig.scale && this.playerConfig.scale !== 1) {
-                this.player.setScale(this.playerConfig.scale);
-            }
-            
-            // Apply animation if specified
-            if (this.playerConfig.animations?.idle) {
-                this.player.play(this.playerConfig.animations.idle);
-            }
-            
-            this.player.setCollideWorldBounds(true);
-            
-            // Add gravity if horizontal movement
-            if (this.playerConfig.movementConstraint === 'horizontal') {
-                this.physics.world.gravity.y = 300;
-                this.player.setGravityY(300);
-                
-                // Add collision between player and floor
-                if (this.floor) {
-                    this.physics.add.collider(this.player, this.floor);
+            try {
+                // Create player with specified texture and frame - with error checking
+                if (this.textures.exists(this.playerConfig?.texture)) {
+                    // Create sprite with proper physics
+                    this.player = this.physics.add.sprite(
+                        this.startingPosition?.x || 100,
+                        this.startingPosition?.y || 100,
+                        this.playerConfig.texture,
+                        this.playerConfig.frame
+                    );
+                    
+                    // Now safe to call sprite methods
+                    if (this.player.setCollideWorldBounds) {
+                        this.player.setCollideWorldBounds(true);
+                    }
+                } else {
+                    // Fallback to rectangle
+                    console.log("Creating rectangle player");
+                    const rect = this.add.rectangle(
+                        this.startingPosition?.x || 100,
+                        this.startingPosition?.y || 100,
+                        32, 48, 0xFF8800
+                    );
+                    this.player = this.physics.add.existing(rect);
+                    
+                    // Rectangle body needs to be set to collide world bounds differently
+                    if (this.player.body) {
+                        this.player.body.collideWorldBounds = true;
+                    }
                 }
+                
+                // Apply scale if specified
+                if (this.playerConfig?.scale && this.playerConfig.scale !== 1) {
+                    this.player.setScale(this.playerConfig.scale);
+                }
+                
+                // Add gravity if horizontal movement
+                if (this.playerConfig?.movementConstraint === 'horizontal') {
+                    this.physics.world.gravity.y = 300;
+                    
+                    // Different methods based on object type
+                    if (this.player.body) {
+                        this.player.body.setGravityY(300);
+                    }
+                    
+                    // Add collision between player and floor
+                    if (this.floor) {
+                        this.physics.add.collider(this.player, this.floor);
+                    }
+                }
+                
+                // Don't start camera follow by default
+                // Each scene should decide whether to follow or not
+                // this.cameras.main.startFollow(this.player);
+            } catch (error) {
+                console.error("Error creating player:", error);
             }
-            
-            this.cameras.main.startFollow(this.player);
         }
-
+    
         this.isPaused = false;
         
         // Initialize audio controller
@@ -101,17 +126,23 @@ export class BaseGameScene extends BaseScene {
             .setVisible(false); // Make it invisible
     }
 
-    update(time, delta) {
-        if (this.isPaused) return;
-        super.update();
+// Replace the update method in BaseGameScene.js with this safer version:
 
-        if (Phaser.Input.Keyboard.JustDown(this.keys.pause)) {
-            this.togglePause();
-            return;
-        }
+update(time, delta) {
+    if (this.isPaused) return;
+    super.update();
 
-        if (!this.isCutscene && this.player) {
-            const speed = 500;
+    if (Phaser.Input.Keyboard.JustDown(this.keys.pause)) {
+        this.togglePause();
+        return;
+    }
+
+    // Only try to move player if it has the required physics methods
+    if (!this.isCutscene && this.player) {
+        const speed = 500;
+        
+        // Check if player has proper physics body and methods
+        if (this.player.body && typeof this.player.setVelocity === 'function') {
             let vx = 0, vy = 0;
             
             // Handle movement based on constraint type
@@ -127,25 +158,37 @@ export class BaseGameScene extends BaseScene {
                 // Only left/right movement (gravity handles vertical)
                 if (this.keys.left.isDown) vx = -speed;
                 else if (this.keys.right.isDown) vx = speed;
-                this.player.setVelocityX(vx);
                 
-                // Add idle/walking animations if configured
-                if (this.playerConfig.animations) {
-                    if (vx === 0 && this.playerConfig.animations.idle) {
-                        this.player.play(this.playerConfig.animations.idle, true);
-                    } else if (vx < 0 && this.playerConfig.animations.walkLeft) {
-                        this.player.play(this.playerConfig.animations.walkLeft, true);
-                    } else if (vx > 0 && this.playerConfig.animations.walkRight) {
-                        this.player.play(this.playerConfig.animations.walkRight, true);
-                    }
-                }
+                // Use setVelocity not setVelocityX for maximum compatibility
+                this.player.setVelocity(vx, this.player.body.velocity.y);
             }
             else if (this.playerConfig.movementConstraint === 'none') {
                 // No movement allowed (for cutscenes where player is displayed but can't move)
                 this.player.setVelocity(0, 0);
             }
+        } else if (this.player.x !== undefined) {
+            // Fallback for non-physics objects - just move the object directly
+            const move = 5; // Pixels per frame
+            
+            if (this.playerConfig.movementConstraint === 'free') {
+                if (this.keys.left.isDown) this.player.x -= move;
+                else if (this.keys.right.isDown) this.player.x += move;
+                if (this.keys.up.isDown) this.player.y -= move;
+                else if (this.keys.down.isDown) this.player.y += move;
+            }
+            else if (this.playerConfig.movementConstraint === 'horizontal') {
+                if (this.keys.left.isDown) this.player.x -= move;
+                else if (this.keys.right.isDown) this.player.x += move;
+            }
+            
+            // Keep player within bounds
+            if (this.player.x < 0) this.player.x = 0;
+            if (this.player.y < 0) this.player.y = 0;
+            if (this.player.x > this.scale.width) this.player.x = this.scale.width;
+            if (this.player.y > this.scale.height) this.player.y = this.scale.height;
         }
     }
+}
 
     createNPCs(npcDefs) {
         this.npcs = {};
@@ -218,4 +261,5 @@ export class BaseGameScene extends BaseScene {
             this.scene.launch('PauseMenu', { gameScene: this });
         }
     }
+    
 }
