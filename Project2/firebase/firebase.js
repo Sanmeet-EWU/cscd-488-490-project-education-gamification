@@ -19,47 +19,40 @@ if (!app) {
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-let persistenceSet = false; // Prevent multiple persistence calls
+let persistenceSet = false;
 
 if (!persistenceSet) {
     try {
         setPersistence(auth, browserSessionPersistence).then(() => {
-            console.log("Auth persistence is set to local storage.");
-            persistenceSet = true; // Mark as set
+            persistenceSet = true;
         });
     } catch (error) {
-        console.error("Error setting auth persistence:", error);
+        // Critical error handling only
     }
 }
 
 export default app;
+
 // Fetch player data
 export async function fetchData() {
     try {
         const docRef = doc(db, "Players", "Player");
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
-        } else {
-            console.log("No such document!");
-        }
+        return docSnap.exists() ? docSnap.data() : null;
     } catch (error) {
-        console.error("Error getting document:", error);
+        return null;
     }
 }
 
 // Check if email is registered
 export async function isEmailRegistered(email) {
     const playersRef = collection(db, "Players");
-    const q = query(playersRef, where("SchoolEmail", "==", email)); // Match SchoolEmail field
+    const q = query(playersRef, where("SchoolEmail", "==", email));
     const querySnapshot = await getDocs(q);
-
-    return !querySnapshot.empty; // Return true if email exists
+    return !querySnapshot.empty;
 }
 
-//Register User
 export async function registerUser(email) {
-    console.trace("registerUser called with email:", email)
     // const allowedDomain = "@school.edu"; // Replace with domain or set to null to allow all domains
 
     // if (!email.endsWith(allowedDomain)) {
@@ -106,35 +99,28 @@ export async function registerUser(email) {
     }
 }
 
-/**
- * Saves the player's game progress in Firestore using their SchoolEmail.
- */
+
+// Save game progress
 export async function saveGameData(saveData) {
     const user = auth.currentUser;
     if (!user) {
-        console.error("User not logged in, cannot save data.");
         return false;
     }
 
     try {
         const normalizedEmail = user.email.toLowerCase();
         const playersRef = collection(db, "Players");
-
-        // Query Firestore to find the correct document ID
         const q = query(playersRef, where("SchoolEmail", "==", normalizedEmail));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-            console.error("No player document found for email:", normalizedEmail);
             return false;
         }
 
-        // Get the correct document ID (UID-style string)
-        const playerDoc = querySnapshot.docs[0]; // Assume only one match
+        const playerDoc = querySnapshot.docs[0];
         const playerDocId = playerDoc.id;
-
-        // Use the correct document ID to update Firestore
         const playerRef = doc(db, "Players", playerDocId);
+        
         await updateDoc(playerRef, {
             SaveData: {
                 ...saveData,
@@ -143,81 +129,67 @@ export async function saveGameData(saveData) {
         });
         return true;
     } catch (error) {
-        console.error("Error saving game data:", error);
         return false;
     }
 }
 
-/**
- * Loads the player's saved game progress from Firestore using their SchoolEmail.
- */
+// Load game progress
 export async function loadGameData() {
     const user = auth.currentUser;
     if (!user) {
-        console.error("User not logged in, cannot load data.");
         return null;
     }
 
     try {
         const normalizedEmail = user.email.toLowerCase();
         const playersRef = collection(db, "Players");
-
-        // Query Firestore to find the correct document ID
         const q = query(playersRef, where("SchoolEmail", "==", normalizedEmail));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-            console.warn("No saved game data found. Using default values.");
             return null;
         }
 
-        // Get the correct document ID
         const playerDoc = querySnapshot.docs[0];
         const playerDocId = playerDoc.id;
-
-        // Retrieve save data using the correct document ID
         const playerRef = doc(db, "Players", playerDocId);
         const docSnap = await getDoc(playerRef);
 
         if (docSnap.exists() && docSnap.data().SaveData) {
             return docSnap.data().SaveData;
         } else {
-            console.warn("No saved game data found.");
             return null;
         }
     } catch (error) {
-        console.error("Error loading game data:", error);
         return null;
     }
 }
 
-// Check if the user is signed in
+// Check if user is signed in
 export function isUserSignedIn() {
     let user = auth.currentUser;
     return !!user;
 }
 
-// Get the username of the signed-in user
+// Get username of signed-in user
 export async function getUsername() {
     let user = auth.currentUser;
 
     if (user) {
         try {
-            const email = user.email; // Get the logged-in user's email
+            const email = user.email;
             const playersRef = collection(db, "Players");
-            const q = query(playersRef, where("SchoolEmail", "==", email)); // Query Firestore using email
+            const q = query(playersRef, where("SchoolEmail", "==", email));
             const querySnapshot = await getDocs(q);
 
             if (!querySnapshot.empty) {
-                const docSnap = querySnapshot.docs[0]; // Get the first matching document
+                const docSnap = querySnapshot.docs[0];
                 const userName = docSnap.data().Username;
                 return userName;
             } else {
-                console.error("No document found for email: ", email);
                 return null;
             }
         } catch (error) {
-            console.error("Error fetching username from Firestore: ", error);
             return null;
         }
     } else {
@@ -225,8 +197,9 @@ export async function getUsername() {
     }
 }
 
+// Send login link via email
 export async function sendLoginLink(email) {
-    const normalizedEmail = email.toLowerCase(); // Normalize email to lowercase
+    const normalizedEmail = email.toLowerCase();
     const user = auth.currentUser;
     if (user) {
         await signOut(auth);
@@ -245,22 +218,20 @@ export async function sendLoginLink(email) {
     };
 
     try {
-        window.localStorage.setItem("emailForSignIn", normalizedEmail);  // Store email before sending link
+        window.localStorage.setItem("emailForSignIn", normalizedEmail);
         await sendSignInLinkToEmail(auth, normalizedEmail, actionCodeSettings);
         alert("Check your email for the login link.");
         return true;
     } catch (error) {
-        console.error(" Error sending login link:", error);
-        alert("Error sending login link. Please check console.");
+        alert("Error sending login link. Please try again.");
         return false;
     }
 }
 
-
+// Complete login process
 export async function completeLogin() {
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            // Prevent infinite redirect loop
             if (!window.location.pathname.includes("game.html")) {
                 window.location.href = "game.html";
             }
@@ -271,7 +242,6 @@ export async function completeLogin() {
             let email = window.localStorage.getItem("emailForSignIn");
 
             if (!email) {
-                // If no email in localStorage, ask the user to enter it manually
                 email = prompt("Please enter your email to complete login:");
 
                 if (!email) {
@@ -284,20 +254,15 @@ export async function completeLogin() {
                 const result = await signInWithEmailLink(auth, email, window.location.href);
                 window.localStorage.removeItem("emailForSignIn");
 
-                // Redirect to game.html if not already there
                 if (!window.location.pathname.includes("game.html")) {
                     window.location.href = "game.html";
                 }
             } catch (error) {
-                console.error("Error during sign-in:", error);
                 alert("The sign-in link is invalid or expired. Please try logging in again.");
             }
-        } else {
-            console.log("Not a valid sign-in email link.");
         }
     });
 }
-
 
 window.registerUser = registerUser;
 window.sendLoginLink = sendLoginLink;

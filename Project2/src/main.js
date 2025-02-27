@@ -7,18 +7,18 @@ import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 import { Leaderboard } from './scenes/Leaderboard';
 import { Settings } from './scenes/Settings';
-import { GameScene } from './scenes/GameScene.js';
 import { Act1Scene1 } from './scenes/GameScenes/Act1Scene1.js';
+import { Act1Scene2 } from './scenes/GameScenes/Act1Scene2.js';
+import { Act1Scene3 } from './scenes/GameScenes/Act1Scene3.js';
 import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { completeLogin } from '../firebase/firebase.js';
 import { PauseMenu } from './scenes/PauseMenu.js';
 import Base from 'phaser3-rex-plugins/templates/transitionimagepack/TransitionImagePack.js';
 import { BaseGameScene } from './scenes/BaseGameScene.js';
-// Declare game variable at a global scope
+
 let game;
 
-// Phaser Game Configuration
 const config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
@@ -54,35 +54,37 @@ const config = {
         Leaderboard,
         SceneSelector,
         Settings,
-        GameScene,
         Act1Scene1,
+        Act1Scene2,
+        Act1Scene3,
         PauseMenu,
         BaseGameScene
     ],
 };
 
-// Initialize the Phaser Game only on `game.html`
 if (window.location.pathname.endsWith('game.html')) {
+    game = new Phaser.Game(config);
+    window.game = game;
+    game.globals = {
+        audioController: new AudioController(),
+        bgMusic: null
+    };
+
     completeLogin().then(() => {
-
-        // Initialize the Phaser game and assign it to `game`
-        game = new Phaser.Game(config);
-
-        // Store audio globally
-        game.globals = {
-            audioController: new AudioController(),
-            bgMusic: null
-        };
-
-        // Ensure the game resizes properly
+        let resizeTimeout;
         window.addEventListener("resize", () => {
-            if (game && game.scale) {
-                game.scale.resize(window.innerWidth, window.innerHeight);
-            }
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (game && game.scale) {
+                    game.scale.resize(window.innerWidth, window.innerHeight);
+                }
+            }, 100);
         });
 
-    }).catch((error) => {
-        console.error('Error processing login:', error);
+        if (game && game.scale) {
+            game.scale.resize(window.innerWidth, window.innerHeight);
+        }
+    }).catch(() => {
         alert('Failed to log in. Please try again.');
     });
 }

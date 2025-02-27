@@ -1,7 +1,9 @@
 export class DialogueManager {
-    constructor(scene, dialogueData, playerKey = null) {
+    constructor(scene, dialogueData, portraitMap, isLinearDialogue = false, playerKey = null) {
         this.scene = scene;
         this.dialogueData = dialogueData;
+        this.portraitMap = portraitMap || {};
+        this.isLinearDialogue = isLinearDialogue;
         this.playerKey = playerKey;
 
         this.dialogueContainer = null;
@@ -19,30 +21,34 @@ export class DialogueManager {
         this.currentDialogue = null;
         this.npcKey = null;
         this.dialogueQueue = [];
+        this.onComplete = null;
 
-        // For storing original responses when showing a translation
         this._originalResponses = null;
+
+        this.isActive = false;
+        this.resizeListener = (gameSize) => {
+            if (this.isActive && this.dialogueContainer) {
+                this.adjustBoxSize(gameSize.width, gameSize.height);
+            }
+        };
     }
 
-    startDialogue(npcKey) {
+    startDialogue(npcKey, onComplete = null) {
         this.npcKey = npcKey;
+        this.onComplete = onComplete;
         this.currentDialogue = this.dialogueData[npcKey];
 
-        if (!this.currentDialogue) {
-            return;
-        }
+        if (!this.currentDialogue) return;
 
         this.scene.inDialogue = true;
-        if (this.scene.player?.body) {
-            this.scene.player.body.enable = false;
-        }
+        if (this.scene.player?.body) this.scene.player.body.enable = false;
 
         this.createDialogueBox();
-        this.dialogueQueue = Array.isArray(this.currentDialogue)
-            ? [...this.currentDialogue]
-            : [this.currentDialogue];
+        this.isActive = true;
+        this.scene.scale.on('resize', this.resizeListener);
 
-        // Adjust height shortly after creating the box (to allow text measurements)
+        this.dialogueQueue = Array.isArray(this.currentDialogue) ? [...this.currentDialogue] : [this.currentDialogue];
+
         this.scene.time.delayedCall(100, () => this.adjustBoxHeight(), [], this);
 
         if (this.dialogueQueue.length > 0) {
@@ -50,11 +56,6 @@ export class DialogueManager {
         } else {
             this.endDialogue();
         }
-
-        // Listen for resize events to reposition/resize the dialogue box
-        this.scene.scale.on('resize', (gameSize) => {
-            this.adjustBoxSize(gameSize.width, gameSize.height);
-        });
     }
 
     createDialogueBox() {
@@ -63,27 +64,17 @@ export class DialogueManager {
         this.boxHeight = cam.height * 0.15;
         this.boxX = (cam.width - this.boxWidth) / 2;
         const containerY = cam.height - 20 - this.boxHeight / 2;
-    
-        // Create background rectangle
-        this.bg = this.scene.add.rectangle(0, 0, this.boxWidth, this.boxHeight, 0x000000, 0.8)
-            .setOrigin(0.5);
-    
-        // Create a portrait image with no texture initially, sized 60x60 at top-left
-        this.portrait = this.scene.add.image(
-            -this.boxWidth / 2 + 20,
-            -this.boxHeight / 2 + 20,
-            null
-        )
-        .setOrigin(0, 0)
-        .setDisplaySize(60, 60);
-    
-        // Example dynamic font sizes
+
+        this.bg = this.scene.add.rectangle(0, 0, this.boxWidth, this.boxHeight, 0x000000, 0.8).setOrigin(0.5);
+        this.portrait = this.scene.add.image(-this.boxWidth / 2 + 20, -this.boxHeight / 2 + 20, null)
+            .setOrigin(0, 0)
+            .setDisplaySize(60, 60);
+
         const dynamicNameFontSize = Math.round(cam.height * 0.015);
         const dynamicDialogueFontSize = Math.round(cam.height * 0.025);
-    
-        // Name text centered under the portrait
+
         this.nameText = this.scene.add.text(
-            this.portrait.x + 30, // 30 = half of 60
+            this.portrait.x + 30,
             this.portrait.y + 60 + 10,
             "???",
             {
@@ -93,8 +84,7 @@ export class DialogueManager {
                 wordWrap: { width: 60, useAdvancedWrap: true }
             }
         ).setOrigin(0.5, 0);
-    
-        // Dialogue text positioned to the right of the portrait
+
         this.dialogueText = this.scene.add.text(
             -this.boxWidth / 2 + 160,
             -this.boxHeight / 2 + 20,
@@ -105,142 +95,116 @@ export class DialogueManager {
                 wordWrap: { width: this.boxWidth - 200, useAdvancedWrap: true }
             }
         );
-    
-        // Container that holds all elements
+
         this.dialogueContainer = this.scene.add.container(
             this.boxX + this.boxWidth / 2,
             containerY,
             [this.bg, this.portrait, this.nameText, this.dialogueText]
         ).setDepth(9999);
-    
-        // Listen for resize events
-        this.scene.scale.on('resize', (gameSize) => {
-            this.adjustBoxSize(gameSize.width, gameSize.height);
-        });
     }
-    
-    
-    
-    
-    
+
     nextDialogue() {
         if (this.dialogueQueue.length === 0) {
             this.endDialogue();
+            if (this.onComplete) this.onComplete();
             return;
         }
-    
+
         let dialogueNode = this.dialogueQueue.shift();
-    
+
         if (dialogueNode.endScene) {
             this.endDialogue();
+            if (this.onComplete) this.onComplete();
             return;
         }
-    
+
         this.updateSpeaker(dialogueNode.speaker);
         this.typeText(dialogueNode.text);
-    
-        // Clear any previous stored original responses.
+
         this._originalResponses = null;
-    
-        // If a translation exists and isn’t empty, add a translation option.
+
         let responses = dialogueNode.responses ? [...dialogueNode.responses] : [];
         if (dialogueNode.translation && dialogueNode.translation.trim() !== "") {
-            // Prepend the translation option. Also store the original text.
             responses.unshift({
                 text: "[Translate to modern english]",
                 translation: dialogueNode.translation,
                 originalText: dialogueNode.text
             });
         }
-    
+
         if (responses.length > 0) {
             this.showResponses(responses);
         }
     }
-    
+
     updateSpeaker(speaker) {
         if (!speaker) {
             this.nameText.setText("???");
+            this.portrait.setTexture(null);
             return;
         }
-    
+
         this.nameText.setText(speaker);
-    
-        // Map JSON speaker names to portrait images
-        const portraitMap = {
-            "First Witch": "witch1portrait",
-            "Second Witch": "witch2portrait",
-            "Third Witch": "witch3portrait"
-        };
-    
-        // Default to "npc" if no mapping found (you’d need to load "npc" in preload if you want this fallback)
-        let texKey = portraitMap[speaker] || "npc";
-    
-        // If that texture exists, set it. If not, we just keep whatever’s there
+        let texKey = this.portraitMap[speaker] || "npc";
         if (this.scene.textures.exists(texKey)) {
             this.portrait.setTexture(texKey);
-        } else {
-            console.warn(`Texture missing: ${texKey}`);
         }
-    
-        // Force the portrait to be 60×60 again
-        this.portrait.setDisplaySize(80, 80);
+        this.portrait.setDisplaySize(60, 60);
     }
-       
-    
+
     typeText(text) {
         this.fullText = text;
         this.currentText = "";
         this.textIndex = 0;
         this.dialogueText.setText("");
-    
+
         if (this.textTimer) {
             this.textTimer.remove(false);
         }
-    
+
         this.textTimer = this.scene.time.addEvent({
             delay: this.typingSpeed,
             callback: this.typeNextLetter,
             callbackScope: this,
             loop: true
         });
-    
+
         this.scene.time.delayedCall(200, () => this.adjustBoxHeight(), [], this);
     }
-    
+
     typeNextLetter() {
-        if (!this.dialogueText || !this.fullText) {
-            return;
-        }
-    
+        if (!this.dialogueText || !this.fullText) return;
+
         if (this.textIndex < this.fullText.length) {
             this.currentText += this.fullText[this.textIndex];
             this.dialogueText.setText(this.currentText);
             this.textIndex++;
-    
             this.scene.time.delayedCall(50, () => this.adjustBoxHeight(), [], this);
-        } else {
-            if (this.textTimer) {
-                this.textTimer.remove(false);
-            }
+        } else if (this.textTimer) {
+            this.textTimer.remove(false);
         }
     }
-    
+
     endDialogue() {
-        this.dialogueContainer.destroy();
-        if (this.scene.player?.body) {
-            this.scene.player.body.enable = true;
+        this.scene.scale.off('resize', this.resizeListener);
+        this.scene.time.removeAllEvents();
+        if (this.dialogueContainer) {
+            this.dialogueContainer.destroy();
+            this.dialogueContainer = null;
+            this.bg = null;
         }
+        if (this.scene.player?.body) this.scene.player.body.enable = true;
         this.scene.inDialogue = false;
+        this.isActive = false;
     }
-    
+
     showResponses(responses) {
         const textStartX = this.dialogueText.x;
         const startY = this.dialogueText.y + this.dialogueText.height + 20;
-    
+
         this.clearResponses();
         this.responseTexts = [];
-    
+
         responses.forEach((resp, index) => {
             let option = this.scene.add.text(
                 textStartX,
@@ -252,26 +216,23 @@ export class DialogueManager {
                     padding: { x: 10, y: 5 }
                 }
             ).setInteractive();
-    
+
             let border = this.scene.add.rectangle(
                 0, 0,
                 option.width + 20,
                 option.height + 10
             ).setStrokeStyle(2, 0xffff00).setVisible(false);
-    
+
             option.on("pointerover", () => {
                 border.setPosition(option.x + option.width / 2, option.y + option.height / 2);
                 border.setVisible(true);
             });
-    
-            option.on("pointerout", () => {
-                border.setVisible(false);
-            });
-    
+
+            option.on("pointerout", () => border.setVisible(false));
+
             option.on("pointerdown", () => {
                 border.destroy();
                 if (resp.translation) {
-                    // Toggle between the original and translated text.
                     const originalText = resp.originalText || this.fullText;
                     if (this.dialogueText.text === originalText) {
                         this.dialogueText.setText(resp.translation);
@@ -280,8 +241,7 @@ export class DialogueManager {
                         this.dialogueText.setText(originalText);
                         option.setText("[Translate to modern english]");
                     }
-                    // Do not clear responses—allow repeated toggling.
-                } else if (this.scene.scene.key === "Act1Scene1") {
+                } else if (this.isLinearDialogue) {
                     this.clearResponses();
                     this.nextDialogue();
                 } else {
@@ -289,91 +249,94 @@ export class DialogueManager {
                     this.showPlayerResponse(resp.text, resp.next);
                 }
             });
-    
+
             this.dialogueContainer.add([option, border]);
             this.responseTexts.push(option);
         });
     }
-    
-    
+
     showPlayerResponse(playerText, nextKey) {
         this.updateSpeaker("player");
         this.typeText(playerText);
-    
+
         this.scene.input.once("pointerdown", () => {
             if (this.dialogueData[nextKey]) {
                 this.updateSpeaker(this.dialogueData[nextKey].speaker);
                 this.typeText(this.dialogueData[nextKey].text);
             } else {
                 this.endDialogue();
+                if (this.onComplete) this.onComplete();
             }
         });
     }
-    
+
     clearResponses() {
         if (this.responseTexts) {
             this.responseTexts.forEach(option => {
                 option.destroy();
-                if (option.border) {
-                    option.border.destroy();
-                }
+                if (option.border) option.border.destroy();
             });
         }
         this.responseTexts = [];
     }
-    
+
     adjustBoxHeight() {
+        if (!this.dialogueContainer || !this.bg) return;
         const textHeight = this.dialogueText.height + 40;
         const cam = this.scene.cameras.main;
         const baseBoxHeight = cam.height * 0.15;
         const maxBoxHeight = cam.height * 0.4;
-    
+
         this.boxWidth = cam.width * 0.6;
-        // New height: grows with text but is clamped
         const newHeight = Math.max(baseBoxHeight, Math.min(baseBoxHeight + textHeight, maxBoxHeight));
-    
+
         this.bg.setSize(this.boxWidth, newHeight);
         this.boxHeight = newHeight;
-    
-        // Recalculate container Y to keep the bottom fixed.
+
         const containerY = cam.height - 20 - this.boxHeight / 2;
         this.boxX = (cam.width - this.boxWidth) / 2;
         this.dialogueContainer.setPosition(this.boxX + this.boxWidth / 2, containerY);
-    
+
         this.adjustPortraitAndName();
         this.adjustResponsePositions();
     }
-    
+
     adjustPortraitAndName() {
-        // Position the portrait at the top left of the dialogue box background.
+        if (!this.dialogueContainer) return;
         this.portrait.setPosition(-this.boxWidth / 2 + 20, -this.boxHeight / 2 + 20);
-    
-        // Center the name directly under the portrait.
-        this.nameText.setPosition(-this.boxWidth / 2 + 20 + 40, -this.boxHeight / 2 + 20 + 80 + 10);
-    
-        // Dialogue text remains to the right.
+        this.nameText.setPosition(-this.boxWidth / 2 + 20 + 30, -this.boxHeight / 2 + 20 + 60 + 10);
         this.dialogueText.setPosition(-this.boxWidth / 2 + 160, -this.boxHeight / 2 + 20);
     }
-    
+
     adjustResponsePositions() {
-        // Position response options below the dialogue text.
+        if (!this.dialogueContainer) return;
         const startY = this.dialogueText.y + this.dialogueText.height + 20;
         this.responseTexts.forEach((option, index) => {
             option.setPosition(this.dialogueText.x, startY + index * 40);
         });
     }
-    
+
     adjustBoxSize(width, height) {
+        if (!this.dialogueContainer) return;
         this.boxWidth = width * 0.6;
         this.boxX = (width - this.boxWidth) / 2;
-        // Use the current boxHeight to recalc container Y so the bottom stays fixed.
         const containerY = height - 20 - this.boxHeight / 2;
-        this.bg.setSize(this.boxWidth, this.boxHeight);
+        if (this.bg) this.bg.setSize(this.boxWidth, this.boxHeight);
         this.dialogueContainer.setPosition(this.boxX + this.boxWidth / 2, containerY);
-    
-        // Adjust dialogue text wrapping based on the new box width.
         this.dialogueText.setWordWrapWidth(this.boxWidth - 200);
         this.adjustPortraitAndName();
         this.adjustResponsePositions();
+    }
+
+    destroy() {
+        this.scene.scale.off('resize', this.resizeListener);
+        this.scene.time.removeAllEvents();
+        if (this.dialogueContainer) {
+            this.dialogueContainer.destroy();
+            this.dialogueContainer = null;
+            this.bg = null;
+        }
+        this.isActive = false;
+        this.scene.inDialogue = false;
     }
 }

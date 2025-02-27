@@ -8,7 +8,6 @@ export class Settings extends BaseScene {
     }
 
     preload() {
-        // Load assets for the scene.
         this.load.setPath('assets');
         this.load.setPath('assets/audio');
         this.load.audio('swoosh', 'swoosh.mp3');
@@ -22,15 +21,13 @@ export class Settings extends BaseScene {
         this.audioController = this.sys.game.globals.audioController;
         this.bgMusic = this.sys.game.globals.bgMusic;
 
-        // Create UI elements.
         this.createTitle(width, height);
         this.createBackButton(width, height);
         this.createToggles(width, height);
         this.createVolumeSliders(width, height);
         this.createPlaySFXButton(width, height);
         this.createChangeUsername(width, height);
-        
-        // Register resize event.
+
         this.scale.on('resize', this.repositionUI, this);
     }
 
@@ -46,34 +43,24 @@ export class Settings extends BaseScene {
     }
 
     createBackButton(width, height) {
-        // Create the back button as an image.
-        this.backButton = this.add.image(width * 0.1, height * 0.1, 'backButton')
-            .setInteractive();
-        // Use a larger scale factor (0.8) so it appears bigger.
+        this.backButton = this.add.image(width * 0.1, height * 0.1, 'backButton').setInteractive();
         this.fitToScreen(this.backButton, 0.8);
-        this.backButton.on('pointerdown', () => {
-            this.switchScene('MainMenu');
-        });
+        this.backButton.on('pointerdown', () => this.switchScene('MainMenu'));
     }
 
     createToggles(width, height) {
-        // Music toggle.
         this.musicButton = this.add.image(width * 0.4, height * 0.25,
-            this.audioController.musicOn ? 'checkedBox' : 'uncheckedBox')
-            .setInteractive();
+            this.audioController.musicOn ? 'checkedBox' : 'uncheckedBox').setInteractive();
         this.musicText = this.add.text(width * 0.45, height * 0.25, 'Music Enabled', {
             fontSize: `${Math.floor(height * 0.05)}px`
         }).setOrigin(0, 0.5);
-        
-        // Sound toggle.
+
         this.soundButton = this.add.image(width * 0.4, height * 0.35,
-            this.audioController.soundOn ? 'checkedBox' : 'uncheckedBox')
-            .setInteractive();
+            this.audioController.soundOn ? 'checkedBox' : 'uncheckedBox').setInteractive();
         this.soundText = this.add.text(width * 0.45, height * 0.35, 'Sound Enabled', {
             fontSize: `${Math.floor(height * 0.05)}px`
         }).setOrigin(0, 0.5);
 
-        // Toggle callbacks.
         this.musicButton.on('pointerdown', () => {
             this.audioController.musicOn = !this.audioController.musicOn;
             this.musicButton.setTexture(this.audioController.musicOn ? 'checkedBox' : 'uncheckedBox');
@@ -90,7 +77,6 @@ export class Settings extends BaseScene {
 
     createVolumeSliders(width, height) {
         const sliderWidth = width * 0.4;
-        // Music volume slider.
         this.musicSlider = this.rexUI.add.slider({
             x: width / 2,
             y: height * 0.50,
@@ -101,14 +87,10 @@ export class Settings extends BaseScene {
             indicator: this.rexUI.add.roundRectangle(0, 0, 10, 20, 5, 0x7b5e57),
             thumb: this.rexUI.add.roundRectangle(0, 0, 20, 20, 10, 0xffffff),
             value: this.audioController.bgVolume,
-            valuechangeCallback: (value) => {
-                this.updateVolume(value);
-            }
+            valuechangeCallback: (value) => this.updateVolume(value)
         }).layout();
 
-        // Enable clicking on the slider track to set the value.
-        this.musicSlider.getElement('track')
-            .setInteractive()
+        this.musicSlider.getElement('track').setInteractive()
             .on('pointerdown', function (pointer) {
                 let track = this.getElement('track');
                 let topLeft = track.getTopLeft();
@@ -117,9 +99,8 @@ export class Settings extends BaseScene {
                 this.setValue(newValue);
             }, this.musicSlider);
 
-        this.musicSliderLabel = this.add.text(this.musicSlider.x - 300, this.musicSlider.y - 45, 'Music Volume:', {align: 'center', fontSize: 24});
+        this.musicSliderLabel = this.add.text(this.musicSlider.x - 300, this.musicSlider.y - 45, 'Music Volume:', { align: 'center', fontSize: 24 });
 
-        // SFX volume slider.
         this.soundSlider = this.rexUI.add.slider({
             x: width / 2,
             y: height * 0.60,
@@ -130,13 +111,10 @@ export class Settings extends BaseScene {
             indicator: this.rexUI.add.roundRectangle(0, 0, 10, 20, 5, 0x7b5e57),
             thumb: this.rexUI.add.roundRectangle(0, 0, 20, 20, 10, 0xffffff),
             value: this.audioController.soundVolume,
-            valuechangeCallback: (value) => {
-                this.updateSoundVolume(value);
-            }
+            valuechangeCallback: (value) => this.updateSoundVolume(value)
         }).layout();
-        
-        this.soundSlider.getElement('track')
-            .setInteractive()
+
+        this.soundSlider.getElement('track').setInteractive()
             .on('pointerdown', function (pointer) {
                 let track = this.getElement('track');
                 let topLeft = track.getTopLeft();
@@ -145,33 +123,24 @@ export class Settings extends BaseScene {
                 this.setValue(newValue);
             }, this.soundSlider);
 
-        this.soundSliderLabel = this.add.text(this.soundSlider.x - 300, this.soundSlider.y - 45, 'Sound Volume:', {align: 'center', fontSize: 24});
+        this.soundSliderLabel = this.add.text(this.soundSlider.x - 300, this.soundSlider.y - 45, 'Sound Volume:', { align: 'center', fontSize: 24 });
     }
 
     createPlaySFXButton(width, height) {
-        this.playButton = this.add.image(this.soundSlider.x + 50, this.soundSlider.y + 60, 'playButton')
-            .setInteractive();
-        this.playButtonText = this.add.text(this.playButton.x - 160, this.playButton.y - 10, 'Play SFX', {
-            fontSize: 24
-        });
+        this.playButton = this.add.image(this.soundSlider.x + 50, this.soundSlider.y + 60, 'playButton').setInteractive();
+        this.playButtonText = this.add.text(this.playButton.x - 160, this.playButton.y - 10, 'Play SFX', { fontSize: 24 });
         this.playButton.on('pointerdown', () => {
-            if (!this.audioController.soundOn) return;
-            this.sound.add('swoosh').play({ loop: false, volume: this.soundSlider.getValue() });
-            this.playButton.setScale(0.9);
+            if (this.audioController.soundOn) {
+                this.sound.add('swoosh').play({ loop: false, volume: this.soundSlider.getValue() });
+                this.playButton.setScale(0.9);
+            }
         });
-        this.playButton.on('pointerover', () => {
-            this.playButton.setScale(1.1);
-        });
-        this.playButton.on('pointerout', () => {
-            this.playButton.setScale(1);
-        });
-        this.playButton.on('pointerup', () => {
-            this.playButton.setScale(1.1);
-        });
+        this.playButton.on('pointerover', () => this.playButton.setScale(1.1));
+        this.playButton.on('pointerout', () => this.playButton.setScale(1));
+        this.playButton.on('pointerup', () => this.playButton.setScale(1.1));
     }
 
     createChangeUsername(width, height) {
-        // Use the BaseScene's createButton helper for consistent styling.
         this.changeUsername = this.createButton("Change Username", 0.80, async () => {
             const user = this.auth.currentUser;
             if (!user) {
@@ -196,8 +165,10 @@ export class Settings extends BaseScene {
 
     updateVolume(value) {
         this.audioController.bgVolume = value;
+        
+        // Direct update to the bgMusic if it exists
         if (this.bgMusic) {
-            this.bgMusic.setVolume(this.audioController.bgVolume);
+            this.bgMusic.setVolume(value);
         }
     }
 
@@ -208,121 +179,60 @@ export class Settings extends BaseScene {
     updateAudio() {
         this.musicButton.setTexture(this.audioController.musicOn ? 'checkedBox' : 'uncheckedBox');
         this.soundButton.setTexture(this.audioController.soundOn ? 'checkedBox' : 'uncheckedBox');
+        
+        // Direct control of bgMusic if it exists
         if (this.bgMusic) {
             if (this.audioController.musicOn) {
-                this.bgMusic.resume();
+                if (!this.bgMusic.isPlaying) {
+                    this.bgMusic.resume();
+                }
             } else {
-                this.bgMusic.pause();
+                if (this.bgMusic.isPlaying) {
+                    this.bgMusic.pause();
+                }
             }
         }
     }
 
-    /**
-     * Repositions UI elements on window resize.
-     */
     repositionUI({ width, height }) {
         setTimeout(() => {
-            super.repositionUI({ width, height });
-            // Update title.
-            if (this.title && this.title.active && this.title.context) {
+            if (this.title?.active) {
                 this.title.setPosition(width / 2, height * 0.1);
-                try {
-                    this.title.setFontSize(`${Math.floor(height * 0.08)}px`);
-                } catch (error) {
-                    console.error("Error updating title font size:", error);
-                }
+                this.title.setFontSize(`${Math.floor(height * 0.08)}px`);
             }
-            // Update back button.
-            if (this.backButton && this.backButton.active) {
+            if (this.backButton?.active) {
                 this.backButton.setPosition(width * 0.1, height * 0.1);
                 this.fitToScreen(this.backButton, 0.8);
             }
-            // Update toggles.
-            if (this.musicButton && this.musicButton.active) {
-                this.musicButton.setPosition(width * 0.4, height * 0.25);
-            }
-            if (this.musicText && this.musicText.active && this.musicText.context) {
+            if (this.musicButton?.active) this.musicButton.setPosition(width * 0.4, height * 0.25);
+            if (this.musicText?.active) {
                 this.musicText.setPosition(width * 0.45, height * 0.25);
-                try {
-                    this.musicText.setFontSize(`${Math.floor(height * 0.05)}px`);
-                } catch (error) {
-                    console.error("Error updating music text font size:", error);
-                }
+                this.musicText.setFontSize(`${Math.floor(height * 0.05)}px`);
             }
-            if (this.soundButton && this.soundButton.active) {
-                this.soundButton.setPosition(width * 0.4, height * 0.35);
-            }
-            if (this.soundText && this.soundText.active && this.soundText.context) {
+            if (this.soundButton?.active) this.soundButton.setPosition(width * 0.4, height * 0.35);
+            if (this.soundText?.active) {
                 this.soundText.setPosition(width * 0.45, height * 0.35);
-                try {
-                    this.soundText.setFontSize(`${Math.floor(height * 0.05)}px`);
-                } catch (error) {
-                    console.error("Error updating sound text font size:", error);
-                }
+                this.soundText.setFontSize(`${Math.floor(height * 0.05)}px`);
             }
-            // Update volume slider labels.
-            if (this.musicSliderLabel && this.musicSliderLabel.active && this.musicSliderLabel.context) {
-                this.musicSliderLabel.setPosition(width / 2, height * 0.45);
-                try {
-                    this.musicSliderLabel.setFontSize(`${Math.floor(height * 0.04)}px`);
-                } catch (error) {
-                    console.error("Error updating music slider label font size:", error);
-                }
-            }
-            // Update Music Slider.
-            if (this.musicSlider && this.musicSlider.active) {
+            if (this.musicSliderLabel?.active) this.musicSliderLabel.setPosition(width / 2, height * 0.45);
+            if (this.musicSlider?.active) {
                 this.musicSlider.setPosition(width / 2, height * 0.50);
-                let newSliderWidth = width * 0.4;
-                // Instead of manually setting the track size, call resize on the slider.
-                if (this.musicSlider.resize) {
-                    this.musicSlider.resize(newSliderWidth, 20);
-                } else {
-                    let track = this.musicSlider.getElement('track');
-                    if (track) {
-                        track.setSize(newSliderWidth, 10);
-                    }
-                }
+                this.musicSlider.resize(width * 0.4, 20);
                 this.musicSlider.setValue(this.audioController.bgVolume);
                 this.musicSlider.layout();
             }
-            if (this.soundSliderLabel && this.soundSliderLabel.active && this.soundSliderLabel.context) {
-                this.soundSliderLabel.setPosition(width / 2, height * 0.55);
-                try {
-                    this.soundSliderLabel.setFontSize(`${Math.floor(height * 0.04)}px`);
-                } catch (error) {
-                    console.error("Error updating sound slider label font size:", error);
-                }
-            }
-            // Update Sound Slider.
-            if (this.soundSlider && this.soundSlider.active) {
+            if (this.soundSliderLabel?.active) this.soundSliderLabel.setPosition(width / 2, height * 0.55);
+            if (this.soundSlider?.active) {
                 this.soundSlider.setPosition(width / 2, height * 0.60);
-                let newSliderWidth = width * 0.4;
-                if (this.soundSlider.resize) {
-                    this.soundSlider.resize(newSliderWidth, 20);
-                } else {
-                    let track = this.soundSlider.getElement('track');
-                    if (track) {
-                        track.setSize(newSliderWidth, 10);
-                    }
-                }
+                this.soundSlider.resize(width * 0.4, 20);
                 this.soundSlider.setValue(this.audioController.soundVolume);
                 this.soundSlider.layout();
             }
-            // Update play SFX button.
-            if (this.playButton && this.playButton.active) {
-                this.playButton.setPosition(this.soundSlider.x + 50, this.soundSlider.y + 60);
-            }
-            if (this.playButtonText && this.playButtonText.active && this.playButtonText.context) {
-                this.playButtonText.setPosition(this.playButton.x - 160, this.playButton.y - 10);
-            }
-            // Update change username button.
-            if (this.changeUsername && this.changeUsername.active && this.changeUsername.context) {
+            if (this.playButton?.active) this.playButton.setPosition(this.soundSlider.x + 50, this.soundSlider.y + 60);
+            if (this.playButtonText?.active) this.playButtonText.setPosition(this.playButton.x - 160, this.playButton.y - 10);
+            if (this.changeUsername?.active) {
                 this.changeUsername.setPosition(width / 2, height * 0.80);
-                try {
-                    this.changeUsername.setFontSize(`${Math.floor(height * 0.05)}px`);
-                } catch (error) {
-                    console.error("Error updating change username button font size:", error);
-                }
+                this.changeUsername.setFontSize(`${Math.floor(height * 0.05)}px`);
             }
         }, 50);
     }
