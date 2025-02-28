@@ -1,219 +1,220 @@
 export default class AudioController {
-    constructor() {
-      this._soundOn = true;
-      this._musicOn = true;
-      this._bgMusicPlaying = false;
-      this._bgVolume = 0.5;
-      this._soundVolume = 0.5;
-      this._currentSceneMusic = null;
-      this._pendingMusic = null;
-      this._userInteracted = false;
-      this._initialized = false;
-      this._gameScenePaused = false;
-      this._pausedSceneKey = null;
-      this._currentSceneKey = null;
-      this._activeMusic = null;
-      this._currentPlayingMusicKey = null;
-  
-      if (window.audioControllerInstance) {
-        return window.audioControllerInstance;
+  constructor() {
+    // Toggles
+    this.musicOn = true;
+    this.soundOn = true;
+
+    // Volumes
+    this.bgVolume = 0.5;
+    this.soundVolume = 0.5;
+
+    // Single track references
+    this._activeTrack = null;
+    this._activeTrackKey = null;
+
+    // Keep track of last "actually played" music, so if we do a resume logic
+    this._lastMusicKey = null;
+    this._lastMusicScene = null;
+    this._lastMusicConfig = null;
+
+    // If the user tries to play music while music is off, we store it here
+    this._pendingMusicKey = null;
+    this._pendingMusicScene = null;
+    this._pendingMusicConfig = null;
+
+    // Track user interaction for auto-play restrictions
+    this._userInteracted = false;
+
+    // Singleton check
+    if (window.audioControllerInstance) {
+      return window.audioControllerInstance;
+    }
+    window.audioControllerInstance = this;
+
+    // Set up the global user interaction listener
+    this._setupGlobalInteractionListener();
+  }
+
+  _setupGlobalInteractionListener() {
+    if (window.audioInteractionListenerAdded) return;
+    window.audioInteractionListenerAdded = true;
+
+    const handleInteraction = () => {
+      this._userInteracted = true;
+      // If we had pending music, try to actually play it now
+      if (this._pendingMusicKey && this.musicOn && this._pendingMusicScene) {
+        this._actuallyPlayMusic(
+          this._pendingMusicKey,
+          this._pendingMusicConfig,
+          this._pendingMusicScene
+        );
+        // Clear pending once we've actually played it
+        this._pendingMusicKey = null;
+        this._pendingMusicScene = null;
+        this._pendingMusicConfig = null;
       }
-      window.audioControllerInstance = this;
-      this._setupGlobalInteractionListener();
+
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+      document.removeEventListener('keydown', handleInteraction);
+      window.audioInteractionListenerAdded = false;
+    };
+
+    document.addEventListener('click', handleInteraction);
+    document.addEventListener('touchstart', handleInteraction);
+    document.addEventListener('keydown', handleInteraction);
+  }
+
+  /**
+   * Main method to play or queue background music by `key`.
+   * @param {string} key - The audio key (e.g. 'sceneMusic', 'testMusic')
+   * @param {Phaser.Scene} scene - The scene that has the audio in its cache
+   * @param {object} config - { volume?: number, loop?: boolean } overrides
+   */
+  playMusic(key, scene = null, config = { volume: 1, loop: true }) {
+    // Must have a valid scene
+    if (!scene) {
+      console.warn("playMusic called without a valid scene. Cannot proceed.");
+      return;
     }
-  
-    set musicOn(value) {
-      this._musicOn = value;
-      if (!value) {
-        if (window.game?.globals?.bgMusic?.isPlaying) {
-          window.game.globals.bgMusic.pause();
-        }
-        if (this._currentSceneMusic?.isPlaying) {
-          this._currentSceneMusic.pause();
-        }
-        this._bgMusicPlaying = false;
-      } else if (this._userInteracted && this._pendingMusic) {
-        if (window.game?.globals?.bgMusic) {
-          window.game.globals.bgMusic.resume();
-          this._bgMusicPlaying = true;
-        } else if (this._currentSceneMusic) {
-          this._currentSceneMusic.resume();
-          this._bgMusicPlaying = true;
-        } else {
-          this._playMusic(this._pendingMusic.scene, this._pendingMusic.key);
-        }
-      }
+
+    // If music is off, store as pending but do not actually play
+    if (!this.musicOn) {
+      this._pendingMusicKey = key;
+      this._pendingMusicScene = scene;
+      this._pendingMusicConfig = config;
+      return;
     }
-    get musicOn() { return this._musicOn; }
-  
-    set soundOn(value) { this._soundOn = value; }
-    get soundOn() { return this._soundOn; }
-  
-    set bgMusicPlaying(value) { this._bgMusicPlaying = value; }
-    get bgMusicPlaying() { return this._bgMusicPlaying; }
-  
-    set bgVolume(value) {
-      this._bgVolume = value;
-      this.updateBackgroundVolume();
+
+    // If user hasn’t interacted, store pending
+    if (!this._userInteracted) {
+      this._pendingMusicKey = key;
+      this._pendingMusicScene = scene;
+      this._pendingMusicConfig = config;
+      return;
     }
-    get bgVolume() { return this._bgVolume; }
-  
-    set soundVolume(value) {
-      this._soundVolume = value;
+
+    // If we’re already playing this exact track, do nothing
+    if (this._activeTrackKey === key && this._activeTrack?.isPlaying) {
+      return;
     }
-    get soundVolume() { return this._soundVolume; }
-  
-    _setupGlobalInteractionListener() {
-      if (window.audioInteractionListenerAdded) return;
-      window.audioInteractionListenerAdded = true;
-  
-      const handleInteraction = () => {
-        this._userInteracted = true;
-        if (this._pendingMusic && this.musicOn) {
-          this._playMusic(this._pendingMusic.scene, this._pendingMusic.key);
-        }
-        document.removeEventListener('click', handleInteraction);
-        document.removeEventListener('touchstart', handleInteraction);
-        document.removeEventListener('keydown', handleInteraction);
-        window.audioInteractionListenerAdded = false;
-      };
-  
-      document.addEventListener('click', handleInteraction);
-      document.addEventListener('touchstart', handleInteraction);
-      document.addEventListener('keydown', handleInteraction);
+
+    // Stop any old track
+    this.stopMusic();
+    // Actually play new track
+    this._actuallyPlayMusic(key, config, scene);
+  }
+
+  _actuallyPlayMusic(key, config, scene) {
+    if (!scene?.cache?.audio) {
+      console.warn("Scene/cache not valid; cannot play music:", key);
+      return;
     }
-  
-    setGameScenePaused(sceneKey) {
-      this._gameScenePaused = true;
-      this._pausedSceneKey = sceneKey;
+    if (!scene.cache.audio.exists(key)) {
+      console.warn(`Audio key "${key}" not found in cache.`);
+      return;
     }
-  
-    setGameSceneResumed() {
-      this._gameScenePaused = false;
-      this._pausedSceneKey = null;
+
+    this._activeTrackKey = key;
+    this._lastMusicKey = key;
+    this._lastMusicScene = scene;
+    this._lastMusicConfig = config;
+
+    const finalVolume = this.bgVolume * (config.volume ?? 1);
+    const loopVal = config.loop ?? true;
+
+    try {
+      const track = scene.sound.add(key, {
+        volume: finalVolume,
+        loop: loopVal
+      });
+      track.play();
+      this._activeTrack = track;
+    } catch (err) {
+      console.error("Failed to play music:", err);
     }
-  
-    init(scene) {
-      if (this._initialized) return;
-      this._initialized = true;
+  }
+
+  pauseMusic() {
+    if (this._activeTrack?.isPlaying) {
+      this._activeTrack.pause();
     }
-  
-    switchContext() {
-      if (this._currentSceneKey === 'MainMenu') return;
-      this.pauseAllMusic();
-      this._gameScenePaused = false;
-      this._pausedSceneKey = null;
-      this._currentSceneKey = 'MainMenu';
-      this._currentPlayingMusicKey = null;
+  }
+
+  resumeMusic() {
+    if (this._activeTrack && !this._activeTrack.isPlaying) {
+      this._activeTrack.resume();
     }
-  
-    startMainMenuMusic(scene) {
-      if (scene?.scene) this._currentSceneKey = scene.scene.key;
-      if (this._gameScenePaused) return;
-      this.init(scene);
-      if (!this.musicOn || !scene?.sound) return;
-      if (this._currentPlayingMusicKey === 'testMusic') return;
-  
-      if (window.game?.globals?.bgMusic) {
-        const bgMusic = window.game.globals.bgMusic;
-        if (!bgMusic.isPlaying) {
-          bgMusic.resume();
-          this._bgMusicPlaying = true;
-          this._currentPlayingMusicKey = 'testMusic';
-        }
-        return;
-      }
-      this._pendingMusic = { scene, key: 'testMusic' };
-      if (this._userInteracted) {
-        this._playMusic(scene, 'testMusic');
-      }
-    }
-  
-    pauseAllMusic() {
-      if (window.game?.globals?.bgMusic?.isPlaying) {
-        window.game.globals.bgMusic.pause();
-      }
-      if (this._currentSceneMusic?.isPlaying) {
-        this._currentSceneMusic.pause();
-      }
-      this._bgMusicPlaying = false;
-    }
-  
-    _playMusic(scene, musicKey) {
-      if (!this.musicOn || !scene?.sound) return;
-      if (this._currentPlayingMusicKey === musicKey) return;
-      this.pauseAllMusic();
-  
+  }
+
+  stopMusic() {
+    if (this._activeTrack) {
       try {
-        if (!scene.cache.audio.exists(musicKey)) return;
-        const bgMusic = scene.sound.add(musicKey, { volume: this.bgVolume, loop: true });
-        if (scene.sys.game?.globals) {
-          scene.sys.game.globals.bgMusic = bgMusic;
+        if (this._activeTrack.isPlaying) {
+          this._activeTrack.stop();
         }
-        this._activeMusic = bgMusic;
-        this._activeMusic.key = musicKey;
-        this._currentPlayingMusicKey = musicKey;
-        bgMusic.play();
-        this._bgMusicPlaying = true;
-      } catch {}
-    }
-  
-    pauseMainMenuMusic() {
-      const bgMusic = window.game?.globals?.bgMusic;
-      if (bgMusic?.isPlaying) {
-        bgMusic.pause();
-        this._bgMusicPlaying = false;
-      }
-    }
-  
-    playSceneMusic(scene, musicKey, options = { volume: 0.8, loop: true }) {
-      if (scene?.scene) this._currentSceneKey = scene.scene.key;
-      if (this._gameScenePaused && scene?.scene.key === this._pausedSceneKey) {
-        this.setGameSceneResumed();
-        return;
-      }
-      if (!this.musicOn || !scene) return;
-      if (this._currentPlayingMusicKey === musicKey) return;
-  
-      this._pendingMusic = { scene, key: musicKey };
-      this.pauseAllMusic();
-  
-      if (!this._userInteracted) return;
-      try {
-        if (scene.cache.audio.exists(musicKey)) {
-          this._currentSceneMusic = scene.sound.add(musicKey, {
-            volume: this.bgVolume * options.volume,
-            loop: options.loop
-          });
-          this._currentSceneMusic.key = musicKey;
-          this._currentPlayingMusicKey = musicKey;
-          this._currentSceneMusic.play();
+        if (!this._activeTrack.isDestroyed) {
+          this._activeTrack.destroy();
         }
       } catch {}
+      this._activeTrack = null;
+      this._activeTrackKey = null;
     }
-  
-    stopSceneMusic() {
-      if (this._currentSceneMusic) {
-        try {
-          if (this._currentSceneMusic.isPlaying) {
-            this._currentSceneMusic.stop();
-          }
-          if (!this._currentSceneMusic.isDestroyed) {
-            this._currentSceneMusic.destroy();
-          }
-        } catch {}
-        this._currentSceneMusic = null;
-        this._currentPlayingMusicKey = null;
+  }
+
+  // Called when user toggles "Music On/Off"
+  setMusicOn(value) {
+    this.musicOn = value;
+
+    if (!value) {
+      // Turn music OFF
+      this.stopMusic();
+    } else {
+      // Turn music ON
+      // If we have an active track paused, resume it
+      if (this._activeTrack && !this._activeTrack.isPlaying) {
+        this.resumeMusic();
+        return;
       }
-    }
-  
-    updateBackgroundVolume() {
-      if (window.game?.globals?.bgMusic) {
-        window.game.globals.bgMusic.setVolume(this.bgVolume);
+
+      // Otherwise, check if we have pending from a new scene
+      if (this._pendingMusicKey && this._pendingMusicScene && this._userInteracted) {
+        this.stopMusic();
+        this._actuallyPlayMusic(
+          this._pendingMusicKey,
+          this._pendingMusicConfig,
+          this._pendingMusicScene
+        );
+        // Clear pending after playing
+        this._pendingMusicKey = null;
+        this._pendingMusicScene = null;
+        this._pendingMusicConfig = null;
+        return;
       }
-      if (this._currentSceneMusic) {
-        this._currentSceneMusic.setVolume(this.bgVolume);
+
+      // If no pending is set, fallback to lastMusicKey
+      if (this._lastMusicKey && this._lastMusicScene && this._userInteracted) {
+        this._actuallyPlayMusic(
+          this._lastMusicKey,
+          this._lastMusicConfig,
+          this._lastMusicScene
+        );
       }
     }
   }
-  
+
+  setSoundOn(value) {
+    this.soundOn = value;
+  }
+
+  setBGVolume(vol) {
+    this.bgVolume = vol;
+    if (this._activeTrack) {
+      this._activeTrack.setVolume(vol);
+    }
+  }
+
+  setSoundVolume(vol) {
+    this.soundVolume = vol;
+  }
+}
