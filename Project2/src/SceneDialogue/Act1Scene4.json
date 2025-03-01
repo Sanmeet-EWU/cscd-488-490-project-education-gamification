@@ -8,8 +8,47 @@
         },
         {
             "speaker": "Malcolm",
-            "text": "My liege,they are not yet come back. But I have spoke with one that saw him die, who did report that very frankly he confessed his treasons, implored your Highness’ pardon, and set forth deep repentance. Nothing in his life became him like the leaving it",
+            "text": "My liege,they are not yet come back. But I have spoke with one that saw him die, who did report that very frankly he confessed his treasons, implored your Highness’ pardon, and set forth deep repentance. Nothing in his life became him like the leaving it.",
+            "translation":"Nothing in his life was as noble as his death.",
             "responses":[{"text": "...", "next":"Duncan"}]
+        },
+        {
+            "speaker":"Duncan",
+            "text": "There’s no art to find the mind’s construction in the face. He was a gentleman on whom I built an absolute trust. O worthiest cousin, Would thou hadst less deserved, that the proportion both of thanks and payment might have been mine! Only I have left to say, more is thy due than more than all can pay.",
+            "translation": "It is impossible to understand someone's mind from their face alone. He was a gentleman who I trusted. O worthy cousin, Your deeds are beyond any reward I could give. I owe you more than I could ever repay.",
+            "responses":[{"text":"...", "next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text": "The service and the loyalty I owe in doing it pays itself. Your Highness’ part is to receive our duties, and our duties are to your throne and state children and servants, which do but what they should by doing everything safe toward your love and honor",
+            "translation": "The loyalty and service I owe are their own reward. Your throne and state command our duties, which we perform gladly.",
+            "responses": [{"text":"...", "next": "Duncan"}]
+        },
+        {
+            "speaker":"Duncan",
+            "text":"Welcome hither. I have begun to plant thee and will labor to make thee full of growing. —Noble Banquo, that hast no less deserved nor must be known no less to have done so, let me enfold thee and hold thee to my heart.",
+            "translation":"Welcome hither. The rewards I have given you are newly planted, and I will work towards growing your future.—Noble Banquo, that hast no less deserved nor must be known no less to have done so, let me enfold thee and hold thee to my heart.",
+            "responses": [{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"There, if I grow, the harvest is your own.",
+            "responses": [{"text":"...","next":"Duncan"}]
+        },
+        {
+            "speaker":"Duncan",
+            "text":"We will establish our estate upon our eldest, Malcolm, whom we name hereafter the Prince of Cumberland; which honor must not unaccompanied invest him only, but signs of nobleness",
+            "responses":[{"text":"...", "next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"I’ll be myself the harbinger and make joyful The hearing of my wife with your approach. So humbly take my leave.",
+            "responses":[{"text": "...", "next":"Duncan"}]
+        },
+        {
+            "speaker":"Duncan",
+            "text":"My worthy Cawdor.True, worthy Banquo. He is full so valiant, Let’s after him, Whose care is gone before to bid us welcome. It is a peerless kinsman.",
+            "endScene": true
         }
     ]
 }
