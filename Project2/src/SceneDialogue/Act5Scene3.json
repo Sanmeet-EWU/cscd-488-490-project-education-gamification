@@ -1,0 +1,111 @@
+{
+    "Act5Scene3": [
+        {
+            "speaker": "Macbeth",
+            "text": "Bring me no more reports. Let them fly all. Till Birnam Wood remove to Dunsinane I cannot taint with fear.",
+            "translation": "Don't bring me more reports. Let the thanes run from me. Until Birnam Wood moves, I won't be affected by fear.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "What’s the boy Malcolm? Was he not born of woman? The spirits that know all mortal consequences have pronounced me thus:",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "'Fear not, Macbeth. No man that’s born of woman Shall e’er have power upon thee.'",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Where got’st thou that goose-look?",
+            "translation": "Why do look as frightened as a goose?",
+            "responses": [{ "text": "...", "next": "Servant" }]
+        },
+        {
+            "speaker": "Servant",
+            "text": "There is ten thousand soldiers, sir.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "What soldiers, patch? Those linen cheeks of thine Are counselors to fear. What soldiers, whey-face?",
+            "responses": [{ "text": "...", "next": "Servant" }]
+        },
+        {
+            "speaker": "Servant",
+            "text": "The English force, so please you.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Take thy face hence.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Seyton!—I am sick at heart When I behold—Seyton, I say!—This push Will cheer me ever or disseat me now.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I have lived long enough. Seyton!",
+            "responses": [{ "text": "...", "next": "Seyton" }]
+        },
+        {
+            "speaker": "Seyton",
+            "text": "What’s your gracious pleasure?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "What news more?",
+            "responses": [{ "text": "...", "next": "Seyton" }]
+        },
+        {
+            "speaker": "Seyton",
+            "text": "All is confirmed, my lord, which was reported. Give me my armor.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Seyton",
+            "text": "’Tis not needed yet.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I’ll put it on. Send out more horses. Skirr the country round. Hang those that talk of fear. Give me mine armor.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "How does your patient, doctor?",
+            "responses": [{ "text": "...", "next": "Doctor" }]
+        },
+        {
+            "speaker": "Doctor",
+            "text": "Not so sick, my lord, As she is troubled with thick-coming fancies That keep her from her rest.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Cure her of that. Canst thou not minister to a mind diseased?",
+            "responses": [{ "text": "...", "next": "Doctor" }]
+        },
+        {
+            "speaker": "Doctor",
+            "text": "Therein the patient Must minister to himself.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Come, put mine armor on. Give me my staff. Seyton, send out. Bring it after me.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I will not be afraid of death and bane Till Birnam Forest come to Dunsinane.",
+            "endScene": true
+        }
+    ]
+}

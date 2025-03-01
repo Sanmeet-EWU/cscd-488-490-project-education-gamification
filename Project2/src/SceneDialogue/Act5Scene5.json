@@ -1,0 +1,93 @@
+{
+    "Act5Scene5": [
+        {
+            "speaker": "Macbeth",
+            "text": "Hang out our banners on the outward walls. The cry is still 'They come!'",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Our castle’s strength will laugh a siege to scorn. Were they not forced with those that should be ours, we might have met them dareful, beard to beard, and beat them backward home.",
+            "translation": "Our castle's is enough to laugh off their seige. If so many of our soldiers hadn't betrayed us and joined them, we would met in front of the castle and battled man to man, and sent them back to England.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "What is that noise?",
+            "responses": [{ "text": "...", "next": "Seyton" }]
+        },
+        {
+            "speaker": "Seyton",
+            "text": "It is the cry of women, my good lord.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I have almost forgot the taste of fears.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I have supped full with horrors. Direness, familiar to my slaughterous thoughts, cannot once start me.",
+            "translation": "I have feasted on true horrors so much now that it has become it has become familiar to my bloody thoughts that it can no longer startle me.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Wherefore was that cry?",
+            "responses": [{ "text": "...", "next": "Seyton" }]
+        },
+        {
+            "speaker": "Seyton",
+            "text": "The Queen, my lord, is dead.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "She should have died hereafter.",
+            "translation": "She was going to die anyways.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Thou com’st to use thy tongue: thy story quickly.",
+            "responses": [{ "text": "...", "next": "Messenger" }]
+        },
+        {
+            "speaker": "Messenger",
+            "text": "Gracious my lord, I should report that which I say I saw, but know not how to do ’t.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Well, say, sir.",
+            "responses": [{ "text": "...", "next": "Messenger" }]
+        },
+        {
+            "speaker": "Messenger",
+            "text": "As I did stand my watch upon the hill, I looked toward Birnam, and anon methought the Wood began to move.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Liar and slave!",
+            "responses": [{ "text": "...", "next": "Messenger" }]
+        },
+        {
+            "speaker": "Messenger",
+            "text": "Let me endure your wrath if ’t be not so. Within this three mile may you see it coming. I say, a moving grove.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "If thou speak’st false, upon the next tree shall thou hang alive till famine cling thee. —Arm, arm, and out!— —Ring the alarum bell!—",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "At least we’ll die with harness on our back.",
+            "translation": "At least we'll die with armor on our backs.",
+            "endScene": true
+        }
+    ]
+}

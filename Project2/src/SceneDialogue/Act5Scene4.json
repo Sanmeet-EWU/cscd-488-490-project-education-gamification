@@ -1,0 +1,53 @@
+{
+    "Act5Scene4": [
+        {
+            "speaker": "Malcolm",
+            "text": "Cousins, I hope the days are near at hand that chambers will be safe.",
+            "responses": [{ "text": "...", "next": "Menteith" }]
+        },
+        {
+            "speaker": "Menteith",
+            "text": "We doubt it nothing.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "What wood is this before us?",
+            "responses": [{ "text": "...", "next": "Menteith" }]
+        },
+        {
+            "speaker": "Menteith",
+            "text": "The Wood of Birnam.",
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "Let every soldier hew him down a bough And bear ’t before him.",
+            "translation": "Every soldier should cut down a branch and hold it in front of them.",
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "Thereby shall we shadow the numbers of our host and make discovery err in report of us.",
+            "translation": "This way it will be difficult for Macbeth's spies to get an accurate report of our numbers.",
+            "responses": [{ "text": "...", "next": "Soldier" }]
+        },
+        {
+            "speaker": "Soldier",
+            "text": "It shall be done.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "The time approaches that will with due decision make us know what we shall say we have and what we owe.",
+            "translation": "The time approaches in which we will know what we have accomplished and what we still need to do.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "Thoughts speculative their unsure hopes relate, But certain issue strokes must arbitrate; Towards which, advance the war.",
+            "translation": "Speculation only leads to uncertainty. We will only get certainty by going out and fighting. So let's start this war.",
+            "endScene": true
+        }
+    ]
+}
