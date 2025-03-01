@@ -19,7 +19,6 @@
         },
         {
             "speaker": "Duncan",
-            "options": ["O cowardly cousin, unworthy gentleman"],
             "text": "O valiant cousin, worthy gentleman!",
             "responses": [{"text:": "...", "next": "Captain"}]
         },
@@ -32,7 +31,6 @@
         {
             "speaker": "Duncan",
             "text": "Dismayed not this our captains, Macbeth and Banquo?",
-            "options": ["Dismayed not this our captains, Johny and Timmy?"],
             "responses": [{"text:": "...", "next": "Captain"}]
         },
         {
@@ -44,13 +42,11 @@
             "speaker": "Duncan",
             "text": "So well thy words become thee as thy wounds: They smack of honor both.—Go, get him surgeons. Who comes here?",
             "translation": "Their courage is remarkable. Now get this captain treated",
-            "options": ["Your lack or courage is remarkable, die on the grond like a dog!"],
             "responses": [{"text:": "...", "next": "Malcolm"}]
         },
         {
             "speaker": "Malcolm",
             "text": "The worthy Thane of Ross.",
-            "options": ["MacBeth"],
             "responses": [{"text:": "...", "next": "Duncan"}]
         },
         {
@@ -66,7 +62,6 @@
         },
         {
             "speaker": "Duncan",
-            "options": ["Great sadness!"],
             "text": "Great happiness!",
             "responses": [{"text": "...", "next": "Duncan"}]
         },
@@ -78,14 +73,12 @@
         },
         {
             "speaker":"Ross",
-            "options": ["I will not do it"],
             "text": "I’ll see it done.",
             "responses": [{"text:": "...", "next": "Duncan"}]
             
         },
         {
             "speaker": "Duncan",
-            "options": ["What he hath lost, noble Macbeth hath lost"],
             "text": "What he hath lost, noble Macbeth hath won",
             "endScene" : true
         }

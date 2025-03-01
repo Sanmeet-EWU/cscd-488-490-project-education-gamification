@@ -1,0 +1,15 @@
+{
+    "Act1Scene4":
+    [
+        {
+            "speaker": "Duncan",
+            "text": "Is execution done on Cawdor?",
+            "responses": [{"text": "...", "next": "Malcolm"}]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "My liege,they are not yet come back. But I have spoke with one that saw him die, who did report that very frankly he confessed his treasons, implored your Highness’ pardon, and set forth deep repentance. Nothing in his life became him like the leaving it",
+            "responses":[{"text": "...", "next":"Duncan"}]
+        }
+    ]
+}
