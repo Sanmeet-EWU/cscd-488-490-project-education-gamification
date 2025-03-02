@@ -1,0 +1,10 @@
+{
+    "Act1Scene6":
+    [
+        {
+            "speaker":"Duncan",
+            "text": "This castle hath a pleasant seat. The air Nimbly and sweetly recommends itself Unto our gentle senses.",
+            "responses":[{"text":"...", "next":"Banquo"}]
+        }
+    ]
+}
