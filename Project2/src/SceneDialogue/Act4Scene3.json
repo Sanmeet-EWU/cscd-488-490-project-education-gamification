@@ -42,12 +42,38 @@
         },
         {
             "speaker": "Malcolm",
-            "text": "Perchance even there where I did find my doubts. Why in that rawness left you wife and child Without leave-taking? I pray you, Let not my jealousies be your dishonors, But mine own safeties. You may be rightly just, Whatever I shall think.",
+            "text": "Perchance even there where I did find my doubts. ",
+            "responses": [{"text": "...", "next": "Malcolm"}]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "Why in that rawness left you wife and child without leave-taking?",
+            "translation": "Why did you suddenly leave your wife and child without saying goodbye?",
+            "responses": [{"text": "...", "next": "Malcolm"}]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "I pray you, let not my jealousies be your dishonors, but mine own safeties.",
+            "responses": [{"text": "...", "next": "Malcolm"}]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "You may be rightly just, whatever I shall think.",
             "responses": [{"text": "...", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
-            "text": "Bleed, bleed, poor country! Great tyranny, lay thou thy basis sure, For goodness dare not check thee. Wear thou thy wrongs; The title is affeered.—Fare thee well, lord. I would not be the villain that thou think’st For the whole space that’s in the tyrant’s grasp, And the rich East to boot.",
+            "text": "Bleed, bleed, poor country! Great tyranny, lay thou thy basis sure, For goodness dare not check thee. ",
+            "responses": [{"text": "...", "next": "Macduff"}]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "Wear thou thy wrongs; The title is affeered.—Fare thee well, lord.",
+            "responses": [{"text": "...", "next": "Macduff"}]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "I would not be the villain that thou think’st for the whole space that’s in the tyrant’s grasp, And the rich East to boot.",
             "responses": [{"text": "...", "next": "Malcolm"}]
         },
         {
@@ -167,7 +193,7 @@
         },
         {
             "speaker": "Ross",
-            "text": "When I came hither to transport the tidings Which I have heavily borne, there ran a rumor Of many worthy fellows that were out.",
+            "text": "When I came hither to transport the tidings which I have heavily borne, there ran a rumor of many worthy fellows that were out.",
             "responses": [{"text": "...", "next": "Malcolm"}]
         },
         {
@@ -248,6 +274,7 @@
         {
             "speaker": "Malcolm",
             "text": "Be this the whetstone of your sword. Let grief Convert to anger. Blunt not the heart; enrage it.",
+            "translation": "Use your grief as a whetstone to sharpen your sword. Let your sorrow turn into anger. Don't dull your heart; make it furious.",
             "responses": [{"text": "...", "next": "Macduff"}]
         },
         {
@@ -257,7 +284,12 @@
         },
         {
             "speaker": "Malcolm",
-            "text": "This tune goes manly. Come, go we to the King. Macbeth Is ripe for shaking, and the powers above Put on their instruments. Receive what cheer you may. The night is long that never finds the day.",
+            "text": "This tune goes manly. Come, go we to the King. Macbeth Is ripe for shaking, and the powers above Put on their instruments.",
+            "responses": [{"text": "...", "next": "Malcolm"}]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "Receive what cheer you may. The night is long that never finds the day.",
             "endScene": true
         }
     ]
