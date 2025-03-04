@@ -71,7 +71,8 @@ module.exports = {
                 { from: "public/assets/portraits", to: "assets/portraits" },
                 { from: "public/assets/fonts", to: "font" },
                 { from: "public/assets/characters", to: "assets/characters" },
-                { from: "src/SceneDialogue", to: "SceneDialogue" }
+                { from: "src/SceneDialogue", to: "SceneDialogue" },
+                { from: "src/QuestionSets", to: "QuestionSets" }
             ]
         }),
 
