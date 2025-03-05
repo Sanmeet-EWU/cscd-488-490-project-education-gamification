@@ -1,0 +1,89 @@
+{
+    "Act3Scene2": [
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Is Banquo gone from court?",
+            "responses": [{"text": "...", "next": "Servant"}]
+        },
+        {
+            "speaker": "Servant",
+            "text": "Ay, madam, but returns again tonight.",
+            "responses": [{"text": "...", "next": "Lady Macbeth"}]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Say to the King I would attend his leisure For a few words.",
+            "responses": [{"text": "...", "next": "Servant"}]
+        },
+        {
+            "speaker": "Servant",
+            "text": "Madam, I will.",
+            "responses": [{"text": "...", "next": "Lady Macbeth"}]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Naught’s had, all’s spent, Where our desire is got without content.",
+            "translation": "We have nothing, everything is spent, when we get what we want without satisfaction.",
+            "responses": [{"text": "...", "next": "Lady Macbeth"}]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "How now, my lord, why do you keep alone, Of sorriest fancies your companions making? Things without all remedy Should be without regard.",
+            "responses": [{"text": "...", "next": "Macbeth"}]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "We have scorched the snake, not killed it. She’ll close and be herself whilst our poor malice Remains in danger of her former tooth.",
+            "translation": "We have only wounded the snake, not killed it. She will recover and be herself again while our weak malice is still in danger of her former venom.",
+            "responses": [{"text": "...", "next": "Lady Macbeth"}]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Come on, gentle my lord, Be bright and jovial Among your guests tonight.",
+            "responses": [{"text": "...", "next": "Macbeth"}]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "So shall I, love, And so I pray be you. Let your remembrance Apply to Banquo; present him eminence Both with eye and tongue.",
+            "responses": [{"text": "...", "next": "Lady Macbeth"}]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "You must leave this.",
+            "responses": [{"text": "...", "next": "Macbeth"}]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "O, full of scorpions is my mind, dear wife! Thou know’st that Banquo and his Fleance lives.",
+            "responses": [{"text": "...", "next": "Lady Macbeth"}]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "But in them nature’s copy’s not eterne.",
+            "responses": [{"text": "...", "next": "Macbeth"}]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "There’s comfort yet; they are assailable. Then be thou jocund.",
+            "translation": "There is still hope; they can be killed. So be joyful.",
+            "responses": [{"text": "...", "next": "Lady Macbeth"}]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "What’s to be done?",
+            "responses": [{"text": "...", "next": "Macbeth"}]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Be innocent of the knowledge, dearest chuck, Till thou applaud the deed. ",
+            "responses": [{"text": "...", "next": "Macbeth"}]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Things bad begun make strong themselves by ill. So prithee go with me.",
+            "translation": "Things done through bad deeds only grow stronger through more bad deeds. So, please come with me.",
+            "endScene": true
+        }
+    ]
+}
+  

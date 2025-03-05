@@ -1,0 +1,114 @@
+{
+    "Act3Scene3": [
+        {
+            "speaker": "First Murderer",
+            "text": "But who did bid thee join with us?",
+            "translation:": "But who told you to come join us?",
+            "responses": [{"text": "...", "next": "Third Murderer"}]
+        },
+        {
+            "speaker": "Third Murderer",
+            "text": "Macbeth.",
+            "responses": [{"text": "...", "next": "Second Murderer"}]
+        },
+        {
+            "speaker": "Second Murderer",
+            "text": "He needs not our mistrust, since he delivers our offices and what we have to do to the direction just.",
+            "translation:": "We can trust him because he's stated his instructions and they are identical to the one give to us.",
+            "responses": [{"text": "...", "next": "First Murderer"}]
+        },
+        {
+            "speaker": "First Murderer",
+            "text": "Then stand with us.— Near approaches The subject of our watch.",
+            "responses": [{"text": "...", "next": "Third Murderer"}]
+        },
+        {
+            "speaker": "Third Murderer",
+            "text": "Hark, I hear horses.",
+            "responses": [{"text": "...", "next": "Banquo"}]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "Give us a light there, ho!",
+            "responses": [{"text": "...", "next": "Second Murderer"}]
+        },
+        {
+            "speaker": "Second Murderer",
+            "text": "Then ’tis he. The rest That are within the note of expectation Already are i’ th’ court.",
+            "responses": [{"text": "...", "next": "First Murderer"}]
+        },
+        {
+            "speaker": "First Murderer",
+            "text": "His horses go about.",
+            "responses": [{"text": "...", "next": "Third Murderer"}]
+        },
+        {
+            "speaker": "Third Murderer",
+            "text": "Almost a mile; but he does usually from hence to th’ palace gate Make it their walk.",
+            "responses": [{"text": "...", "next": "Second Murderer"}]
+        },
+        {
+            "speaker": "Second Murderer",
+            "text": "A light, a light!",
+            "responses": [{"text": "...", "next": "Third Murderer"}]
+        },
+        {
+            "speaker": "Third Murderer",
+            "text": "’Tis he.",
+            "responses": [{"text": "...", "next": "First Murderer"}]
+        },
+        {
+            "speaker": "First Murderer",
+            "text": "Stand to ’t.",
+            "responses": [{"text": "...", "next": "Banquo"}]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "It will be rain tonight.",
+            "responses": [{"text": "...", "next": "First Murderer"}]
+        },
+        {
+            "speaker": "First Murderer",
+            "text": "Let it come down! The three Murderers attack.",
+            "responses": [{"text": "...", "next": "Banquo"}]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "O treachery! Fly, good Fleance, fly, fly, fly! Thou mayst revenge—O slave!",
+            "translation:": "Oh treachery? Run, Fleance, run, run, run! Maybe one day you shall get revenge.",
+            "responses": [{"text": "...", "next": "Banquo"}]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "O slave!",
+            "responses": [{"text": "...", "next": "Third Murderer"}]
+        },
+        {
+            "speaker": "Third Murderer",
+            "text": "Who did strike out the light?",
+            "responses": [{"text": "...", "next": "First Murderer"}]
+        },
+        {
+            "speaker": "First Murderer",
+            "text": "Was ’t not the way?",
+            "responses": [{"text": "...", "next": "Third Murderer"}]
+        },
+        {
+            "speaker": "Third Murderer",
+            "text": "There’s but one down. The son is fled.",
+            "responses": [{"text": "...", "next": "Second Murderer"}]
+        },
+        {
+            "speaker": "Second Murderer",
+            "text": "We have lost best half of our affair.",
+            "translation:": "We have failed half of our mission.",
+            "responses": [{"text": "...", "next": "First Murderer"}]
+        },
+        {
+            "speaker": "First Murderer",
+            "text": "Well, let’s away and say how much is done.",
+            "endScene": true
+        }
+    ]
+}
+  

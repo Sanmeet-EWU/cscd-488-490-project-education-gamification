@@ -1,0 +1,320 @@
+{
+    "Act3Scene4": [
+        {
+            "speaker": "Macbeth",
+            "text": "You know your own degrees; sit down. At first And last, the hearty welcome.",
+            "responses": [{ "text": "...", "next": "Lords" }]
+        },
+        {
+            "speaker": "Lords",
+            "text": "Thanks to your Majesty.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Ourself will mingle with society And play the humble host. Our hostess keeps her state, but in best time We will require her welcome.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Pronounce it for me, sir, to all our friends, For my heart speaks they are welcome.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "See, they encounter thee with their hearts’ thanks. Both sides are even. Here I’ll sit i’ th’ midst.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Be large in mirth. Anon we’ll drink a measure The table round.",
+            "responses": [{ "text": "...", "next": "Murderer" }]
+        },
+        {
+            "speaker": "Murderer",
+            "text": "’Tis Banquo’s then.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "’Tis better thee without than he within. Is he dispatched?",
+            "responses": [{ "text": "...", "next": "Murderer" }]
+        },
+        {
+            "speaker": "Murderer",
+            "text": "My lord, his throat is cut.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Thou art the best o’ th’ cutthroats, Yet he’s good that did the like for Fleance. If thou didst it, thou art the nonpareil.",
+            "translation": "You are the best of cutthroats, but whoever did the same to FLeance is just as good. I you killed Fleance, you would be a cutthroat with no equal.",
+            "responses": [{ "text": "...", "next": "Murderer" }]
+        },
+        {
+            "speaker": "Murderer",
+            "text": "Most royal sir, Fleance is ’scaped.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Then comes my fit again. I had else been perfect but now I am bound in to saucy doubts and fears. —But Banquo’s safe?",
+            "responses": [{ "text": "...", "next": "Murderer" }]
+        },
+        {
+            "speaker": "Murderer",
+            "text": "Ay, my good lord.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Thanks for that. There the grown serpent lies.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "The worm that’s fled Hath nature that in time will venom breed, No teeth for th’ present.",
+            "translation": "The worm that's escaped will in time become venomous, but for now has no fangs.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Get thee gone. Tomorrow We’ll hear ourselves again.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "My royal lord, You do not give the cheer. The sauce to meat is ceremony; Meeting were bare without it.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Sweet remembrancer!— Now, good digestion wait on appetite And health on both!",
+            "responses": [{ "text": "...", "next": "Lennox" }]
+        },
+        {
+            "speaker": "Lennox",
+            "text": "May ’t please your Highness sit.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Here had we now our country’s honor roofed, Were the graced person of our Banquo present, Who may I rather challenge for unkindness Than pity for mischance.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "His absence, sir, Lays blame upon his promise. Please ’t your Highness To grace us with your royal company?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "The table’s full.",
+            "responses": [{ "text": "...", "next": "Lennox" }]
+        },
+        {
+            "speaker": "Lennox",
+            "text": "Here is a place reserved, sir.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Where?",
+            "responses": [{ "text": "...", "next": "Lennox" }]
+        },
+        {
+            "speaker": "Lennox",
+            "text": "Here, my good lord. What is ’t that moves your Highness?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Which of you have done this?",
+            "responses": [{ "text": "...", "next": "Lords" }]
+        },
+        {
+            "speaker": "Lords",
+            "text": "What, my good lord?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Thou canst not say I did it. Never shake Thy gory locks at me.",
+            "translation": "You can't say I did it. Don't shake your bloody head at me.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Gentlemen, rise. His Highness is not well.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Sit, worthy friends. My lord is often thus And hath been from his youth.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "If much you note him You shall offend him and extend his passion. Feed and regard him not.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Are you a man?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Ay, and a bold one, that dare look on that Which might appall the devil.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "O, proper stuff! This is the very painting of your fear. When all’s done, You look but on a stool.",
+            "translation": "This is just a hallucination brought by fear. When it's all over, you'll see it's just a stool.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Prithee, see there. Behold, look! Lo, how say you? Why, what care I? If thou canst nod, speak too.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "What, quite unmanned in folly?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "If I stand here, I saw him.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Fie, for shame!",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "The time has been That, when the brains were out, the man would die, And there an end. But now they rise again.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "This is more strange Than such a murder is.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "My worthy lord, Your noble friends do lack you.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I do forget.— Do not muse at me, my most worthy friends. I have a strange infirmity, which is nothing To those that know me.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Come, love and health to all. Then I’ll sit down.—Give me some wine. Fill full.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I drink to th’ general joy o’ th’ whole table And to our dear friend Banquo, whom we miss. Would he were here! To all, and him we thirst, And all to all.",
+            "responses": [{ "text": "...", "next": "Lords" }]
+        },
+        {
+            "speaker": "Lords",
+            "text": "Our duties, and the pledge.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Avaunt, and quit my sight!",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Think of this, good peers, But as a thing of custom. ’Tis no other; Only it spoils the pleasure of the time.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Horrible shadow! Unreal mock’ry, hence! Why so, being gone, I am a man again.—Pray you sit still.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "You have displaced the mirth, broke the good meeting With most admired disorder.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Can such things be And overcome us like a summer’s cloud, Without our special wonder?",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "What sights, my lord?",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "I pray you, speak not. He grows worse and worse. At once, good night. Go at once.",
+            "responses": [{ "text": "...", "next": "Lennox" }]
+        },
+        {
+            "speaker": "Lennox",
+            "text": "Good night, and better health Attend his Majesty.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "A kind good night to all.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "What is the night?",
+            "translation": "How late is it?",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Almost at odds with morning.",
+            "translation": "It's almost morning.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "How say’st thou that Macduff denies his person At our great bidding?",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "Did you send to him, sir?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I hear it by the way; but I will send. I will tomorrow to the Weïrd Sisters. More shall they speak.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Strange things I have in head that will to hand, Which must be acted ere they may be scanned.",
+            "responses": [{ "text": "...", "next": "Lady Macbeth" }]
+        },
+        {
+            "speaker": "Lady Macbeth",
+            "text": "You lack the season of all natures, sleep.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Come, we’ll to sleep.",
+            "endScene": true
+        }
+    ]
+}
