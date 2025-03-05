@@ -5,6 +5,7 @@ export class Act1Scene1 extends BaseGameScene {
   constructor() {
     super('Act1Scene1');
     this.isCutscene = true;
+    this.npcs = {}; // Explicitly initialize npcs
   }
 
   preload() {
@@ -67,15 +68,16 @@ export class Act1Scene1 extends BaseGameScene {
     // Basic scene setup
     this.whiteBg = this.add.rectangle(0, 0, width, height, 0xffffff)
       .setOrigin(0, 0)
-      .setDepth(-1);
+      .setDepth(-2);
     this.background = this.add.image(0, 0, 'background')
       .setOrigin(0, 0)
-      .setDisplaySize(width, height);
+      .setDisplaySize(width, height)
+      .setDepth(-1);
 
     this.physics.world.setBounds(0, 0, width, height);
     this.cameras.main.setBounds(0, 0, width, height);
 
-    // NPC definitions
+    // NPC definitions - WITCHES
     this.npcDefs = [
       { key: "Witch1", xRatio: 0.25, yRatio: 0.8, scale: 7, animationKey: 'witchIdle', texture: 'WitchIdle' },
       { key: "Witch2", xRatio: 0.4, yRatio: 0.55, scale: 7, animationKey: 'witchIdle', texture: 'WitchIdle' },
@@ -83,6 +85,9 @@ export class Act1Scene1 extends BaseGameScene {
     ];
     this.scale.on('resize', this.onResize, this);
 
+    // Create animations
+    this.createAnimations();
+    
     // Create and load dialogue data
     try {
       if (!this.cache.json.exists('Act1Scene1Data')) {
@@ -107,15 +112,22 @@ export class Act1Scene1 extends BaseGameScene {
       }).setOrigin(0.5);
       return;
     }
+    
+    // Create debug text to help troubleshoot
+    this.debugText = this.add.text(10, 10, "Starting scene...", {
+      fontSize: '16px',
+      fill: '#00ff00',
+      backgroundColor: '#000000',
+      padding: { x: 5, y: 5 }
+    }).setDepth(1000);
 
-    this.createAnimations();
-    this.playLightningEffect();
+    // Play lightning effect - Let's wait for a short moment to ensure all is ready
+    this.time.delayedCall(100, () => this.playLightningEffect());
 
     // Cleanup on shutdown
     this.events.on('shutdown', () => {
       this.scale.off('resize', this.onResize, this);
       if (this.audioController) {
-        // Replace old `stopSceneMusic()` with unified `stopMusic()`
         this.audioController.stopMusic();
       }
       if (this.dialogueManager) {
@@ -136,20 +148,31 @@ export class Act1Scene1 extends BaseGameScene {
   }
 
   spawnNPCs() {
+    // For Act1Scene1, we need to use the original method
     const { width, height } = this.scale;
-    const npcDefsForCreation = this.npcDefs.map(def => ({
+    this.debugText.setText("Creating witches...");
+    
+    // Create all three witches
+    const npcConfigs = this.npcDefs.map(def => ({
       key: def.key,
       x: width * def.xRatio,
       y: height * def.yRatio,
       texture: def.texture,
       scale: def.scale,
-      animationKey: def.animationKey
+      animationKey: def.animationKey,
+      physics: false, // No physics for witches
+      depth: 5,       // Higher depth than background
+      displayName: def.key
     }));
-    if (!this.npcs) {
-      this.createNPCs(npcDefsForCreation);
-    }
+    
+    // Use our base class method to create the NPCs
+    this.createNPCs(npcConfigs);
+    
+    // Verify witches were created
+    const witchCount = Object.keys(this.npcs).filter(key => !key.endsWith('Tag')).length;
+    this.debugText.setText(`Created ${witchCount} witches`);
   }
-
+  //This doesnt work for some reason????????
   playLightningEffect() {
     const { width, height } = this.scale;
     const lightningYStart = -height * 0.2;
@@ -226,28 +249,41 @@ export class Act1Scene1 extends BaseGameScene {
       }
     });
   }
-
   onResize(gameSize) {
     if (!this.scene.isActive('Act1Scene1')) return;
     const { width, height } = gameSize;
+    
+    // Resize background elements
     if (this.whiteBg?.active) {
       this.whiteBg.setSize(width, height);
     }
     if (this.background?.active) {
       this.background.setDisplaySize(width, height);
     }
+    
+    // Update world bounds
     this.physics.world.setBounds(0, 0, width, height);
     this.cameras.main.setBounds(0, 0, width, height);
 
+    // Update witch positions
     if (this.npcs) {
       this.npcDefs.forEach(def => {
         const npc = this.npcs[def.key];
         if (npc?.active) {
           npc.x = width * def.xRatio;
           npc.y = height * def.yRatio;
+          
+          // Update nametag if it exists
+          const tag = this.npcs[def.key + "Tag"];
+          if (tag?.active) {
+            tag.x = npc.x;
+            tag.y = npc.y - (npc.height * npc.scale * 1.2);
+          }
         }
       });
     }
+    
+    // Update dialogue box
     if (this.dialogueManager?.isActive) {
       this.dialogueManager.adjustBoxSize(width, height);
     }
@@ -256,11 +292,14 @@ export class Act1Scene1 extends BaseGameScene {
   switchToAct1Scene2() {
     try {
       if (this.scene.get('Act1Scene2')) {
+        this.debugText.setText("Switching to Act1Scene2");
         this.switchScene('Act1Scene2');
       } else {
+        this.debugText.setText("Act1Scene2 not found, going to MainMenu");
         this.switchScene('MainMenu');
       }
-    } catch {
+    } catch (error) {
+      this.debugText.setText("Error switching scenes: " + error.message);
       this.switchScene('MainMenu');
     }
   }
