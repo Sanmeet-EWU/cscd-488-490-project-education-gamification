@@ -18,7 +18,15 @@
             "text": "Doubtful it stood, As two spent swimmers that do cling together And choke their art. The merciless Macdonwald (Worthy to be a rebel, for to that The multiplying villainies of nature Do swarm upon him) from the Western Isles Of kerns and gallowglasses is supplied. And Fortune, on his damnèd quarrel smiling, Showed like a rebel's whore. But all's too weak; For brave Macbeth (well he deserves that name), Disdaining Fortune, with his brandished steel, Which smoked with bloody execution, Like Valor's minion, carved out his passage Till he faced the slave; Which ne'er shook hands, nor bade farewell to him, Till he unseamed him from the nave to th' chops, And fixed his head upon our battlements.",
             "translation": "The battle was uncertain, like two exhausted swimmers clinging to each other and hindering each other's abilities. The ruthless Macdonwald (who deserves to be a rebel because he's swarmed with all of nature's villainies) is supplied with light-armed and heavy-armed Irish soldiers from the Western Isles. Fortune seemed to smile on his cursed cause, like a rebel's whore. But it wasn't enough, because brave Macbeth, scorning Fortune, with his bloodied sword, carved his way through until he faced the rebel. Without any formal parting, Macbeth split him open from his navel to his jaw and placed his head on our battlements.",
             "id": "Captain1",
-            "responses": [{ "text": "...", "next": "Duncan1" }]
+            "responses": [{ "text": "...", "next": "Macbeth1" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "[Enters, still in armor, blood-stained from battle]",
+            "id": "Macbeth1",
+            "responses": [
+                { "text": "Your Majesty, I have returned from the battlefield victorious.", "next": "Duncan1" }
+            ]
         },
         {
             "speaker": "Duncan",
@@ -39,7 +47,15 @@
             "text": "Dismayed not this our captains, Macbeth and Banquo?",
             "translation": "Didn't this discourage our captains, Macbeth and Banquo?",
             "id": "Duncan2",
-            "responses": [{ "text": "...", "next": "Captain3" }]
+            "responses": [{ "text": "...", "next": "Macbeth2" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "[Stepping forward]",
+            "id": "Macbeth2",
+            "responses": [
+                { "text": "No, your Majesty. We redoubled our efforts against the Norwegian forces.", "next": "Captain3" }
+            ]
         },
         {
             "speaker": "Captain",
@@ -109,7 +125,15 @@
             "text": "No more that Thane of Cawdor shall deceive Our bosom interest. Go, pronounce his present death, And with his former title greet Macbeth.",
             "translation": "The Thane of Cawdor will no longer betray us. Go, announce his immediate execution, and greet Macbeth with his former title.",
             "id": "Duncan6",
-            "responses": [{ "text": "...", "next": "Ross4" }]
+            "responses": [{ "text": "...", "next": "Macbeth3" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "[Surprised by this sudden honor]",
+            "id": "Macbeth3",
+            "responses": [
+                { "text": "Your Majesty, I am humbled by your generosity.", "next": "Ross4" }
+            ]
         },
         {
             "speaker": "Ross",
@@ -123,6 +147,20 @@
             "text": "What he hath lost, noble Macbeth hath won.",
             "translation": "What he has lost, noble Macbeth has won.",
             "id": "Duncan7",
+            "responses": [{ "text": "...", "next": "Macbeth4" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "[Aside]",
+            "id": "Macbeth4",
+            "responses": [
+                { "text": "Thane of Cawdor? A title I never dreamed would be mine...", "isPlayerLine": true, "next": "MacbethEnd" }
+            ]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "[Thoughts of ambition begin to stir]",
+            "id": "MacbethEnd",
             "endScene": true
         }
     ]

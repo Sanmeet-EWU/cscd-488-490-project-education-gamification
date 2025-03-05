@@ -1,0 +1,44 @@
+{
+    "questions": [
+      {
+        "original": "What bloody man is that? He can report, As seemeth by his plight, of the revolt The newest state.",
+        "answers": [
+          { "text": "Who's that bloody man? He can probably tell us the latest battle news.", "correct": true },
+          { "text": "The man is covered in blood because of his crimes.", "correct": false },
+          { "text": "We need more soldiers to join the revolt.", "correct": false }
+        ]
+      },
+      {
+        "original": "Doubtful it stood, As two spent swimmers that do cling together And choke their art. The merciless Macdonwald from the Western Isles Of kerns and gallowglasses is supplied.",
+        "answers": [
+          { "text": "The battle was uncertain, like two tired swimmers clinging to each other. The cruel Macdonwald had reinforcements from the Western Isles.", "correct": true },
+          { "text": "The outcome was certain, and Macdonwald's forces easily defeated our soldiers from the Western Isles.", "correct": false },
+          { "text": "The swimmers doubted their swimming abilities. Macdonwald showed mercy to his Western Isle soldiers.", "correct": false }
+        ]
+      },
+      {
+        "original": "No sooner justice had, with valor armed, compelled these skipping kerns to trust their heels, but the Norweyan lord, surveying vantage, with furbished arms and new supplies of men, began a fresh assault.",
+        "answers": [
+          { "text": "The Norwegian king fled with his soldiers when he saw our army approaching.", "correct": false },
+          { "text": "Justice was served to the enemy soldiers who were caught running away.", "correct": false },
+          { "text": "Just as we thought the battle was over, the Norwegian king launched a fresh assault.", "correct": true }
+        ]
+      },
+      {
+        "original": "From Fife, great king, Norway himself, with terrible numbers, assisted by that most disloyal traitor, The Thane of Cawdor, began a dismal conflict, till that Bellona's bridegroom, lapped in proof, confronted him, curbing his lavish spirit.",
+        "answers": [
+          { "text": "From Fife, we sent numerous soldiers to help Norway fight against traitors until the wedding celebration was disrupted.", "correct": false },
+          { "text": "The King of Norway personally led a large army, helped by the traitorous Thane of Cawdor, until Macbeth confronted and defeated him.", "correct": true },
+          { "text": "The battle was terrible because the Thane of Cawdor betrayed Norway's forces, and our general was unable to stop him.", "correct": false }
+        ]
+      },
+      {
+        "original": "No more that Thane of Cawdor shall deceive our bosom interest. Go, pronounce his present death, and with his former title greet Macbeth.",
+        "answers": [
+          { "text": "The Thane of Cawdor will no longer betray us. Execute him and give his title to Macbeth.", "correct": true },
+          { "text": "The Thane of Cawdor must explain his actions before we punish him.", "correct": false },
+          { "text": "Macbeth should personally execute the Thane of Cawdor for his betrayal.", "correct": false }
+        ]
+      }
+    ]
+  }

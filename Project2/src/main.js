@@ -14,7 +14,7 @@ import { completeLogin } from '../firebase/firebase.js';
 import { PauseMenu } from './scenes/PauseMenu.js';
 import { BaseGameScene } from './scenes/BaseGameScene.js';
 import { Act1Minigame } from './scenes/GameScenes/Act1Minigame.js';
-
+import { Act1Scene2Minigame } from './scenes/GameScenes/Act1Scene2Minigame.js';
 let game;
 
 const config = {
@@ -54,6 +54,7 @@ const config = {
     Act1Scene2,
     Act1Scene3,
     Act1Minigame,
+    Act1Scene2Minigame,
     PauseMenu,
     BaseGameScene
   ],
