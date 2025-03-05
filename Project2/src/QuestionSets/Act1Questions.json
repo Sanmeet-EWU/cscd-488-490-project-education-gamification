@@ -1,0 +1,40 @@
+{
+    "Act1Questions": [
+        {
+            "question" : "What does Duncan call Macbeth when he hears that Macbeth has defeated Macdonwald?",
+            "answers" : ["A traitor", "A coward", "A fine worrior", "A worthy gentleman"],
+            "correct" : "A worthy gentleman"
+        },
+        {
+            "question" : "Who is sentenced to death?",
+            "answers" : ["Macbeth", "The Thane of Cawdor", "Ross", "Thane of Glamis"],
+            "correct" : "The Thane of Cawdor"
+        },
+        {
+            "question" : "What title is given to Macbeth for his bravery in battle?",
+            "answers" : ["Thane of Cawdor", "Thane of Glamis", "Thane of Ross", "Thane of Skibidi"],
+            "correct" : "Thane of Cawdor"
+        },
+        {
+            "question" : "What do the witches predict in Act 1, Scene 3 for Macbeth?",
+            "answers" : ["He will be king", "He will be Thane of Cawdor", "He will have many sons", "He will be a great warrior"],
+            "correct" : "He will be king"
+        },
+        {
+            "question" : "Who will be the new Thane of Cawdor?",
+            "answers" : ["Macbeth", "Ross", "Malcolm", "Banquo"],
+            "correct" : "Macbeth"
+        },
+        {
+            "question" : "What do the witches predict in Act 1, Scene 3 for Banquo?",
+            "answers" : ["He will be king", "His children will be kings", "He will be Thane of Cawdor", "He will be a great warrior"],
+            "correct" : "His children will be kings"
+        },
+        {
+            "question" : "Who is named as the Prince of Cumberland, the king's heir?",
+            "answers" : ["Macbeth", "Malcolm", "Banquo", "Ross"],
+            "correct" : "Malcolm"
+        }
+
+    ]
+}

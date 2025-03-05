@@ -13,6 +13,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { completeLogin } from '../firebase/firebase.js';
 import { PauseMenu } from './scenes/PauseMenu.js';
 import { BaseGameScene } from './scenes/BaseGameScene.js';
+import { Act1Minigame } from './scenes/GameScenes/Act1Minigame.js';
 
 let game;
 
@@ -52,6 +53,7 @@ const config = {
     Act1Scene1,
     Act1Scene2,
     Act1Scene3,
+    Act1Minigame,
     PauseMenu,
     BaseGameScene
   ],

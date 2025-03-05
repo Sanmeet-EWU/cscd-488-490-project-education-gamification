@@ -1,0 +1,19 @@
+{
+    "Act1Minigame": [
+        {
+            "speaker": "First Witch",
+            "text": "When shall we three meet again — In thunder, lightning, or in rain?",
+            "translation": "This thing really works huh?",
+            "responses": [{ "text": "...", "next": "SecondWitch" }]
+        },
+        { "speaker": "Second Witch", "text": "When the hurlyburly’s done, when the battle’s lost and won.", "responses": [{ "text": "...", "next": "ThirdWitch" }] },
+        { "speaker": "Third Witch", "text": "That will be ere the set of sun.", "responses": [{ "text": "...", "next": "FirstWitch2" }] },
+        { "speaker": "First Witch", "text": "Where the place?", "responses": [{ "text": "...", "next": "SecondWitch2" }] },
+        { "speaker": "Second Witch", "text": "Upon the heath.", "responses": [{ "text": "...", "next": "ThirdWitch2" }] },
+        { "speaker": "Third Witch", "text": "There to meet with Macbeth.", "responses": [{ "text": "...", "next": "FirstWitch3" }] },
+        { "speaker": "First Witch", "text": "I come, Graymalkin.", "responses": [{ "text": "...", "next": "SecondWitch3" }] },
+        { "speaker": "Second Witch", "text": "Paddock calls.", "responses": [{ "text": "...", "next": "ThirdWitch3" }] },
+        { "speaker": "Third Witch", "text": "Anon.", "responses": [{ "text": "...", "next": "FinalLine" }] },
+        { "speaker": "All", "text": "Fair is foul, and foul is fair. Hover through the fog and filthy air.", "endScene": false }
+    ]
+}
