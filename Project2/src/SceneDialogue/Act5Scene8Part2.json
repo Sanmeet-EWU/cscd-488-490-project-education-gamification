@@ -1,0 +1,84 @@
+{
+    "Act5Scene8Part2": [
+        {
+            "speaker": "Malcolm",
+            "text": "I would the friends we miss were safe arrived.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "Some must go off; and yet by these I see So great a day as this is cheaply bought.",
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "Macduff is missing, and your noble son.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Your son, my lord, has paid a soldier’s debt.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "Then he is dead?",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Ay, and brought off the field.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "Had he his hurts before?",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Ay, on the front.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "Why then, God’s soldier be he!",
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "He’s worth more sorrow, and that I’ll spend for him.",
+            "responses": [{ "text": "...", "next": "Siward" }]
+        },
+        {
+            "speaker": "Siward",
+            "text": "He’s worth no more. They say he parted well and paid his score.",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "Hail, King! for so thou art. Behold where stands Th’ usurper’s cursèd head. The time is free. Hail, King of Scotland!",
+            "responses": [{ "text": "...", "next": "All" }]
+        },
+        {
+            "speaker": "All",
+            "text": "Hail, King of Scotland!",
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "We shall not spend a large expense of time before we reckon with your several loves and make us even with you.",
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "My thanes and kinsmen, henceforth be earls, the first that ever Scotland in such an honor named. What’s more to do, which would be planted newly with the time, So thanks to all at once and to each one, whom we invite to see us crowned at Scone.",
+            "responses": [{ "text": "...", "next": "Malcolm" }]
+        },
+        {
+            "speaker": "Malcolm",
+            "text": "What’s more to do, which would be planted newly with the time, So thanks to all at once and to each one, whom we invite to see us crowned at Scone.",
+            "endScene": true
+        }
+    ]
+}
