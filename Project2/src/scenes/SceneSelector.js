@@ -19,7 +19,7 @@ export class SceneSelector extends BaseScene {
       strokeThickness: 2
     }).setOrigin(0.5);
 
-    const availableScenes = ['Act1Scene1', 'Act1Scene2', 'Act1Scene3', 'Act1Minigame'];
+    const availableScenes = ['Act1Scene1', 'Act1Scene2', 'Act1Scene3', 'Act1Minigame', 'Act1Scene2Minigame', 'Act1Scene3', 'Act1Scene4'];
     let startY = height * 0.25;
     availableScenes.forEach((scene, index) => {
       this.createButton(scene, startY + index * 50, () => this.loadScene(scene));

@@ -1,24 +1,23 @@
 import { BaseGameScene } from '../BaseGameScene.js';
 import { DialogueManager } from '../../DialogueManager.js';
 
-export class Act1Scene3 extends BaseGameScene {
+export class Act1Scene4 extends BaseGameScene {
   constructor() {
-    super('Act1Scene3');
+    super('Act1Scene4');
     
-    // This is a scene with dialogue where Macbeth is mentioned but not directly present
-    // We're adding him as a playable character
+    // This scene features Macbeth in Duncan's court
     this.isCutscene = false;
   }
 
   preload() {
     // Load background
-    if (!this.textures.exists('background_act1scene3')) {
-      this.load.svg('background_act1scene3', 'assets/act1/Act1Scene3BG.svg', { width: 2560, height: 1440 });
+    if (!this.textures.exists('background_act1scene4')) {
+      this.load.svg('background_act1scene4', 'assets/act1/act1scene4.svg', { width: 2560, height: 1440 });
     }
     
     // Dialogue JSON
-    if (!this.cache.json.exists('Act1Scene3Data')) {
-      this.load.json('Act1Scene3Data', 'SceneDialogue/Act1Scene3.json');
+    if (!this.cache.json.exists('Act1Scene4Data')) {
+      this.load.json('Act1Scene4Data', 'SceneDialogue/Act1Scene4.json');
     }
     
     // Load Macbeth character sprite and other characters
@@ -40,12 +39,10 @@ export class Act1Scene3 extends BaseGameScene {
     this.load.image("Macbeth", "assets/portraits/Macbeth.png");
     this.load.image("Duncan", "assets/portraits/Duncan.png");
     this.load.image("Malcolm", "assets/portraits/Malcolm.png");
-    this.load.image("Captain", "assets/portraits/Captain.png");
-    this.load.image("Ross", "assets/portraits/Ross.png");
-    this.load.image("Lennox", "assets/portraits/Lennox.png");
+    this.load.image("Banquo", "assets/portraits/Banquo.png");
     
     // Scene music
-    this.load.audio('act1scene3Music', 'assets/audio/act1scene2.ogg');
+    this.load.audio('act1scene4Music', 'assets/audio/act1scene2.ogg');
     
     this.load.on('loaderror', (fileObj) => {
       console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);
@@ -59,7 +56,7 @@ export class Act1Scene3 extends BaseGameScene {
     
     // Check required assets
     const requiredAssets = [
-      'background_act1scene3'
+      'background_act1scene4'
     ];
     const missing = this.checkRequiredAssets(requiredAssets);
     if (missing.length > 0) {
@@ -77,14 +74,14 @@ export class Act1Scene3 extends BaseGameScene {
     this.cameras.main.fadeIn(1000, 0, 0, 0);
 
     // Setup background - fallback to a plain color if the background image isn't available
-    if (this.textures.exists('background_act1scene3')) {
-      this.background = this.add.image(0, 0, 'background_act1scene3')
+    if (this.textures.exists('background_act1scene4')) {
+      this.background = this.add.image(0, 0, 'background_act1scene4')
         .setOrigin(0, 0)
         .setDisplaySize(width, height)
         .setDepth(-1);
     } else {
-      // Fallback to a color background
-      this.background = this.add.rectangle(0, 0, width, height, 0x333333)
+      // Fallback to a color background - use a castle/court color
+      this.background = this.add.rectangle(0, 0, width, height, 0x482c1c)
         .setOrigin(0, 0)
         .setDepth(-1);
     }
@@ -99,8 +96,8 @@ export class Act1Scene3 extends BaseGameScene {
     this.createAnimations();
     
     // Play scene music
-    if (this.audioController && this.cache.audio.exists('act1scene3Music')) {
-      this.audioController.playMusic('act1scene3Music', this, { volume: 1, loop: true });
+    if (this.audioController && this.cache.audio.exists('act1scene4Music')) {
+      this.audioController.playMusic('act1scene4Music', this, { volume: 1, loop: true });
     }
     
     // Create player (Macbeth)
@@ -160,7 +157,7 @@ export class Act1Scene3 extends BaseGameScene {
     // Create the player (positioned on the left side)
     this.player = this.createPlayer(playerConfig);
     
-    // Position Macbeth on center-left of screen
+    // Position Macbeth on right side of scene
     if (this.player) {
       const { width, height } = this.scale;
       this.player.setPosition(width * 0.3, height * 0.8);
@@ -170,7 +167,7 @@ export class Act1Scene3 extends BaseGameScene {
   setupNPCs() {
     const { width, height } = this.scale;
     
-    // Define the NPCs for this scene
+    // Define the NPCs for this scene - position them in a court setting
     const npcConfigs = [
       {
         key: "Duncan",
@@ -195,7 +192,7 @@ export class Act1Scene3 extends BaseGameScene {
         displayName: 'Malcolm'
       },
       {
-        key: "Captain",
+        key: "Banquo",
         x: width * 0.4,
         y: height * 0.8,
         texture: 'guard',
@@ -203,29 +200,7 @@ export class Act1Scene3 extends BaseGameScene {
         scale: 1.5,
         animationKey: 'idle',
         interactive: true,
-        displayName: 'Captain'
-      },
-      {
-        key: "Ross",
-        x: width * 0.7,
-        y: height * 0.8,
-        texture: 'guard',
-        frame: 'sprite1',
-        scale: 1.5,
-        animationKey: 'idle',
-        interactive: true,
-        displayName: 'Ross'
-      },
-      {
-        key: "Lennox",
-        x: width * 0.8,
-        y: height * 0.8,
-        texture: 'guard',
-        frame: 'sprite1',
-        scale: 1.5,
-        animationKey: 'idle',
-        interactive: true,
-        displayName: 'Lennox'
+        displayName: 'Banquo'
       }
     ];
     
@@ -243,22 +218,20 @@ export class Act1Scene3 extends BaseGameScene {
   }
 
   setupSceneDialogue() {
-    if (!this.cache.json.exists('Act1Scene3Data')) {
-      console.error("Act1Scene3Data JSON not found");
+    if (!this.cache.json.exists('Act1Scene4Data')) {
+      console.error("Act1Scene4Data JSON not found");
       return;
     }
     
     try {
-      const dialogueData = this.cache.json.get('Act1Scene3Data');
+      const dialogueData = this.cache.json.get('Act1Scene4Data');
       
       // Map character names to portrait texture keys
       const portraitMap = {
         "Macbeth": "Macbeth",
         "Duncan": "Duncan",
         "Malcolm": "Malcolm",
-        "Captain": "Captain",
-        "Ross": "Ross",
-        "Lennox": "Lennox"
+        "Banquo": "Banquo"
       };
 
       // Use base class method to setup dialogue with Macbeth as player character
@@ -338,9 +311,14 @@ export class Act1Scene3 extends BaseGameScene {
         this.player.body.setVelocity(0, 0);
       }
       
-      this.dialogueManager.startDialogue(npcKey, () => {
-        console.log(`Dialogue with ${npcKey} completed`);
-        // If this is a complete scene playthrough, we could auto-advance to the next scene
+      // Start the scene directly with Duncan speaking
+      this.dialogueManager.startDialogue("Duncan", () => {
+        console.log(`Dialogue completed`);
+        // If this is a complete scene, we could auto-advance to the next scene
+        this.time.delayedCall(2000, () => {
+          // Example: Switch to next scene after dialogue completes
+          // this.switchScene('Act1Scene5');
+        });
       });
     }
   }
@@ -383,7 +361,7 @@ export class Act1Scene3 extends BaseGameScene {
   }
   
   onResize(gameSize) {
-    if (!this.scene.isActive('Act1Scene3')) return;
+    if (!this.scene.isActive('Act1Scene4')) return;
     
     const { width, height } = gameSize;
     
@@ -406,6 +384,28 @@ export class Act1Scene3 extends BaseGameScene {
       ground.setVisible(false);
     }
     
-    // The rest of NPC repositioning is handled by super.updateNametags()
+    // Reposition characters
+    if (this.player) {
+      this.player.setPosition(width * 0.3, height * 0.8);
+    }
+    
+    if (this.npcs.Duncan) {
+      this.npcs.Duncan.setPosition(width * 0.5, height * 0.8);
+    }
+    
+    if (this.npcs.Malcolm) {
+      this.npcs.Malcolm.setPosition(width * 0.6, height * 0.8);
+    }
+    
+    if (this.npcs.Banquo) {
+      this.npcs.Banquo.setPosition(width * 0.4, height * 0.8);
+    }
+    
+    // The rest of nametag repositioning is handled by super.updateNametags()
+    
+    // Update dialogue box if active
+    if (this.dialogueManager?.isActive && this.dialogueManager.adjustBoxSize) {
+      this.dialogueManager.adjustBoxSize(width, height);
+    }
   }
 }

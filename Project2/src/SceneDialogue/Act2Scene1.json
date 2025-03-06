@@ -1,0 +1,87 @@
+{
+    "Act2Scene1":
+    [
+        {
+            "speaker":"Banquo",
+            "text":"How goes the night, boy?",
+            "responces":[{"text":"...","next":"Fleance"}]
+        },
+        {
+            "speaker":"Fleance",
+            "text":"The moon is down. I have not heard the clock.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"And she goes down at twelve.",
+            "translation":"It must be past midnight.",
+            "responces":[{"text":"...","next":"Fleance"}]
+        },
+        {
+            "speaker":"Fleance",
+            "text":"I take ’t ’tis later, sir.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"Hold, take my sword. There’s husbandry in heaven; Their candles are all out. A heavy summons lies like lead upon me, And yet I would not sleep. Merciful powers, Restrain in me the cursèd thoughts that nature Gives way to in repose. Give me my sword.—Who’s there?",
+            "translation":"Hold, take my sword. There’s husbandry in heaven; Not a star in sight. A heavy summons lies like lead upon me, And yet I would not sleep. Merciful powers, Restrain in me the cursèd thoughts that nature Gives way to in repose. Give me my sword.—Who’s there?",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"A friend.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"What, sir, not yet at rest? The King’s abed. He hath been in unusual pleasure, and Sent forth great largess to your offices. This diamond he greets your wife withal, By the name of most kind hostess, and shut up In measureless content.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Being unprepared, Our will became the servant to defect, Which else should free have wrought.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"All’s well. I dreamt last night of the three Weïrd Sisters.To you they have showed some truth.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"I think not of them. Yet, when we can entreat an hour to serve, We would spend it in some words upon that business.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"At your kind’st leisure.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"If you shall cleave to my consent, when ’tis, It shall make honor for you.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"So I lose none In seeking to augment it, but still keep My bosom franchised and allegiance clear, I shall be counseled.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Good repose the while.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"Thanks, sir. The like to you.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Go bid thy mistress, when my drink is ready, She strike upon the bell. Get thee to bed. Is this a dagger which I see before me, The handle toward my hand? Come, let me clutch thee. I have thee not, and yet I see thee still. Art thou not sensible o feeling as to sight? Or art thou but a false creation Proceeding from the heat-oppressèd brain? Thou marshal’st me the way that I was going, Mine eyes are made the fools o’ th’ other senses Or else worth all the rest. I see thee still, And, on thy blade and dudgeon, gouts of blood, Which was not so before. There’s no such thing. It is the bloody business which informs Thus to mine eyes. Whiles I threat, he lives. Words to the heat of deeds too cold breath gives. I go, and it is done. The bell invites me. Hear it not, Duncan, for it is a knell That summons thee to heaven or to hell.",
+            "endScene": true
+        }
+    ]
+}

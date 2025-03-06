@@ -9,6 +9,7 @@ export class BaseGameScene extends BaseScene {
     this.playerConfig = null;
     this.characterManager = null;
     this.isCutscene = false;
+    this.isMinigame = false;  // New flag for minigame scenes
     this.npcs = {};
     this.interactText = null;
     this.debugText = null;
@@ -48,8 +49,8 @@ export class BaseGameScene extends BaseScene {
     const { width, height } = this.scale;
     this.physics.world.setBounds(0, 0, width, height);
 
-    // If not a cutscene, optionally create floor
-    if (!this.isCutscene && this.playerConfig?.movementConstraint === 'horizontal') {
+    // If not a cutscene or minigame, optionally create floor
+    if (!this.isCutscene && !this.isMinigame && this.playerConfig?.movementConstraint === 'horizontal') {
       this.createFloor();
     }
 
@@ -65,7 +66,7 @@ export class BaseGameScene extends BaseScene {
     }
 
     // Create interaction text if not a cutscene
-    if (!this.isCutscene) {
+    if (!this.isCutscene && !this.isMinigame) {
       this.interactText = this.add.text(
         width / 2,
         height / 2,
@@ -104,6 +105,9 @@ export class BaseGameScene extends BaseScene {
    * @param {Object} config - Configuration options for the player
    */
   createPlayer(config = null) {
+    // Skip player creation for minigames or cutscenes without players
+    if (this.isMinigame) return null;
+
     // Use provided config or the scene's playerConfig
     const playerConfig = config || this.playerConfig;
     
@@ -310,6 +314,9 @@ export class BaseGameScene extends BaseScene {
    * Checks if player is near an NPC for interaction
    */
   checkInteraction() {
+    // Skip for minigames since they don't have player interaction with NPCs
+    if (this.isMinigame) return;
+    
     if (!this.player || !this.interactText) {
       if (this.interactText) this.interactText.setVisible(false);
       return;
@@ -376,12 +383,15 @@ export class BaseGameScene extends BaseScene {
       return;
     }
     
-    // Update player and NPC tags
-    this.updateNametags();
-    
-    // Check for NPC interaction if not a cutscene
-    if (!this.isCutscene && this.player && !this.dialogueManager?.isActive) {
-      this.checkInteraction();
+    // Skip player-specific update logic for minigames
+    if (!this.isMinigame) {
+      // Update player and NPC tags
+      this.updateNametags();
+      
+      // Check for NPC interaction if not a cutscene
+      if (!this.isCutscene && this.player && !this.dialogueManager?.isActive) {
+        this.checkInteraction();
+      }
     }
     
     // Update dialogue indicators
@@ -394,6 +404,9 @@ export class BaseGameScene extends BaseScene {
    * Updates positions of all character nametags
    */
   updateNametags() {
+    // Skip for minigames
+    if (this.isMinigame) return;
+    
     // Update player nametag
     if (this.player && this.playerNameTag) {
       this.playerNameTag.setPosition(

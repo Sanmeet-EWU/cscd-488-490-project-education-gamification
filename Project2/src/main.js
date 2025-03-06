@@ -7,13 +7,15 @@ import { Leaderboard } from './scenes/Leaderboard';
 import { Settings } from './scenes/Settings';
 import { Act1Scene1 } from './scenes/GameScenes/Act1Scene1.js';
 import { Act1Scene2 } from './scenes/GameScenes/Act1Scene2.js';
-import { Act1Scene3 } from './scenes/GameScenes/Act1Scene3.js'; // Referenced but not shown in the project
+import { Act1Scene3 } from './scenes/GameScenes/Act1Scene3.js';
+import { Act1Scene4 } from './scenes/GameScenes/Act1Scene4.js';
 import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { completeLogin } from '../firebase/firebase.js';
 import { PauseMenu } from './scenes/PauseMenu.js';
 import { BaseGameScene } from './scenes/BaseGameScene.js';
 import { Act1Minigame } from './scenes/GameScenes/Act1Minigame.js';
+import { Act1Scene2Minigame } from './scenes/GameScenes/Act1Scene2Minigame.js';
 
 let game;
 
@@ -54,6 +56,8 @@ const config = {
     Act1Scene2,
     Act1Scene3,
     Act1Minigame,
+    Act1Scene2Minigame,
+    Act1Scene4,
     PauseMenu,
     BaseGameScene
   ],

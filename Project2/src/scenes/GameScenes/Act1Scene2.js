@@ -26,6 +26,9 @@ export class Act1Scene2 extends BaseGameScene {
     this.load.image("Ross", "assets/portraits/Ross.png");
     this.load.image("Duncan", "assets/portraits/Duncan.png");
     
+    // Load minigame portal asset
+    this.load.image("minigame_portal", "assets/ui/minigame_portal.png");
+    
     this.load.audio('act1scene2Music', 'assets/audio/act1scene2.ogg');
   }
 
@@ -80,6 +83,9 @@ export class Act1Scene2 extends BaseGameScene {
     
     // Create NPCs
     this.createNPCs();
+    
+    // Create minigame portal at the far right of the screen
+    this.createMinigamePortal(width, height);
     
     // "Press E to Interact" text
     this.interactText = this.add.text(
@@ -207,6 +213,63 @@ export class Act1Scene2 extends BaseGameScene {
     }
   }
   
+  createMinigamePortal(width, height) {
+    // Create an interactive portal/station at the far right of the screen
+    const portalX = width * 0.95;
+    const portalY = height * 0.8;
+    
+    // Create portal sprite or rectangle
+    if (this.textures.exists('minigame_portal')) {
+      this.minigamePortal = this.add.image(portalX, portalY, 'minigame_portal');
+      this.minigamePortal.setScale(1.5);
+      this.minigamePortal.setOrigin(0.5, 1.0);
+    } else {
+      // Fallback if image isn't loaded
+      this.minigamePortal = this.add.rectangle(portalX, portalY - 50, 80, 100, 0x00ff00, 0.7);
+      this.minigamePortal.setStrokeStyle(2, 0xffffff);
+    }
+    
+    // Add floating animation
+    this.tweens.add({
+      targets: this.minigamePortal,
+      y: portalY - 10,
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+    
+    // Add glowing effect
+    this.tweens.add({
+      targets: this.minigamePortal,
+      alpha: 0.7,
+      duration: 2000,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+    
+    // Add portal label
+    this.minigameLabel = this.add.text(
+      portalX,
+      portalY - 110,
+      'Battle Report\nTranslator',
+      {
+        fontSize: '16px',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 3,
+        align: 'center'
+      }
+    ).setOrigin(0.5);
+    
+    // Create interaction zone (larger than the visual element for easier interaction)
+    this.minigameZone = this.add.zone(portalX, portalY - 50, 150, 150).setInteractive();
+    
+    // Store portal position for checking proximity
+    this.minigamePortalPosition = { x: portalX, y: portalY };
+  }
+  
   createNPCs() {
     const { width, height } = this.scale;
     
@@ -326,6 +389,9 @@ export class Act1Scene2 extends BaseGameScene {
       // Check for NPC interaction (E key press)
       this.checkInteraction();
       
+      // Check for minigame portal interaction
+      this.checkMinigamePortal();
+      
       // Update dialogue indicators if dialogueManager exists
       if (this.dialogueManager) {
         this.dialogueManager.updateIndicators();
@@ -356,7 +422,33 @@ export class Act1Scene2 extends BaseGameScene {
       }
     });
 
+    // Check proximity to minigame portal
+    const portalDist = this.minigamePortalPosition ? 
+      Phaser.Math.Distance.Between(
+        playerX, 
+        playerY, 
+        this.minigamePortalPosition.x, 
+        this.minigamePortalPosition.y
+      ) : Infinity;
+      
+    // If portal is closer than NPCs, prioritize it
+    if (portalDist < interactDistance && portalDist < closestDistance) {
+      this.interactText.setPosition(
+        this.minigamePortalPosition.x,
+        this.minigamePortalPosition.y - 140
+      );
+      this.interactText.setText('Press E to Start Minigame');
+      this.interactText.setVisible(true);
+      
+      if (Phaser.Input.Keyboard.JustDown(this.keys.interact)) {
+        this.startMinigame();
+      }
+      return;
+    }
+
+    // Otherwise, handle NPC interaction as before
     if (closestNPC) {
+      this.interactText.setText('Press E to Interact');
       this.interactText.setPosition(
         closestNPC.npc.x, 
         closestNPC.npc.y - (closestNPC.npc.height * 1.5) - 20
@@ -369,6 +461,43 @@ export class Act1Scene2 extends BaseGameScene {
     } else {
       this.interactText.setVisible(false);
     }
+  }
+  
+  checkMinigamePortal() {
+    // Check if player is within the minigame zone
+    if (!this.minigameZone || !this.player) return;
+    
+    const bounds = this.minigameZone.getBounds();
+    const playerBounds = this.player.getBounds();
+    
+    if (Phaser.Geom.Rectangle.Overlaps(bounds, playerBounds)) {
+      this.interactText.setPosition(
+        this.minigamePortalPosition.x,
+        this.minigamePortalPosition.y - 140
+      );
+      this.interactText.setText('Press E to Start Minigame');
+      this.interactText.setVisible(true);
+      
+      // Highlight the portal
+      this.minigamePortal.setAlpha(1);
+      
+      if (Phaser.Input.Keyboard.JustDown(this.keys.interact)) {
+        this.startMinigame();
+      }
+    } else if (this.interactText.text === 'Press E to Start Minigame') {
+      this.interactText.setVisible(false);
+    }
+  }
+  
+  startMinigame() {
+    console.log("Starting Battle Report Translator minigame");
+    
+    // Transition effect
+    this.cameras.main.fadeOut(1000, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+      // Switch to the minigame scene
+      this.scene.start('Act1Scene2Minigame');
+    });
   }
   
   startDialogue(npcKey) {
@@ -418,6 +547,22 @@ export class Act1Scene2 extends BaseGameScene {
     if (this.npcs.Malcolm) this.npcs.Malcolm.setPosition(width * 0.25, height * 0.8);
     if (this.npcs.Captain) this.npcs.Captain.setPosition(width * 0.60, height * 0.8);
     if (this.npcs.Ross) this.npcs.Ross.setPosition(width * 0.80, height * 0.8);
+    
+    // Reposition minigame portal
+    if (this.minigamePortal) {
+      const portalX = width * 0.95;
+      const portalY = height * 0.8;
+      this.minigamePortal.setPosition(portalX, portalY);
+      this.minigamePortalPosition = { x: portalX, y: portalY };
+      
+      if (this.minigameLabel) {
+        this.minigameLabel.setPosition(portalX, portalY - 110);
+      }
+      
+      if (this.minigameZone) {
+        this.minigameZone.setPosition(portalX, portalY - 50);
+      }
+    }
     
     if (this.dialogueManager?.isActive && this.dialogueManager.adjustBoxSize) {
       this.dialogueManager.adjustBoxSize(width, height);
