@@ -1,0 +1,115 @@
+{
+    "Act2Scene4": [
+        {
+            "speaker": "Old Man",
+            "text": "Threescore and ten I can remember well, within the volume of which time I have seen hours dreadful and things strange, but this sore night hath trifled former knowings.",
+            "translation": "I can remember seventy years well. During that time, I have seen dreadful hours and strange things, but this night is more terrible than anything I have ever known.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Ha, good father, Thou seest the heavens, as troubled with man’s act, Threatens his bloody stage.",
+            "translation": "Yes old man, the skies that are troubled by the acts of men, threaten the bloody earth with storms.",
+            "responses": [{ "text": "...", "next": "Old Man" }]
+        },
+        {
+            "speaker": "Old Man",
+            "text": "’Tis unnatural, Even like the deed that’s done.",
+            "translation": "It is unnatural, just like the murder that has been committed.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Here comes the good Macduff.—How goes the world, sir, now?",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "Why, see you not?",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Is ’t known who did this more than bloody deed?",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "Those that Macbeth hath slain.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Alas the day, What good could they pretend?",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "They were suborned.",
+            "translation": "They were bribed.",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "Malcolm and Donalbain, the King’s two sons, Are stol’n away and fled, which puts upon them Suspicion of the deed.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "’Gainst nature still! Thriftless ambition, that will ravin up Thine own lives’ means.",
+            "translation": "Against nature still! Ambition that is wasteful and will destroy its own resources.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Then ’tis most like The sovereignty will fall upon Macbeth.",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "He is already named and gone to Scone To be invested.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Where is Duncan’s body?",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "Carried to Colmekill, The sacred storehouse of his predecessors.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Will you to Scone?",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "No, cousin, I’ll to Fife.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Well, I will thither.",
+            "responses": [{ "text": "...", "next": "Macduff" }]
+        },
+        {
+            "speaker": "Macduff",
+            "text": "Well, may you see things well done there. Adieu.",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        {
+            "speaker": "Ross",
+            "text": "Farewell, father.",
+            "responses": [{ "text": "...", "next": "Old Man" }]
+        },
+        {
+            "speaker": "Old Man",
+            "text": "God’s benison go with you.",
+            "translation": "God’s blessing on you.",
+            "endScene": true
+        }
+    ]
+}

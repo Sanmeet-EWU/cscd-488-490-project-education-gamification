@@ -1,0 +1,162 @@
+{
+    "Act3Scene1": [
+        {
+            "speaker": "Banquo",
+            "text": "Thou hast it now—king, Cawdor, Glamis, all As the Weïrd Women promised,",
+            "responses": [{ "text": "...", "next": "Banquo" }]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "and I fear Thou played’st most foully for ’t.",
+            "translation": "and I fear you played most foully for it.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Here’s our chief guest. Tonight we hold a solemn supper, sir, And I’ll request your presence.",
+            "responses": [{ "text": "...", "next": "Banquo" }]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "Let your Highness Command upon me, to the which my duties Are with a most indissoluble tie Forever knit.",
+            "translation": "Whatever your Highness commands me to do, my duties are forever tied to you.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Ride you this afternoon?",
+            "responses": [{ "text": "...", "next": "Banquo" }]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "Ay, my good lord.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "We should have else desired your good advice In this day’s council, but we’ll take tomorrow. Is ’t far you ride?",
+            "responses": [{ "text": "...", "next": "Banquo" }]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "As far, my lord, as will fill up the time ’Twixt this and supper.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Fail not our feast.",
+            "responses": [{ "text": "...", "next": "Banquo" }]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "My lord, I will not.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "We hear our bloody cousins are bestowed in England and in Ireland, not confessing their cruel parricide, filling their hearers With strange invention.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "But of that tomorrow, when therewithal we shall have cause of state craving us jointly.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Hie you to horse. Adieu, till you return at night. Goes Fleance with you?",
+            "responses": [{ "text": "...", "next": "Banquo" }]
+        },
+        {
+            "speaker": "Banquo",
+            "text": "Ay, my good lord. Our time does call upon ’s.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I wish your horses swift and sure of foot. Farewell.",
+            "responses": [{ "text": "...", "next": "Servant" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Sirrah, a word with you. Attend those men Our pleasure?",
+            "responses": [{ "text": "...", "next": "Servant" }]
+        },
+        {
+            "speaker": "Servant",
+            "text": "They are, my lord, without the palace gate.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Bring them before us.",
+            "responses": [{ "text": "...", "next": "Murderers" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Our fears in Banquo stick deep, and in his royalty of nature reigns that which would be feared.",
+            "translation": "I fear Banquo because he has a natural nobility that make him a threat.",
+            "responses": [{ "text": "...", "next": "Murderers" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Was it not yesterday we spoke together?",
+            "responses": [{ "text": "...", "next": "Murderers" }]
+        },
+        {
+            "speaker": "Murderers",
+            "text": "It was, so please your Highness.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Well then, now Have you considered of my speeches? Know That it was he, in the times past, which held you So under fortune.",
+            "responses": [{ "text": "...", "next": "First Murderer" }]
+        },
+        {
+            "speaker": "First Murderer",
+            "text": "You made it known to us.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "I did so, and went further. Do you find Your patience so predominant in your nature That you can let this go?",
+            "responses": [{ "text": "...", "next": "First Murderer" }]
+        },
+        {
+            "speaker": "First Murderer",
+            "text": "We are men, my liege.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Both of you Know Banquo was your enemy.",
+            "responses": [{ "text": "...", "next": "Murderers" }]
+        },
+        {
+            "speaker": "Murderers",
+            "text": "True, my lord.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "So is he mine. I to your assistance do make love.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "Within this hour at most I will advise you where to plant yourselves. It must be done tonight.",
+            "responses": [{ "text": "...", "next": "Murderers" }]
+        },
+        {
+            "speaker": "Murderers",
+            "text": "We are resolved, my lord.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        {
+            "speaker": "Macbeth",
+            "text": "It is concluded. Banquo, thy soul’s flight, If it find heaven, must find it out tonight.",
+            "endScene": true
+        }
+    ]
+}
