@@ -14,7 +14,7 @@ export class TEMPLATESCENE extends BaseGameScene {
     
     // Background
     if (!this.textures.exists('background_act5scene8part2')) {
-      this.load.svg('background_act5scene8part2', 'assets/act5/scene8part2.svg', { width: 2560, height: 1440 });
+      this.load.svg('background_act5scene8part2', 'assets/act5/act5scene8part2.svg', { width: 2560, height: 1440 });
     }
     
     // Dialogue JSON
@@ -30,11 +30,14 @@ export class TEMPLATESCENE extends BaseGameScene {
     }
     
     // Character portraits for dialogue
-    this.load.image("portrait1", "assets/portraits/Character1.png");
-    this.load.image("portrait2", "assets/portraits/Character2.png");
+    this.load.image("Macduff", "assets/portraits/Macduff.png");
+    this.load.image("Macbeth", "assets/portraits/Macbeth.png");
+    this.load.image("Malcolm", "assets/portraits/Malcolm.png");
+    this.load.image("Siward", "assets/portraits/Siward.png");
+    this.load.image("Ross", "assets/portraits/Ross.png");
     
     // Scene music
-    this.load.audio('sceneMusic', 'assets/audio/scenemusic.mp3');
+    this.load.audio('act5scene8part2music', 'assets/audio/act5scene8part2music.mp3');
     
     // Sound effects
     this.load.audio('soundEffect1', 'assets/audio/effect.mp3');
