@@ -11,6 +11,12 @@ export class Act1Minigame extends BaseGameScene {
     /**@type {CountdownController} */
     countdown;
 
+    /**@type {Phaser.GameObjects.Text} */
+    multiplierDisplay;
+
+    /**@type {Phaser.GameObjects.Text} */
+    scoreDisplay;
+
     /**@type {DialogueManager} */
     dialogueManager;
 
@@ -28,6 +34,9 @@ export class Act1Minigame extends BaseGameScene {
 
     /**@type {Phaser.GameObjects.Image{}} */
     ingredients = {};
+
+    /**@type {Phaser.GameObjects.Text{}} */
+    tags = {};
 
     /**@type {Phaser.GameObjects.Image} */
     heldIngredient = null;
@@ -47,9 +56,7 @@ export class Act1Minigame extends BaseGameScene {
     }
 
     preload() {
-        if (!this.textures.exists('background')) {
-            this.load.svg('background', '../assets/act1/act1scene1.svg', { width: 2560, height: 1440 });
-        }
+        this.load.svg('bg', '../assets/act1/Act1Scene1EmptyBg.svg', { width: 2560, height: 1440 });
         if (!this.cache.json.exists('Act1MinigameData')) {
             this.load.json('Act1MinigameData', 'SceneDialogue/Act1Minigame.json');
         }
@@ -59,13 +66,9 @@ export class Act1Minigame extends BaseGameScene {
         this.load.image('witch1portrait', 'assets/portraits/witch1portrait.png');
         this.load.image('witch2portrait', 'assets/portraits/witch2portrait.png');
         this.load.image('witch3portrait', 'assets/portraits/witch3portrait.png');
-        this.load.spritesheet('WitchIdle', 'assets/characters/B_witch_idle.png', {
-            frameWidth: 24, frameHeight: 36
-        });
-        this.load.image('greenGas1', 'assets/effects/greenGas1.svg');
-        this.load.image('greenGas2', 'assets/effects/greenGas2.svg');
-        this.load.image('redGas1', 'assets/effects/redGas1.svg');
-        this.load.image('redGas2', 'assets/effects/redGas2.svg');
+
+        this.load.image('cauldron', 'assets/act1/witchPot.png');
+        this.load.image('cauldronGas', 'assets/effects/cauldronGas.svg');
 
         this.load.audio('correct', 'assets/audio/CauldronMixing.mp3');
         this.load.audio('incorrect', 'assets/audio/explosion.mp3');
@@ -76,6 +79,8 @@ export class Act1Minigame extends BaseGameScene {
         this.load.image('ingredient3', 'assets/act1/ingredient3.png');
         this.load.image('ingredient4', 'assets/act1/ingredient4.png');
         this.load.image('ingredient5', 'assets/act1/ingredient5.png');
+        this.load.image('ingredient6', 'assets/act1/ingredient6.png');
+        this.load.image('ingredient7', 'assets/act1/ingredient7.png');
 
         this.load.on('loaderror', (fileObj) => {
             console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);
@@ -95,10 +100,14 @@ export class Act1Minigame extends BaseGameScene {
         super.create(data);
         const { width, height } = this.scale;
 
-        this.background = this.add.image(0, 0, 'background')
+        this.gameActive = false;//lock out player movement until the game starts
+
+        this.background = this.add.image(0, 0, 'bg')
             .setOrigin(0, 0)
             .setDisplaySize(width, height)
             .setDepth(-5);
+
+        this.createFloor();
 
         this.cameras.main.setBounds(0, 0, width, height);
         this.cameras.main.fadeIn(1000, 0, 0, 0);
@@ -108,10 +117,11 @@ export class Act1Minigame extends BaseGameScene {
           this.audioController.stopMusic();
         }
 
-        this.physics.world.setBounds(0, 0, width, height * .8);//Im setting the Y higher up to act as the floor
+        this.physics.world.setBounds(0, 0, width, height * .85);//Im setting the Y higher up to act as the floor
         this.physics.world.gravity.y = 1000;
 
         this.player = this.physics.add.sprite(width * 0.1, height * 0.8, 'witchIdle', 'sprite1');
+
         this.player.setScale(1.5);
         this.player.setOrigin(0.5, 1.0);
         this.player.setCollideWorldBounds(true);
@@ -124,17 +134,23 @@ export class Act1Minigame extends BaseGameScene {
         this.player.x = width / 2;
         this.player.y = height * 4 / 5;
         this.player.setDepth(1);
-        
+        this.physics.add.collider(this.player, this.floor);
 
-        //Load the questionSet
-        this.questionSet = this.cache.json.get('Act1Questions').Act1Questions;
-        
+        //Load the questionSet, and make a deep copy of it
+        this.questionSet = this.cache.json.get('Act1Questions').Act1Questions.map(a => {return {...a}})
+        if(this.quizOverlay){
+            console.log("destroying quiz overlay");
+            this.quizOverlay.destroy();
+            this.quizOverlay = null;
+        }
+
+        //Esure score is reset
+        this.score = 0;
+        this.multiplier = 1;
+
         //Set the starting time
-        const startingTime = 30;
+        const startingTime = 1000;
         
-        //Handle the introduction to the minigame rules etc, then start
-        this.introduction();
-
         //Start the countdown clock
         const countdownText = this.add.text(width *0.9, height * 0.1, startingTime, {
             fontFamily: "Inknut Antiqua",
@@ -144,64 +160,135 @@ export class Act1Minigame extends BaseGameScene {
             strokeThickness: 8
         }).setOrigin(0.5);
         this.countdown = new CountdownController(this, countdownText);
-        this.countdown.start(this.handleOutOfTime.bind(this),startingTime*1000);
 
+        this.startButton = this.add.text(this.scale.width / 2, this.scale.height / 2, 'start', {
+            fontFamily: 'Inknut Antiqua',
+            fontSize: '48px',
+            color: '#fcd12a',
+            stroke: 'black',
+            strokeThickness: 8
+        }).setOrigin(0.5).setInteractive();
 
-        //Initialize the cauldron
-        this.cauldron = this.add.rectangle(this.scale.width * 0.5, this.scale.height * 0.6, 60, 60, 0xFF0000).setOrigin(0.5);
-        this.physics.add.existing(this.cauldron, true);
-        this.physics.world.enable(this.cauldron);
-        this.cauldron.enableBody = true;
-        this.cauldron.setDepth(1);
-        //You need to define the body size as well, its not set automatically based on sprite size
-        this.cauldron.body.setSize(60, 60);
-        this.cauldron.body.setOffset(0, 0);
-
-
-        //Set up the overlap collision between the player and the cauldron
-        this.physics.add.overlap(this.player, this.cauldron, this.handleCauldronOverlap, null, this);
-
-        //Load the first question
-        this.loadNextQuestion();
+        //Start the game when the player clicks start
+        this.startButton.on('pointerdown', () => {
+            this.countdown.start(this.handleOutOfTime.bind(this),startingTime*1000);
+                //Game starts
+                this.gameActive = true;
+                console.log(this.gameActive);
+                this.spawnCauldron();
+                //Load the first question
+                this.loadNextQuestion();
+                this.startButton.destroy();
+        });
         
-        //Game starts
-        this.gameActive = true;
-        console.log(this.gameActive);
+        //Display the multiplier and score
+        this.multiplierDisplay = this.add.text(width * 0.9, height * 0.2, 'Multiplier: \n' + this.multiplier, {
+            fontFamily: 'Inknut Antiqua',
+            fontSize: '24px',
+            color: '#fcd12a',
+            stroke: 'black',
+            strokeThickness: 8,
+            align: 'center'
+        }).setOrigin(.5);
+        this.scoreDisplay = this.add.text(width * 0.9, height * 0.3, 'Score: \n' + this.score, {
+            fontFamily: 'Inknut Antiqua',
+            fontSize: '24px',
+            color: '#fcd12a',
+            stroke: 'black',
+            strokeThickness: 8,
+            align: 'center'
+        }).setOrigin(.5);
 
     }
 
-    //Handle the introduction to the minigame rules etc
-    introduction() {
+    setupPlayer() {
+        // REPLACE: Define player configuration
+        const playerConfig = {
+          texture: 'WitchIdle',
+          frame: 0,
+          scale: 1.5,
+          displayName: 'Player',
+          animation: 'idleAnim',
+          movementConstraint: 'horizontal' // or 'topdown'
+        };
+        
+        // Use the base class method to create player
+        this.player = this.createPlayer(playerConfig);
+    }
 
-        // Create and load dialogue data
-        try {
-            if (!this.cache.json.exists('Act1MinigameData')) {
-            throw new Error("Dialogue data not found");
-            }
-            const portraitMap = {
-            "First Witch": "witch1portrait",
-            "Second Witch": "witch2portrait",
-            "Third Witch": "witch3portrait"
-            };
-            const dialogueData = this.cache.json.get('Act1MinigameData');
-            if (!dialogueData || Object.keys(dialogueData).length === 0) {
-            throw new Error("Dialogue data is empty");
-            }
-            this.dialogueManager = new DialogueManager(this, dialogueData, portraitMap, true);
-        } catch (error) {
-            this.add.text(width / 2, height / 2, `Error: ${error.message}`, {
-            fontSize: '32px',
-            color: '#ff0000',
-            stroke: '#000000',
-            strokeThickness: 4
-            }).setOrigin(0.5);
-            return;
-        }
-
+    spawnCauldron() {
+        //Initialize the cauldron
+        //this.cauldron = this.add.rectangle(this.scale.width * 0.5, this.scale.height * 0.6, 60, 60, 0xFF0000).setOrigin(0.5);
+        this.cauldron = this.add.image(this.scale.width * 0.5, this.scale.height * 0.6, 'cauldron')
+            .setOrigin(0.5)
+            .setDepth(1)
+            .setScale(0.5);
+        this.physics.add.existing(this.cauldron, true);
+        this.physics.world.enable(this.cauldron);
+        //You need to define the body size as well, its not set automatically based on sprite size
+        this.cauldron.body.setSize(80, 60);
+        this.cauldron.body.setOffset(40,0);//have to set a weird offset to make it work with the sprite
+        
+        //Set up the overlap collision between the player and the cauldron
+        this.physics.add.overlap(this.player, this.cauldron, this.handleCauldronOverlap, null, this);
     }
 
     loadNextQuestion() {
         console.log('loading next question');
+        console.log(this.questionSet);
+        if(!this.quizOverlay) {//Create the quiz overlay if it doesn't exist
+            let containX = this.scale.width / 2;
+            let containY = this.scale.height / 8;
+            let containWidth = this.scale.width * 3/5;
+            let containHeight = this.scale.height * 1/4;
+            this.quizOverlay = this.add.container(containX, containY);
+            this.quizOverlay.add([
+                this.quizBg = this.rexUI.add.roundRectangle(0, 0, containWidth, containHeight, 20, 0x4E342E)
+                    .setStrokeStyle(3, 0x674F49)
+                    .setOrigin(0.5),
+                this.question = this.add.text(-containWidth/2 + 20,-containHeight/2 + 20, '', {
+                    fontFamily: 'Inknut Antiqua',
+                    fontSize: '20px',
+                    color: '#FFDD86',
+                    stroke: 'black',
+                    strokeThickness: 5,
+                    align: 'left',
+                    wordWrap: { width: containWidth - 20, useAdvancedWrap: true }
+                }).setOrigin(0,0),
+                this.answer1 = this.add.text(-containWidth/2 + 25, this.question.y + 60, '', {
+                    fontFamily: 'Inknut Antiqua',
+                    fontSize: '18px',
+                    color: '#FFDD86',
+                    stroke: 'black',
+                    strokeThickness: 4,
+                    wordWrap: { width: containWidth/2 - 20, useAdvancedWrap: true }
+                }).setOrigin(0,0),
+                this.answer2 = this.add.text(-containWidth/2 + 25, this.answer1.y + 40, '', {
+                    fontFamily: 'Inknut Antiqua',
+                    fontSize: '18px',
+                    color: '#FFDD86',
+                    stroke: 'black',
+                    strokeThickness: 4,
+                    wordWrap: { width: containWidth/2 - 20, useAdvancedWrap: true }
+                }).setOrigin(0,0),
+                this.answer3 = this.add.text(5, this.question.y + 60, '', {
+                    fontFamily: 'Inknut Antiqua',
+                    fontSize: '18px',
+                    color: '#FFDD86',
+                    stroke: 'black',
+                    strokeThickness: 4,
+                    wordWrap: { width: containWidth/2 - 20, useAdvancedWrap: true }
+                }).setOrigin(0,0),
+                this.answer4 = this.add.text(5, this.answer3.y + 40, '', {
+                    fontFamily: 'Inknut Antiqua',
+                    fontSize: '18px',
+                    color: '#FFDD86',
+                    stroke: 'black',
+                    strokeThickness: 4,
+                    wordWrap: { width: containWidth/2 - 20, useAdvancedWrap: true }
+                }).setOrigin(0,0), 
+            ]);
+        }
 
         //console.log(this.questionSet);
         if(this.questionSet.length > 0) {
@@ -216,27 +303,41 @@ export class Act1Minigame extends BaseGameScene {
                 // console.log('Correct Answer: ' + question.correct);
             //display the question
             //console.log(this.questionSet);
+            this.quizOverlay.getAt(1).setText(question.question);
 
-            this.spawnIngredients(this.questionSet);
-            
+            //shuffle the answers
+            question.answers = Phaser.Utils.Array.Shuffle([...question.answers]);
+            let setCorrect = question.answers.indexOf(question.correct);
+            this.spawnIngredients(setCorrect);
 
-            //display the answers
-                //Need to randomize the order of the answers
-                //Need to randomize the ingredients tied to the answers
+            //Update the answers on the overlay
+            this.quizOverlay.getAt(2).setText('1. ' + question.answers[0]);
+            this.quizOverlay.getAt(3).setText('2. ' + question.answers[1]);
+            this.quizOverlay.getAt(4).setText('3. ' + question.answers[2]);
+            this.quizOverlay.getAt(5).setText('4. ' + question.answers[3]);
+            //this.spawnIngredients(question);
 
         } else {
             console.log('No more questions');
             //End the game
             this.countdown.stop();
+            this.quizOverlay.destroy();
             this.gameActive = false;
-            
+            this.add.text(this.scale.width / 2, this.scale.height / 8, 'You got through all the questions!', {
+                fontFamily: 'Inknut Antiqua',
+                fontSize: '48px',
+                color: '#0DB500',
+                stroke: 'black',
+                strokeThickness: 8
+            }).setOrigin(0.5);
+            this.endGame();
         }
     }
 
     //Spawn new ingredients for each question
-    spawnIngredients(questionSet) {
+    spawnIngredients(setCorrect) {
 
-        //need to destroy old ingredients if thsy exist
+        //Need to destroy old ingredients if they exist
         if(this.ingredients.ingredient1) {
             this.ingredients.ingredient1.destroy();
         }
@@ -250,78 +351,104 @@ export class Act1Minigame extends BaseGameScene {
             this.ingredients.ingredient4.destroy();
         }
 
-        //Spawn new ingredients
-        this.ingredients = {
-            ingredient1: this.add.image(this.scale.width  * 0.1, this.scale.height * 0.8, 'ingredient1').setDepth(2),
-            ingredient2: this.add.image(this.scale.width  * 0.3, this.scale.height * 0.8, 'ingredient2').setDepth(2),
-            ingredient3: this.add.image(this.scale.width  * 0.7, this.scale.height * 0.8, 'ingredient3').setDepth(2),
-            ingredient4: this.add.image(this.scale.width  * 0.9, this.scale.height * 0.8, 'ingredient4').setDepth(2)
+        //Randomize which ingredients sprites to use
+        let possibleSprites = ['ingredient1', 'ingredient2', 'ingredient3', 'ingredient4', 'ingredient5', 'ingredient6', 'ingredient7'];
+        let usingSprties = [];
+        for(let i = 0; i < 4; i++) {
+            let randomIndex = Math.floor(Math.random() * possibleSprites.length);
+            usingSprties.push(possibleSprites.splice(randomIndex, 1)[0]);
         }
 
+        //Spawn new ingredients
+        this.ingredients = {
+            ingredient1: this.add.image(this.scale.width  * 0.1, this.scale.height * 0.85, usingSprties[0]).setDepth(2),
+            ingredient2: this.add.image(this.scale.width  * 0.3, this.scale.height * 0.85, usingSprties[1]).setDepth(2),
+            ingredient3: this.add.image(this.scale.width  * 0.7, this.scale.height * 0.85, usingSprties[2]).setDepth(2),
+            ingredient4: this.add.image(this.scale.width  * 0.9, this.scale.height * 0.85, usingSprties[3]).setDepth(2)
+        }
+
+        switch(setCorrect) {
+            case 0:
+                this.correctIngredient = this.ingredients.ingredient1;
+                break;
+            case 1:
+                this.correctIngredient = this.ingredients.ingredient2;
+                break;
+            case 2:
+                this.correctIngredient = this.ingredients.ingredient3;
+                break;
+            case 3:
+                this.correctIngredient = this.ingredients.ingredient4;
+                break;
+        }
+
+
+        // this.tags = {
+        //     ingredient1: this.add.text(0,0,question.answers[0], {align: 'center'}),
+        //     ingredient2: this.add.text(0,0,question.answers[1], {align: 'center'}),
+        //     ingredient3: this.add.text(0,0,question.answers[2], {align: 'center'}),
+        //     ingredient4: this.add.text(0,0,question.answers[3], {align: 'center'})
+        // }
+
+        
+
+
+        
         ////////////////////////////////////////////////
         //There is probably a better way to do this...//
         ////////////////////////////////////////////////
 
+        //1
         this.physics.add.existing(this.ingredients.ingredient1, true);
         this.physics.world.enable(this.ingredients.ingredient1);
         this.ingredients.ingredient1.enableBody = true;
-        this.ingredients.ingredient1.setDepth(1);
-        //You need to define the body size as well, its not set automatically based on sprite size
         this.ingredients.ingredient1.body.setSize(60, 60);
-        this.ingredients.ingredient1.body.setOffset(0, 0);
-
+        this.ingredients.ingredient1.body.setOffset(0.5);
+        //2
         this.physics.add.existing(this.ingredients.ingredient2, true);
         this.physics.world.enable(this.ingredients.ingredient2);
         this.ingredients.ingredient2.enableBody = true;
-        this.ingredients.ingredient2.setDepth(1);
-        //You need to define the body size as well, its not set automatically based on sprite size
         this.ingredients.ingredient2.body.setSize(60, 60);
-        this.ingredients.ingredient2.body.setOffset(0, 0);
-
+        this.ingredients.ingredient2.body.setOffset(0.5);
+        //3
         this.physics.add.existing(this.ingredients.ingredient3, true);
         this.physics.world.enable(this.ingredients.ingredient3);
         this.ingredients.ingredient3.enableBody = true;
-        this.ingredients.ingredient3.setDepth(1);
-        //You need to define the body size as well, its not set automatically based on sprite size
         this.ingredients.ingredient3.body.setSize(60, 60);
-        this.ingredients.ingredient3.body.setOffset(0, 0);
-
+        this.ingredients.ingredient3.body.setOffset(0.5);
+        //4
         this.physics.add.existing(this.ingredients.ingredient4, true);
         this.physics.world.enable(this.ingredients.ingredient4);
         this.ingredients.ingredient4.enableBody = true;
-        this.ingredients.ingredient4.setDepth(1);
-        //You need to define the body size as well, its not set automatically based on sprite size
         this.ingredients.ingredient4.body.setSize(60, 60);
-        this.ingredients.ingredient4.body.setOffset(0, 0);
-
+        this.ingredients.ingredient4.body.setOffset(0.5);
         //Need to set overlap collision between the player and each ingredient as well
-        this.physics.add.overlap(this.player, this.ingredients.ingredient1, this.handleIngredientPickup.bind(this), null, this);
-        this.physics.add.overlap(this.player, this.ingredients.ingredient2, this.handleIngredientPickup.bind(this), null, this);
-        this.physics.add.overlap(this.player, this.ingredients.ingredient3, this.handleIngredientPickup.bind(this), null, this);
-        this.physics.add.overlap(this.player, this.ingredients.ingredient4, this.handleIngredientPickup.bind(this), null, this);
+        this.physics.add.overlap(this.player, this.ingredients.ingredient1, this.handleIngredientPickup.bind(this));
+        this.physics.add.overlap(this.player, this.ingredients.ingredient2, this.handleIngredientPickup.bind(this));
+        this.physics.add.overlap(this.player, this.ingredients.ingredient3, this.handleIngredientPickup.bind(this));
+        this.physics.add.overlap(this.player, this.ingredients.ingredient4, this.handleIngredientPickup.bind(this));
 
-        //Set the correct ingredient
-        this.correctIngredient = this.ingredients.ingredient1;//for now
-        
     }
 
     handleIngredientPickup(scene,ingredient) {
-        console.log("pickup" + ingredient);
-
         //Early exit if they are not trying to pick up an ingredient
         if(!this.keys.interact.isDown)
             return
 
-        console.log("pickup2");
-        this.sound.add('pickup').play({ loop: false, volume: this.audioController.soundVolume });
-        if(this.heldIngredient){//Swap
-            let temp = this.heldIngredient;
-            this.heldIngredient = ingredient;
-            ingredient = temp;
+        //If the player is already holding an ingredient, swap it with the new one
+        if(this.heldIngredient){//Swap the ingredients
+            return;//I'm giving up on swaping, it was causing too many issues with bodies
+            // let temp = this.heldIngredient;
+            // this.heldIngredient = ingredient;
+            // ingredient = temp;
+            //ingredient.body.reset(ingredient.x, ingredient.y);
+            //this.heldIngredient.body.reset(this.heldIngredient.x, this.heldIngredient.y);
         }
         else{
+            //No swaps needed
             this.heldIngredient = ingredient;
-            //this.heldIngredient = this.ingredients.ingredient1;
+            //Play a sound effect
+            this.sound.add('pickup').play({ loop: false, volume: this.audioController.soundVolume });
         }
     }
 
@@ -338,13 +465,25 @@ export class Act1Minigame extends BaseGameScene {
         if(this.heldIngredient  == this.correctIngredient) {
             console.log("correct ingredient");
             //If so, add to the score, time, and multiplier
-            this.countdown.addTime(5*1000);
+            this.countdown.addTime(3*1000);
             this.score += 100 * this.multiplier;
-            this.multiplier += 0.25 + this.multiplier;
+            this.multiplier += 0.25;
             //Then load the next question, respawn new ingredients
             this.loadNextQuestion();
             //Play a correct sound effect and use the green gas for animation
             this.sound.add('correct').play({ loop: false, volume: this.audioController.soundVolume*1.5});//kinda quiet 
+
+            const gas = this.add.image(this.cauldron.x, this.cauldron.y - 130, 'cauldronGas')
+                .setOrigin(0.5)
+                .setAlpha(1)
+                .setDepth(5)
+                .setScale(0.5);
+
+            this.time.delayedCall(100, () => { if (gas.active) gas.setAlpha(0); });
+            this.time.delayedCall(200, () => { if (gas.active) gas.setAlpha(1); });
+            this.time.delayedCall(300, () => { if (gas.active) gas.setAlpha(0); });
+            this.time.delayedCall(400, () => { if (gas.active) gas.setAlpha(1); });
+            this.time.delayedCall(600, () => { if (gas.active) gas.setAlpha(0); });
         }
         else {
             console.log("incorrect ingredient");
@@ -353,7 +492,24 @@ export class Act1Minigame extends BaseGameScene {
             this.multiplier = 1;
             //Play an incorrect sound effect and use the red gas for animation
             this.sound.add('incorrect').play({ loop: false, volume: this.audioController.soundVolume*1.5});//kinda quiet
+
+            const gas = this.add.image(this.cauldron.x, this.cauldron.y - 130, 'cauldronGas')
+                .setOrigin(0.5)
+                .setAlpha(1)
+                .setDepth(5)
+                .setScale(0.5)
+                .setTint(0xff1100);
+
+            this.time.delayedCall(100, () => { if (gas.active) gas.setAlpha(0); });
+            this.time.delayedCall(200, () => { if (gas.active) gas.setAlpha(1); });
+            this.time.delayedCall(300, () => { if (gas.active) gas.setAlpha(0); });
+            this.time.delayedCall(400, () => { if (gas.active) gas.setAlpha(1); });
+            this.time.delayedCall(600, () => { if (gas.active) gas.setAlpha(0); });  
         }
+
+        //Update the score display
+        this.scoreDisplay.setText('Score: \n' + this.score);
+        this.multiplierDisplay.setText('Multiplier: \n' + this.multiplier);
 
         //Set the held ingredient to null
         this.heldIngredient.destroy();
@@ -362,22 +518,98 @@ export class Act1Minigame extends BaseGameScene {
 
     //Handle when the player runs out of time
     handleOutOfTime() {
-        this.gameActive = false;
-        console.log(this.gameActive);
         console.log("out of time called");
-        this.add.text(this.scale.width / 2, this.scale.height / 2, 'Game Over', {
+        this.add.text(this.scale.width / 2, this.scale.height / 8, 'You ran out of time!', {
             fontFamily: 'Inknut Antiqua',
             fontSize: '48px',
-            color: '#ff0000',
-            stroke: '#000000',
+            color: '#FF0000',
+            stroke: 'black',
             strokeThickness: 8
         }).setOrigin(0.5);
 
-        //Need to lock player movement
-        //Clean up
-        //add score to their account
-        //prompt them to either play again, return to main menu, or continue to the next scene
-        
+        //End the game
+        this.endGame();
+    }
+
+    endGame() {
+        //Stop the player from moving
+        this.player.setVelocity(0,0);
+        //Destroy quiz overlay if it exists
+        if(this.quizOverlay){
+            this.quizOverlay.destroy();
+            this.quizOverlay = null;
+        }
+
+        //Ensure game is over
+        this.gameActive = false;
+        console.log(this.gameActive);
+
+        this.endGameOverlay = this.add.container(this.scale.width / 2, this.scale.height / 2);
+        this.endGameOverlay.add([
+            this.rexUI.add.roundRectangle(0, 0, 340, 440, 20, 0x4E342E).setStrokeStyle(3, 0x674F49).setOrigin(0.5),
+            this.add.text(0, -150, 'Your Score:', {
+                fontFamily: 'Inknut Antiqua',
+                fontSize: '24px',
+                color: '#ffffff',
+                stroke: '#000000',
+                strokeThickness: 8,
+                align: 'center'
+            }).setOrigin(0.5).setInteractive(),
+            this.add.text(0, -100, this.score, {
+                fontFamily: 'Inknut Antiqua',
+                fontSize: '48px',
+                color: '#fcd12a',
+                stroke: '#000000',
+                strokeThickness: 8,
+                align: 'center'
+            }).setOrigin(0.5).setInteractive(),
+            this.add.image(0, 0, 'playAgainButton').setOrigin(0.5).setInteractive(),
+            this.add.image(0, 80, 'toMainMenuButton').setOrigin(0.5).setInteractive(),
+            this.add.image(0, 160, 'continueButton').setOrigin(0.5).setInteractive(),
+        ]).setDepth(8);
+
+        //Save score to the player's account ------------------------------------------------------
+
+        //Handle the buttons actions
+        this.endGameOverlay.getAt(3).on('pointerdown', () => {
+            this.switchScene('Act1Minigame');
+        });
+        this.endGameOverlay.getAt(4).on('pointerdown', () => {
+            this.switchScene('MainMenu');
+        });
+        this.endGameOverlay.getAt(5).on('pointerdown', () => {
+            this.switchScene('Act1Scene2');
+        });
+
+        //Button animations
+        this.endGameOverlay.getAt(3).on('pointerover', () => {
+            this.endGameOverlay.getAt(3).setScale(1.1);
+        });
+        this.endGameOverlay.getAt(3).on('pointerout', () => {
+            this.endGameOverlay.getAt(3).setScale(1);
+        });
+        this.endGameOverlay.getAt(4).on('pointerover', () => {
+            this.endGameOverlay.getAt(4).setScale(1.1);
+        });
+        this.endGameOverlay.getAt(4).on('pointerout', () => {
+            this.endGameOverlay.getAt(4).setScale(1);
+        });
+        this.endGameOverlay.getAt(5).on('pointerover', () => {
+            this.endGameOverlay.getAt(5).setScale(1.1);
+        });
+        this.endGameOverlay.getAt(5).on('pointerout', () => {
+            this.endGameOverlay.getAt(5).setScale(1);
+        });
+
+    }
+
+    createFloor() {
+        const { width, height } = this.scale;
+        const groundY = height * 0.85;
+        this.floor = this.physics.add.staticGroup();
+        const ground = this.add.rectangle(width / 2, groundY, width, 20, 0x555555);
+        this.floor.add(ground);
+        ground.setVisible(false);
     }
 
     update() {
@@ -391,7 +623,10 @@ export class Act1Minigame extends BaseGameScene {
         const speed = 300;
 
         // Handle player movement
-        if (this.keys.left.isDown) {
+        if (this.keys.left.isDown && this.keys.right.isDown) {
+            this.player.setVelocityX(0);
+        }
+        else if(this.keys.left.isDown) {
             this.player.setVelocityX(-speed);
             //this.player.anims.play('left', true);
         } else if (this.keys.right.isDown) {
@@ -401,21 +636,26 @@ export class Act1Minigame extends BaseGameScene {
             this.player.setVelocityX(0);
             //this.player.anims.play('idle', true);
         }
-        //Jump
-        if (this.keys.up.isDown) {
-            this.player.setVelocityY(-speed);
+        //Jump only when in contact with the floor
+        if ((this.keys.up.isDown || this.keys.space.isDown) && this.player.body.touching.down) {
+            this.player.setVelocityY(-550);
         }
+
+        //Debugging
+        // if(this.keys.down.isDown) {
+        //     console.log("item 1:  " + this.ingredients.ingredient1.body.x + "," + this.ingredients.ingredient1.body.y);
+        //     console.log("item 2:  " + this.ingredients.ingredient2.body.x + "," + this.ingredients.ingredient2.body.y);
+        //     console.log("item 3:  " + this.ingredients.ingredient3.body.x + "," + this.ingredients.ingredient3.body.y);
+        //     console.log("item 4:  " + this.ingredients.ingredient4.body.x + "," + this.ingredients.ingredient4.body.y);
+        //     if(this.heldIngredient) console.log("held: " + this.heldIngredient.body.x + "," + this.heldIngredient.body.y);
+        // }
 
         //Handle the position of the held ingredient
         if(this.heldIngredient){
             this.heldIngredient.x = this.player.x;
-            //this.heldIngredient.body.x = this.player.x;
             this.heldIngredient.y = this.player.y;
-            //this.heldIngredient.body.y = this.player.y;
+            // this.heldIngredient.body.reset(this.heldIngredient.x, this.heldIngredient.y);
         }
-
-
-
 
     }
 

@@ -42,7 +42,8 @@ export class BaseGameScene extends BaseScene {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
       interact: Phaser.Input.Keyboard.KeyCodes.E,
-      pause: Phaser.Input.Keyboard.KeyCodes.ESC
+      pause: Phaser.Input.Keyboard.KeyCodes.ESC,
+      space: Phaser.Input.Keyboard.KeyCodes.SPACE
     });
 
     // Setup physics world
