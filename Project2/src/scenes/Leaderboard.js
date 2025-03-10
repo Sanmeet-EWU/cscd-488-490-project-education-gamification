@@ -1,18 +1,6 @@
 import { BaseScene } from './BaseScene';
-import { initializeApp } from "firebase/app";
+import { fetchLeaderboardData } from "../../firebase/firebase.js"
 import { getFirestore, collection, query, getDocs, orderBy, limit } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 export class Leaderboard extends BaseScene {
   constructor() {
@@ -37,7 +25,9 @@ export class Leaderboard extends BaseScene {
     }).setOrigin(0.5);
     
     try {
-      const leaderboardData = await this.fetchLeaderboardData();
+      console.log("Fetching leaderboard data");
+      const leaderboardData = fetchLeaderboardData();
+      console.log("Leaderboard data fetched");
       if (Object.keys(leaderboardData).length === 0) {
         this.add.text(width / 2, height * 0.3, "No leaderboard data available", {
           fontFamily: 'Inknut Antiqua',
@@ -66,16 +56,6 @@ export class Leaderboard extends BaseScene {
     this.scale.on('resize', this.repositionUI, this);
   }
 
-  async fetchLeaderboardData() {
-    const leaderboardData = {};
-    const q = query(collection(db, "Players"), orderBy("SaveData.score", 'desc'), limit(10));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.docs.forEach((doc, i) => {
-      const data = doc.data();
-      leaderboardData[i] = { Username: data.Username, Score: data.SaveData.score };
-    });
-    return leaderboardData;
-  }
 
   repositionUI({ width, height }) {
     setTimeout(() => {
