@@ -1,7 +1,8 @@
 import { BaseGameScene } from '../BaseGameScene.js';
 import CountdownController from '../../CountdownController.js';
-import { DialogueManager } from '../../DialogueManager.js';
-import { count } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, updateDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 
 export class Act1Minigame extends BaseGameScene {
 
@@ -16,9 +17,6 @@ export class Act1Minigame extends BaseGameScene {
 
     /**@type {Phaser.GameObjects.Text} */
     scoreDisplay;
-
-    /**@type {DialogueManager} */
-    dialogueManager;
 
     /**@type {number} */
     multiplier = 1;
@@ -100,6 +98,10 @@ export class Act1Minigame extends BaseGameScene {
         super.create(data);
         const { width, height } = this.scale;
 
+        //For saving the score later
+        this.db = getFirestore();
+        this.auth = getAuth();
+
         this.gameActive = false;//lock out player movement until the game starts
 
         this.background = this.add.image(0, 0, 'bg')
@@ -122,13 +124,12 @@ export class Act1Minigame extends BaseGameScene {
 
         this.player = this.physics.add.sprite(width * 0.1, height * 0.8, 'witchIdle', 'sprite1');
 
+        //this.setupPlayer();
         this.player.setScale(1.5);
         this.player.setOrigin(0.5, 1.0);
         this.player.setCollideWorldBounds(true);
         this.physics.add.existing(this.player, false);
         this.physics.world.enable(this.player);
-        this.player.depth = 10; // Ensure player is above other elements
-        
 
         //Position the player
         this.player.x = width / 2;
@@ -149,7 +150,7 @@ export class Act1Minigame extends BaseGameScene {
         this.multiplier = 1;
 
         //Set the starting time
-        const startingTime = 1000;
+        const startingTime = 30;
         
         //Start the countdown clock
         const countdownText = this.add.text(width *0.9, height * 0.1, startingTime, {
@@ -160,26 +161,8 @@ export class Act1Minigame extends BaseGameScene {
             strokeThickness: 8
         }).setOrigin(0.5);
         this.countdown = new CountdownController(this, countdownText);
-
-        this.startButton = this.add.text(this.scale.width / 2, this.scale.height / 2, 'start', {
-            fontFamily: 'Inknut Antiqua',
-            fontSize: '48px',
-            color: '#fcd12a',
-            stroke: 'black',
-            strokeThickness: 8
-        }).setOrigin(0.5).setInteractive();
-
-        //Start the game when the player clicks start
-        this.startButton.on('pointerdown', () => {
-            this.countdown.start(this.handleOutOfTime.bind(this),startingTime*1000);
-                //Game starts
-                this.gameActive = true;
-                console.log(this.gameActive);
-                this.spawnCauldron();
-                //Load the first question
-                this.loadNextQuestion();
-                this.startButton.destroy();
-        });
+        
+        this.createIntro(width,height,startingTime);
         
         //Display the multiplier and score
         this.multiplierDisplay = this.add.text(width * 0.9, height * 0.2, 'Multiplier: \n' + this.multiplier, {
@@ -201,20 +184,101 @@ export class Act1Minigame extends BaseGameScene {
 
     }
 
-    setupPlayer() {
-        // REPLACE: Define player configuration
-        const playerConfig = {
-          texture: 'WitchIdle',
-          frame: 0,
-          scale: 1.5,
-          displayName: 'Player',
-          animation: 'idleAnim',
-          movementConstraint: 'horizontal' // or 'topdown'
-        };
-        
-        // Use the base class method to create player
-        this.player = this.createPlayer(playerConfig);
+    //Displays the rules and start button
+    createIntro(width,height,startingTime) {
+        const introX = width / 2;
+        const introY = height / 2;
+        const introWidth = width / 4;
+        const introHeight = height*3 / 4;
+        const cam = this.cameras.main;
+        const titleSize = Math.round(height * .036);
+        const rulesSize = Math.round(height * .024);
+        const startSize = Math.round(height * .05);
+        const rulesText = `Rules:
+        - Move left and right with 'A' and 'D'
+        - Tap the spacebar or 'W' to jump
+        - Press 'E' to pick up ingredients\n
+        However choose wisely, as the wrong ingredient will cost you time and reset your multipler!`;
+
+        this.introContainer = this.add.container(introX, introY);
+        this.introContainer.add([
+            this.rexUI.add.roundRectangle(0, 0, introWidth, introHeight, 20, 0x3B2823).setStrokeStyle(3, 0x674F49).setOrigin(0.5),
+            this.title = this.add.text(0, -introHeight*3/8, 'Help the witches brew up something in the cauldron!', {
+                fontFamily: 'Inknut Antiqua',
+                fontSize: `${titleSize}px`,
+                color: '#ffffff',
+                stroke: '#000000',
+                strokeThickness: 8,
+                align: 'center',
+                wordWrap: { width: introWidth - 20, useAdvancedWrap: true }
+            }).setOrigin(0.5),
+            this.portraitContainer = this.add.container(0, this.title.y + height/7),
+            this.portraitContainer.add([
+                this.subBg = this.rexUI.add.roundRectangle(0, 0, introWidth*7/8, introHeight/8, 10, 0x1A0F0D).setStrokeStyle(3, 0x674F49).setOrigin(0.5),
+                this.portrait3 = this.add.image(0, 0, 'witch3portrait')
+                    .setOrigin(0.5)
+                    .setDisplaySize(this.subBg.height - this.subBg.height*.2, this.subBg.height - 20),
+                this.portrait2 = this.add.image(this.portrait3.x-this.portrait3.width*.2, this.portrait3.y, 'witch2portrait')
+                    .setOrigin(0.5)
+                    .setDisplaySize(this.subBg.height - this.subBg.height*.2, this.subBg.height - 20),
+                this.portrait1 = this.add.image(this.portrait3.x+this.portrait3.width*.2, this.portrait3.y, 'witch1portrait')
+                    .setOrigin(0.5)
+                    .setDisplaySize(this.subBg.height - this.subBg.height*.2, this.subBg.height - 20)
+                    .setFlipX(true),
+                ]),
+            this.rules = this.add.text(0, +50, rulesText, {
+                fontFamily: 'Inknut Antiqua',
+                fontSize: `${rulesSize}px`,
+                color: '#ffffff',
+                stroke: '#000000',
+                strokeThickness: 4,
+                align: 'left',
+                wordWrap: { width: introWidth - 20, useAdvancedWrap: true }
+            }).setOrigin(0.5),
+            this.startButton = this.add.text(0,introHeight / 2 -50, '- START -', {
+                    fontFamily: 'Inknut Antiqua',
+                    fontSize: `${startSize}px`,
+                    color: '#fcd12a',
+                    stroke: 'black',
+                    strokeThickness: 8
+                }).setOrigin(0.5).setInteractive().setDepth(9)
+        ]).setDepth(8);
+
+        this.startButton.on('pointerover', () => {
+            this.startButton.setScale(1.1);
+        });
+        this.startButton.on('pointerout', () => {
+            this.startButton.setScale(1);
+        });
+
+        //Start the game when the player clicks start
+        this.startButton.on('pointerdown', () => {
+            this.countdown.start(this.handleOutOfTime.bind(this),startingTime*1000);
+                //Game starts
+                this.gameActive = true;
+                console.log(this.gameActive);
+                this.spawnCauldron();
+                //Load the first question
+                this.loadNextQuestion();
+                this.introContainer.destroy();
+                this.startButton.destroy();
+        });
     }
+
+    // setupPlayer() {
+    //     // REPLACE: Define player configuration
+    //     const playerConfig = {
+    //       texture: 'WitchIdle',
+    //       frame: 0,
+    //       scale: 1.5,
+    //       displayName: 'Player',
+    //       animation: 'idleAnim',
+    //       movementConstraint: 'horizontal' // or 'topdown'
+    //     };
+        
+    //     // Use the base class method to create player
+    //     this.player = this.createPlayer(playerConfig);
+    // }
 
     spawnCauldron() {
         //Initialize the cauldron
@@ -233,14 +297,20 @@ export class Act1Minigame extends BaseGameScene {
         this.physics.add.overlap(this.player, this.cauldron, this.handleCauldronOverlap, null, this);
     }
 
+    //Handles loading the next question and displaying it, and spawning the ingredients
     loadNextQuestion() {
         console.log('loading next question');
         console.log(this.questionSet);
         if(!this.quizOverlay) {//Create the quiz overlay if it doesn't exist
-            let containX = this.scale.width / 2;
-            let containY = this.scale.height / 8;
-            let containWidth = this.scale.width * 3/5;
-            let containHeight = this.scale.height * 1/4;
+            const width = this.scale.width;
+            const height = this.scale.height;
+            const containX = width / 2;
+            const containY = height / 8;
+            const containWidth = width * 3/5;
+            const containHeight = height * 1/4;
+            const questionSize = Math.round(height * .032);
+            const answerSize = Math.round(height * .024);
+
             this.quizOverlay = this.add.container(containX, containY);
             this.quizOverlay.add([
                 this.quizBg = this.rexUI.add.roundRectangle(0, 0, containWidth, containHeight, 20, 0x4E342E)
@@ -248,40 +318,40 @@ export class Act1Minigame extends BaseGameScene {
                     .setOrigin(0.5),
                 this.question = this.add.text(-containWidth/2 + 20,-containHeight/2 + 20, '', {
                     fontFamily: 'Inknut Antiqua',
-                    fontSize: '20px',
+                    fontSize: `${questionSize}px`,
                     color: '#FFDD86',
                     stroke: 'black',
                     strokeThickness: 5,
                     align: 'left',
                     wordWrap: { width: containWidth - 20, useAdvancedWrap: true }
                 }).setOrigin(0,0),
-                this.answer1 = this.add.text(-containWidth/2 + 25, this.question.y + 60, '', {
+                this.answer1 = this.add.text(-containWidth/2 + 25, this.question.y + questionSize*2.5, '', {
                     fontFamily: 'Inknut Antiqua',
-                    fontSize: '18px',
+                    fontSize: `${answerSize}px`,
                     color: '#FFDD86',
                     stroke: 'black',
                     strokeThickness: 4,
                     wordWrap: { width: containWidth/2 - 20, useAdvancedWrap: true }
                 }).setOrigin(0,0),
-                this.answer2 = this.add.text(-containWidth/2 + 25, this.answer1.y + 40, '', {
+                this.answer2 = this.add.text(-containWidth/2 + 25, this.answer1.y + questionSize*2, '', {
                     fontFamily: 'Inknut Antiqua',
-                    fontSize: '18px',
+                    fontSize: `${answerSize}px`,
                     color: '#FFDD86',
                     stroke: 'black',
                     strokeThickness: 4,
                     wordWrap: { width: containWidth/2 - 20, useAdvancedWrap: true }
                 }).setOrigin(0,0),
-                this.answer3 = this.add.text(5, this.question.y + 60, '', {
+                this.answer3 = this.add.text(5, this.question.y + questionSize*2.5, '', {
                     fontFamily: 'Inknut Antiqua',
-                    fontSize: '18px',
+                    fontSize: `${answerSize}px`,
                     color: '#FFDD86',
                     stroke: 'black',
                     strokeThickness: 4,
                     wordWrap: { width: containWidth/2 - 20, useAdvancedWrap: true }
                 }).setOrigin(0,0),
-                this.answer4 = this.add.text(5, this.answer3.y + 40, '', {
+                this.answer4 = this.add.text(5, this.answer3.y + questionSize*2, '', {
                     fontFamily: 'Inknut Antiqua',
-                    fontSize: '18px',
+                    fontSize: `${answerSize}px`,
                     color: '#FFDD86',
                     stroke: 'black',
                     strokeThickness: 4,
@@ -323,7 +393,7 @@ export class Act1Minigame extends BaseGameScene {
             this.countdown.stop();
             this.quizOverlay.destroy();
             this.gameActive = false;
-            this.add.text(this.scale.width / 2, this.scale.height / 8, 'You got through all the questions!', {
+            this.add.text(this.scale.width / 2, this.scale.height / 12, 'You got through all the questions!', {
                 fontFamily: 'Inknut Antiqua',
                 fontSize: '48px',
                 color: '#0DB500',
@@ -519,7 +589,7 @@ export class Act1Minigame extends BaseGameScene {
     //Handle when the player runs out of time
     handleOutOfTime() {
         console.log("out of time called");
-        this.add.text(this.scale.width / 2, this.scale.height / 8, 'You ran out of time!', {
+        this.add.text(this.scale.width / 2, this.scale.height / 12, 'You ran out of time!', {
             fontFamily: 'Inknut Antiqua',
             fontSize: '48px',
             color: '#FF0000',
@@ -569,6 +639,7 @@ export class Act1Minigame extends BaseGameScene {
         ]).setDepth(8);
 
         //Save score to the player's account ------------------------------------------------------
+        this.updateScore();
 
         //Handle the buttons actions
         this.endGameOverlay.getAt(3).on('pointerdown', () => {
@@ -601,6 +672,29 @@ export class Act1Minigame extends BaseGameScene {
             this.endGameOverlay.getAt(5).setScale(1);
         });
 
+    }
+
+    async updateScore() {
+        //this.saveProgress();
+        console.log("updating score");
+        const user = this.auth.currentUser;
+        if (!user) {
+            alert("You need to be logged in to save your score!");
+            return;
+        }
+        else {
+            try { 
+                const playersRef = collection(this.db, "Players");
+                const q = query(playersRef, where("SchoolEmail", "==", user.email));
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                    await updateDoc(querySnapshot.docs[0].ref, { Score: this.score + querySnapshot.docs[0].data().Score });
+                    alert("Score updated successfully!");
+                }
+            } catch {
+                alert("Error updating your.");
+            }
+        }
     }
 
     createFloor() {
