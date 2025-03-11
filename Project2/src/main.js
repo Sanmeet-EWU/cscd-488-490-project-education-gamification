@@ -16,6 +16,7 @@ import { PauseMenu } from './scenes/PauseMenu.js';
 import { BaseGameScene } from './scenes/BaseGameScene.js';
 import { Act1Minigame } from './scenes/GameScenes/Act1Minigame.js';
 import { Act1Scene2Minigame } from './scenes/GameScenes/Act1Scene2Minigame.js';
+import { Act1Scene3Part1a } from './scenes/GameScenes/Act1Scene3Part1a.js';
 
 let game;
 
@@ -54,6 +55,7 @@ const config = {
     Settings,
     Act1Scene1,
     Act1Scene2,
+    Act1Scene3Part1a,
     Act1Scene3,
     Act1Minigame,
     Act1Scene2Minigame,
