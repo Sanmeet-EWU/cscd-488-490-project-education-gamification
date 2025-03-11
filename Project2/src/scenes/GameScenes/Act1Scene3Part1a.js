@@ -23,8 +23,10 @@ export class Act1Scene3Part1a extends BaseGameScene {
 
     // Load other character sprites (using guard as a generic sprite if needed)
     if (!this.textures.exists('witchData')) {
-      this.load.json('witchData', 'assets/characters/sprites.json');
+      console.log("Loading generic witch json");
+      this.load.json('witchData', 'assets/characters/witchIdle.json');
     }
+    console.log("Loading witch json complete");
     // Character spritesheets
     if (!this.textures.exists('WitchIdle')) {
       this.load.spritesheet('WitchIdle', 'assets/characters/B_witch_idle.png', {
@@ -61,8 +63,13 @@ export class Act1Scene3Part1a extends BaseGameScene {
     
     // Check required assets
     const requiredAssets = [
-      'background_witchden', 'witchData', 'WitchIdle', 'witchMusic',
-      'witch1portrait', 'witch2portrait', 'witch3portrait', 'banquoportrait'
+      'background_witchden', 
+      'WitchIdle', 
+      'witchMusic',
+      'witch1portrait', 
+      'witch2portrait', 
+      'witch3portrait', 
+      'banquoportrait'
     ];
     const missing = this.checkRequiredAssets(requiredAssets);
     if (missing.length > 0) {
@@ -75,7 +82,7 @@ export class Act1Scene3Part1a extends BaseGameScene {
       }).setOrigin(0.5);
       return;
     }
-
+    
     // Fade in scene
     this.cameras.main.fadeIn(1000, 0, 0, 0);
 
@@ -155,8 +162,8 @@ export class Act1Scene3Part1a extends BaseGameScene {
         y: this.scale.height * 0.8,
         texture: 'WitchIdle',
         frame: 0,
-        scale: 1.5,
-        animationKey: 'idleAnim',
+        scale: 3,
+        animationKey: 'witchIdleAnimw',
         interactive: true,
         displayName: 'First Witch'
       },
@@ -164,9 +171,9 @@ export class Act1Scene3Part1a extends BaseGameScene {
         key: "Witch2",
         x: this.scale.width * 0.25,
         y: this.scale.height * 0.8,
-        texture: 'WitchIdle',
+        texture: 'witchIdleAnim',
         frame: 0,
-        scale: 1.5,
+        scale: 3,
         animationKey: 'idleAnim',
         interactive: true,
         displayName: 'Second Witch'
@@ -177,8 +184,8 @@ export class Act1Scene3Part1a extends BaseGameScene {
         y: this.scale.height * 0.8,
         texture: 'WitchIdle',
         frame: 0,
-        scale: 1.5,
-        animationKey: 'idleAnim',
+        scale: 3,
+        animationKey: 'witchIdleAnim',
         interactive: true,
         displayName: 'Third Witch'
       }
@@ -210,7 +217,7 @@ export class Act1Scene3Part1a extends BaseGameScene {
       console.error("Error setting up dialogue:", error);
     }
   }
-
+  
   createAnimations() {
     // REPLACE: Set up your character animations
     
@@ -222,7 +229,14 @@ export class Act1Scene3Part1a extends BaseGameScene {
         frameRate: 10
       });
     }
-    
+
+    this.anims.create({
+      key: 'witchIdleAnim',
+      frames: this.anims.generateFrameNumbers('WitchIdle', { start: 0, end: 5 }),
+      frameRate: 6,
+      repeat: -1
+    });
+
     if (!this.anims.exists('walkLeft')) {
       this.anims.create({
         key: 'walkLeft',
