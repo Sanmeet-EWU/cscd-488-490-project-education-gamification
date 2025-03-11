@@ -1,128 +1,189 @@
 {
     "Act1Scene3": [
         {
-            "speaker": "Duncan",
-            "text": "What bloody man is that? He can report, As seemeth by his plight, of the revolt The newest state.",
-            "translation": "Who is this bloodied man? From his appearance, he can tell us the latest news about the rebellion.",
-            "responses": [{ "text": "...", "next": "Malcolm1" }]
+            "speaker": "First Witch",
+            "text": "Where hast thou been, sister?",
+            "responses": [{ "text": "...", "next": "Second Witch" }]
+        },
+        { 
+            "speaker": "Second Witch",
+            "text": "Killing swine.", 
+            "responses": [{ "text": "...", "next": "Third Witch" }] 
         },
         {
-            "speaker": "Malcolm",
-            "text": "This is the sergeant Who, like a good and hardy soldier, fought 'Gainst my captivity. — Hail, brave friend! Say to the King the knowledge of the broil As thou didst leave it.",
-            "translation": "This is the sergeant who fought bravely to prevent my capture. Hello, brave friend! Tell the king what you know about the battle as you left it.",
-            "id": "Malcolm1",
-            "responses": [{ "text": "...", "next": "Captain1" }]
+            "speaker": "Third Witch",
+            "text": "A drum, a drum! Macbeth doth come.",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
         },
         {
-            "speaker": "Captain",
-            "text": "Doubtful it stood, As two spent swimmers that do cling together And choke their art. The merciless Macdonwald (Worthy to be a rebel, for to that The multiplying villainies of nature Do swarm upon him) from the Western Isles Of kerns and gallowglasses is supplied. And Fortune, on his damnèd quarrel smiling, Showed like a rebel's whore. But all's too weak; For brave Macbeth (well he deserves that name), Disdaining Fortune, with his brandished steel, Which smoked with bloody execution, Like Valor's minion, carved out his passage Till he faced the slave; Which ne'er shook hands, nor bade farewell to him, Till he unseamed him from the nave to th' chops, And fixed his head upon our battlements.",
-            "translation": "The battle was uncertain, like two exhausted swimmers clinging to each other and hindering each other's abilities. The ruthless Macdonwald (who deserves to be a rebel because he's swarmed with all of nature's villainies) is supplied with light-armed and heavy-armed Irish soldiers from the Western Isles. Fortune seemed to smile on his cursed cause, like a rebel's whore. But it wasn't enough, because brave Macbeth, scorning Fortune, with his bloodied sword, carved his way through until he faced the rebel. Without any formal parting, Macbeth split him open from his navel to his jaw and placed his head on our battlements.",
-            "id": "Captain1",
-            "responses": [{ "text": "...", "next": "Duncan1" }]
+            "speaker": "Macbeth",
+            "text": "So foul and fair a day I have not seen.",
+            "responses": [{ "text": "...", "next": "Banquo" }]
         },
         {
-            "speaker": "Duncan",
-            "text": "O valiant cousin, worthy gentleman!",
-            "translation": "Oh my brave kinsman, what a worthy gentleman!",
-            "id": "Duncan1",
-            "responses": [{ "text": "...", "next": "Captain2" }]
+            "speaker":"Banquo",
+            "text":"How far is ’t called to Forres?—What are these, So withered, and so wild in their attire. You should be women, And yet your beards forbid me to interpret That you are so.",
+            "responses":[{"text":"...","next":"Macbeth"}]
         },
         {
-            "speaker": "Captain",
-            "text": "As whence the sun 'gins his reflection Shipwracking storms and direful thunders break, So from that spring whence comfort seemed to come Discomfort swells. Mark, King of Scotland, mark: No sooner justice had, with valor armed, Compelled these skipping kerns to trust their heels, But the Norweyan lord, surveying vantage, With furbished arms and new supplies of men, Began a fresh assault.",
-            "translation": "Just as storms and thunder break out from where the sun begins to rise, from the same source that seemed to bring comfort, discomfort swells. Listen, King of Scotland: No sooner had justice, armed with valor, forced these nimble Irish soldiers to flee, than the Norwegian lord, seeing an opportunity, with polished weapons and fresh troops, began a new attack.",
-            "id": "Captain2",
-            "responses": [{ "text": "...", "next": "Duncan2" }]
+            "speaker":"Macbeth",
+            "text":"Speak if you can. What are you?",
+            "responses":[{"text":"...","next":"First Witch"}]
         },
         {
-            "speaker": "Duncan",
-            "text": "Dismayed not this our captains, Macbeth and Banquo?",
-            "translation": "Didn't this discourage our captains, Macbeth and Banquo?",
-            "id": "Duncan2",
-            "responses": [{ "text": "...", "next": "Captain3" }]
+            "speaker":"First Witch",
+            "text":"All hail, Macbeth! Hail to thee, Thane of Glamis!",
+            "responses":[{"text":"...","next":"Second Witch"}]
         },
         {
-            "speaker": "Captain",
-            "text": "Yes, as sparrows eagles, or the hare the lion. If I say sooth, I must report they were As cannons overcharged with double cracks, So they doubly redoubled strokes upon the foe. Except they meant to bathe in reeking wounds Or memorize another Golgotha, I cannot tell — But I am faint. My gashes cry for help.",
-            "translation": "Yes, as much as sparrows frighten eagles, or hares frighten lions. If I tell the truth, they were like cannons loaded with double charges, doubling and redoubling their blows upon the enemy. Unless they intended to bathe in steaming wounds or create another place of skulls like Golgotha, I cannot say — But I'm weak. My wounds need attention.",
-            "id": "Captain3",
-            "responses": [{ "text": "...", "next": "Duncan3" }]
+            "speaker":"Second Witch",
+            "text":"All hail, Macbeth! Hail to thee, Thane of Cawdor!",
+            "responses":[{"text":"...","next":"Third Witch"}]
         },
         {
-            "speaker": "Duncan",
-            "text": "So well thy words become thee as thy wounds: They smack of honor both. — Go, get him surgeons.",
-            "translation": "Your words become you as well as your wounds—both speak of honor. Go, get him medical help.",
-            "id": "Duncan3",
-            "responses": [{ "text": "...", "next": "Malcolm2" }]
+            "speaker":"Third Witch",
+            "text":"All hail, Macbeth, that shalt be king hereafter!",
+            "responses":[{"text":"...","next":"Banquo"}]
         },
         {
-            "speaker": "Malcolm",
-            "text": "The worthy Thane of Ross.",
-            "translation": "The worthy Thane of Ross.",
-            "id": "Malcolm2",
-            "responses": [{ "text": "...", "next": "Lennox1" }]
+            "speaker":"Banquo",
+            "text":"Good sir, My noble partner You greet with present grace and great prediction Of noble having and of royal hope, To me you speak not. If you can look into the seeds of time And say which grain will grow and which will not, Speak, then, to me, who neither beg nor fear Your favors nor your hate.",
+            "responses":[{"text":"...","next":"First Witch"}]
         },
         {
-            "speaker": "Lennox",
-            "text": "What a haste looks through his eyes! So should he look that seems to speak things strange.",
-            "translation": "How urgent he looks! That's how someone who brings strange news should appear.",
-            "id": "Lennox1",
-            "responses": [{ "text": "...", "next": "Ross1" }]
+            "speaker":"First Witch",
+            "text":"Hail!",
+            "responses":[{"text":"...","next":"Second Witch"}]
         },
         {
-            "speaker": "Ross",
-            "text": "God save the King.",
-            "translation": "God save the King.",
-            "id": "Ross1",
-            "responses": [{ "text": "...", "next": "Duncan4" }]
+            "speaker":"Second Witch",
+            "text":"Hail!",
+            "responses":[{"text":"...","next":"Third Witch"}]
         },
         {
-            "speaker": "Duncan",
-            "text": "Whence cam'st thou, worthy thane?",
-            "translation": "Where do you come from, worthy thane?",
-            "id": "Duncan4",
-            "responses": [{ "text": "...", "next": "Ross2" }]
+            "speaker":"Third Witch",
+            "text":"Hail!",
+            "responses":[{"text":"...","next":"First Witch"}]
         },
         {
-            "speaker": "Ross",
-            "text": "From Fife, great king, Where the Norweyan banners flout the sky And fan our people cold. Norway himself, with terrible numbers, Assisted by that most disloyal traitor, The Thane of Cawdor, began a dismal conflict, Till that Bellona's bridegroom, lapped in proof, Confronted him, with self-comparisons, Point against point, rebellious arm 'gainst arm, Curbing his lavish spirit. And to conclude, The victory fell on us.",
-            "translation": "From Fife, great king, where Norwegian flags mock the sky and chill our people. The Norwegian king himself, with fearsome numbers, assisted by that most disloyal traitor, the Thane of Cawdor, began a grim battle. But Macbeth, the husband of the war goddess, dressed in armor, met him equally, matching point against point, rebellious arm against arm, subduing his extravagant spirit. And finally, we won the victory.",
-            "id": "Ross2",
-            "responses": [{ "text": "...", "next": "Duncan5" }]
+            "speaker":"First Witch",
+            "text":"Lesser than Macbeth and greater.",
+            "responses":[{"text":"...","next":"Second Witch"}]
         },
         {
-            "speaker": "Duncan",
-            "text": "Great happiness!",
-            "translation": "Wonderful news!",
-            "id": "Duncan5",
-            "responses": [{ "text": "...", "next": "Ross3" }]
+            "speaker":"Second Witch",
+            "text": "Not so happy, yet much happier.",
+            "responses":[{"text":"...","next":"Third Witch"}]
         },
         {
-            "speaker": "Ross",
-            "text": "That now Sweno, The Norways' king, craves composition. Nor would we deign him burial of his men Till he disbursèd at Saint Colme's Inch Ten thousand dollars to our general use.",
-            "translation": "Now Sweno, the Norwegian king, asks for peace terms. We wouldn't allow him to bury his dead until he paid ten thousand dollars at Saint Colme's Isle for our general use.",
-            "id": "Ross3",
-            "responses": [{ "text": "...", "next": "Duncan6" }]
+            "speaker":"Third Witch",
+            "text":"Thou shalt get kings, though thou be none. So all hail, Macbeth and Banquo!",
+            "responses":[{"text":"...","next":"First Witch"}]
         },
         {
-            "speaker": "Duncan",
-            "text": "No more that Thane of Cawdor shall deceive Our bosom interest. Go, pronounce his present death, And with his former title greet Macbeth.",
-            "translation": "The Thane of Cawdor will no longer betray us. Go, announce his immediate execution, and greet Macbeth with his former title.",
-            "id": "Duncan6",
-            "responses": [{ "text": "...", "next": "Ross4" }]
+            "speaker":"First Witch",
+            "text":"Banquo and Macbeth, all hail!",
+            "responses":[{"text":"...","next":"Macbeth"}]
         },
         {
-            "speaker": "Ross",
-            "text": "I'll see it done.",
-            "translation": "I'll see it done.",
-            "id": "Ross4",
-            "responses": [{ "text": "...", "next": "Duncan7" }]
+            "speaker":"Macbeth",
+            "text":"Stay, ell me more. By Sinel’s death I know I am Thane of Glamis. But how of Cawdor? The Thane of Cawdor lives.",
+            "responses":[{"text":"...","next":"Banquo"}]
         },
         {
-            "speaker": "Duncan",
-            "text": "What he hath lost, noble Macbeth hath won.",
-            "translation": "What he has lost, noble Macbeth has won.",
-            "id": "Duncan7",
+            "speaker":"Banquo",
+            "text":"The earth hath bubbles, as the water has, And these are of them. Whither are they vanished?",
+            "translation":"The Earth itself has bubbles, just like water, and they came from them. Whither are they vanished?",
+            "responses":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Into the air, and what seemed corporal melted.",
+            "responses":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"Have we eaten on the insane root That takes the reason prisoner?",
+            "responses":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Your children shall be kings.",
+            "responses":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"You shall be king.",
+            "responses":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"And Thane of Cawdor too. Went it not so?",
+            "responses":[{"text":"...","next":"Ross"}]
+        },
+        {
+            "speaker":"Ross",
+            "text":"The King hath happily received, Macbeth, The news of thy success.",
+            "responses":[{"text":"...","next":"Angus"}]
+        },
+        {
+            "speaker":"Angus",
+            "text":"We are sent To give thee from our royal master thanks, Only to herald thee into his sight, Not pay thee.",
+            "responses":[{"text":"...","next":"Ross"}]
+        },
+        {
+            "speaker":"Ross",
+            "text":"And for an earnest of a greater honor, He bade me, from him, call thee Thane of Cawdor, In which addition, hail, most worthy thane, For it is thine.",
+            "responses":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"What, can the devil speak true?",
+            "responses":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"The Thane of Cawdor lives. Why do you dress me In borrowed robes?",
+            "responses":[{"text":"...","next":"Angus"}]
+        },
+        {
+            "speaker":"Angus",
+            "text":"Who was the Thane lives yet, But under heavy judgment bears that life Which he deserves to lose. treasons capital, confessed and proved, Have overthrown him.",
+            "responses":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Glamis and Thane of Cawdor! The greatest is behind. Do you not hope your children shall be kings, When those that gave the Thane of Cawdor to me Promised no less to them?",
+            "responses":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":" But ’tis strange. And oftentimes, to win us to our harm, The instruments of darkness tell us truths, Win us with honest trifles, to betray ’s In deepest consequence.—",
+            "responses":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"If chance will have me king, why, chance may crown me Without my stir.",
+            "responses":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"Worthy Macbeth, we stay upon your leisure.",
+            "responses":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Give me your favor. Let us toward the King.",
+            "responses":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"Very gladly.",
+            "responses":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Till then, enough.—Come, friends.",
             "endScene": true
         }
     ]
