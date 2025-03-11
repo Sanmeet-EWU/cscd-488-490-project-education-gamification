@@ -26,7 +26,7 @@ export class Leaderboard extends BaseScene {
     
     try {
       console.log("Fetching leaderboard data");
-      const leaderboardData = fetchLeaderboardData();
+      const leaderboardData = await fetchLeaderboardData();
       console.log("Leaderboard data fetched");
       if (Object.keys(leaderboardData).length === 0) {
         this.add.text(width / 2, height * 0.3, "No leaderboard data available", {

@@ -254,14 +254,14 @@ export class Act1Minigame extends BaseGameScene {
         //Start the game when the player clicks start
         this.startButton.on('pointerdown', () => {
             this.countdown.start(this.handleOutOfTime.bind(this),startingTime*1000);
-                //Game starts
-                this.gameActive = true;
-                console.log(this.gameActive);
-                this.spawnCauldron();
-                //Load the first question
-                this.loadNextQuestion();
-                this.introContainer.destroy();
-                this.startButton.destroy();
+            //Game starts
+            this.gameActive = true;
+            console.log(this.gameActive);
+            this.spawnCauldron();
+            //Load the first question
+            this.loadNextQuestion();
+            this.introContainer.destroy();
+            this.startButton.destroy();
         });
     }
 
@@ -300,10 +300,11 @@ export class Act1Minigame extends BaseGameScene {
     //Handles loading the next question and displaying it, and spawning the ingredients
     loadNextQuestion() {
         console.log('loading next question');
+        const width = this.scale.width;
+        const height = this.scale.height;
         console.log(this.questionSet);
         if(!this.quizOverlay) {//Create the quiz overlay if it doesn't exist
-            const width = this.scale.width;
-            const height = this.scale.height;
+
             const containX = width / 2;
             const containY = height / 8;
             const containWidth = width * 3/5;
@@ -358,6 +359,11 @@ export class Act1Minigame extends BaseGameScene {
                     wordWrap: { width: containWidth/2 - 20, useAdvancedWrap: true }
                 }).setOrigin(0,0), 
             ]);
+            //Adding these here so are only added once
+            this.ingredient1_tag = this.add.text(width*.1,height*.7,'1', {fontSize:'36px', align:'left'}).setOrigin(.5),
+            this.ingredient2_tag = this.add.text(width*.3,height*.7,'2', {fontSize:'36px', align:'left'}).setOrigin(.5),
+            this.ingredient3_tag = this.add.text(width*.7,height*.7,'3', {fontSize:'36px', align:'left'}).setOrigin(.5),
+            this.ingredient4_tag = this.add.text(width*.9,height*.7,'4', {fontSize:'36px', align:'left'}).setOrigin(.5)
         }
 
         //console.log(this.questionSet);
@@ -386,6 +392,8 @@ export class Act1Minigame extends BaseGameScene {
             this.quizOverlay.getAt(4).setText('3. ' + question.answers[2]);
             this.quizOverlay.getAt(5).setText('4. ' + question.answers[3]);
             //this.spawnIngredients(question);
+
+
 
         } else {
             console.log('No more questions');
@@ -452,18 +460,6 @@ export class Act1Minigame extends BaseGameScene {
                 break;
         }
 
-
-        // this.tags = {
-        //     ingredient1: this.add.text(0,0,question.answers[0], {align: 'center'}),
-        //     ingredient2: this.add.text(0,0,question.answers[1], {align: 'center'}),
-        //     ingredient3: this.add.text(0,0,question.answers[2], {align: 'center'}),
-        //     ingredient4: this.add.text(0,0,question.answers[3], {align: 'center'})
-        // }
-
-        
-
-
-        
         ////////////////////////////////////////////////
         //There is probably a better way to do this...//
         ////////////////////////////////////////////////
@@ -610,6 +606,8 @@ export class Act1Minigame extends BaseGameScene {
             this.quizOverlay = null;
         }
 
+        
+
         //Ensure game is over
         this.gameActive = false;
         console.log(this.gameActive);
@@ -675,8 +673,6 @@ export class Act1Minigame extends BaseGameScene {
     }
 
     async updateScore() {
-        //this.saveProgress();
-        console.log("updating score");
         const user = this.auth.currentUser;
         if (!user) {
             alert("You need to be logged in to save your score!");
@@ -688,11 +684,16 @@ export class Act1Minigame extends BaseGameScene {
                 const q = query(playersRef, where("SchoolEmail", "==", user.email));
                 const querySnapshot = await getDocs(q);
                 if (!querySnapshot.empty) {
-                    await updateDoc(querySnapshot.docs[0].ref, { Score: this.score + querySnapshot.docs[0].data().Score });
+                    let oldScore = querySnapshot.docs[0].data().SaveData.score;
+                    let newScore = oldScore + this.score;
+                    //You have to specify the field path weirdly
+                    await updateDoc(querySnapshot.docs[0].ref, { [`SaveData.${'score'}`]: newScore });
+                    console.log("Score calculation: " + oldScore + " + " + this.score + " = " + newScore);
                     alert("Score updated successfully!");
                 }
-            } catch {
-                alert("Error updating your.");
+            } catch(e) {
+                alert("Error updating your score.");
+                console.error("Error updating score: ", e);
             }
         }
     }
@@ -714,7 +715,8 @@ export class Act1Minigame extends BaseGameScene {
             return;//Should probably lock player movement here
         }
 
-        const speed = 300;
+        //Needs to consider the screen size a little
+        const speed = 250 + this.scale.width * 0.2;
 
         // Handle player movement
         if (this.keys.left.isDown && this.keys.right.isDown) {
@@ -750,6 +752,8 @@ export class Act1Minigame extends BaseGameScene {
             this.heldIngredient.y = this.player.y;
             // this.heldIngredient.body.reset(this.heldIngredient.x, this.heldIngredient.y);
         }
+
+        
 
     }
 

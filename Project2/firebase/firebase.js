@@ -52,23 +52,20 @@ export async function isEmailRegistered(email) {
     return !querySnapshot.empty;
 }
 
-// TREVOR THIS FUNCTION NEEDS TO:
-// Fetch the Players DB collection
-// Iterate through every player document, and store the Username and the SaveData.score fields from the individual player doc
-// Then it needs to sort the LeaderboardData object by the SaveData.score field in descending order
-// Finally, it needs to return the sorted LeaderboardData object which we can then deisplay in descending order on the leaderboard scene
 
+// Fetch leaderboard data
 export async function fetchLeaderboardData() {
-    const playersRef = collection(db, "Players");
     const leaderboardData = {};
-    const q = query(playersRef, orderBy("SaveData.score", 'desc'), limit(10));
+    const q = query(collection(db, "Players"), orderBy("SaveData.score", 'desc'), limit(10));
     const querySnapshot = await getDocs(q);
     querySnapshot.docs.forEach((doc, i) => {
-      const data = doc.data();
-      leaderboardData[i] = { Username: data.Username, Score: data.SaveData.score };
+        const data = doc.data();
+        console.log(data); 
+        leaderboardData[i] = { Username: data.Username, Score: data.SaveData.score };
     });
     return leaderboardData;
-  }
+}
+
 
 export async function registerUser(email) {
     // const allowedDomain = "@school.edu"; // Replace with domain or set to null to allow all domains
