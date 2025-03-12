@@ -34,6 +34,15 @@
             "question" : "Who is named as the Prince of Cumberland, the king's heir?",
             "answers" : ["Macbeth", "Malcolm", "Banquo", "Ross"],
             "correct" : "Malcolm"
+        },{
+            "question":"Who creates the plan to kill King Duncan?",
+            "answers":["Macbeth","Malcolm","Lady Macbeth","Duncan"],
+            "correct":"Lady Macbeth"
+        },
+        {
+            "question":"Who is planed to take the blame for killing Duncan?",
+            "answers":["Banquo", "Macbeth","Lady Macbeth", "The Chamber Maids"],
+            "correct":"The Chamber Maids"
         }
 
     ]
