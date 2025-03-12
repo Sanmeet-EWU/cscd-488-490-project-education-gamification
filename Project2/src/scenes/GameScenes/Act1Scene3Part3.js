@@ -61,6 +61,7 @@ export class Act1Scene3Part3 extends BaseGameScene {
     this.load.image('banquoportrait', 'assets/portraits/Banquo.png');
     this.load.image('macbethpotrait', 'assets/portraits/Macbeth.png');
     this.load.image('rossportrait', 'assets/portraits/Ross.png');
+    this.load.image('angusportrait', 'assets/portraits/Angus.png');
     
     // Scene music
     this.load.audio('witchMusic', 'assets/audio/act1scene1.mp3');//Same music from first time seeing the witch den
@@ -88,8 +89,11 @@ export class Act1Scene3Part3 extends BaseGameScene {
       'background_witchden', 
       'witchMusic', 
       'banquoportrait',
-      'macbethpotrait'
-
+      'macbethpotrait',
+      'rossportrait',
+      'angusportrait',
+      'guardImg',
+      'guardData'
     ];
     const missing = this.checkRequiredAssets(requiredAssets);
     if (missing.length > 0) {
@@ -139,8 +143,6 @@ export class Act1Scene3Part3 extends BaseGameScene {
     
     // Create NPCs
     this.setupNPCs();
-
-    this.dialogueComplete = false;
     
     // Setup dialogue
     this.setupSceneDialogue();
@@ -156,8 +158,6 @@ export class Act1Scene3Part3 extends BaseGameScene {
     // wait a little bit before starting dialogue
     this.time.delayedCall(1000, () => this.start());
 
-    
-    
     
     // Handle scene resize
     this.scale.on('resize', this.onResize, this);
@@ -177,9 +177,16 @@ export class Act1Scene3Part3 extends BaseGameScene {
 
           console.log("Ross and Angus enter the scene");
 
+            // create Ross and Angus
             this.setupNPCs2();
-            // Setup dialogue
+            // Setup second dialogue
             this.setupSceneDialogue2();
+
+            this.time.delayedCall(1500, () =>  
+              this.dialogueManager.startDialogue("Ross", () => {
+                this.switchScene('Act1Scene4');
+              })
+            );
 
           //this.switchScene('Act1Minigame');//NextSceneName
         });
@@ -323,7 +330,7 @@ export class Act1Scene3Part3 extends BaseGameScene {
         "Banquo": "banquoportrait",
         "Macbeth": "macbethpotrait",
         "Ross": "rossportrait",
-        "Angus": "",
+        "Angus": "angusportrait",
         "Stage Directions": null
       };
 
