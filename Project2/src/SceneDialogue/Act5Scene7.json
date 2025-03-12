@@ -9,12 +9,12 @@
         {
             "speaker": "Young Siward",
             "text": "What is thy name?",
-            "responses": [{ "text": "...", "next": "Macbeth" }]
+            "responses": [{ "text": "My name’s Macbeth.", "next": "Macbeth" }]
         },
         {
             "speaker": "Macbeth",
             "text": "My name’s Macbeth.",
-            "responses": [{ "text": "...", "next": "Young Siward" }]
+            "responses": [{ "text": "No, nor more fearful.", "next": "Young Siward" }]
         },
         {
             "speaker": "Young Siward",
@@ -30,32 +30,12 @@
         {
             "speaker": "Young Siward",
             "text": "Thou liest, abhorrèd tyrant. With my sword I’ll prove the lie thou speak’st.",
-            "responses": [{ "text": "...", "next": "Macbeth" }]
+            "responses": [{ "text": "Thou wast born of woman.", "next": "Macbeth" }]
         },
         {
             "speaker": "Macbeth",
             "text": "Thou wast born of woman. But swords I smile at, weapons laugh to scorn, Brandished by man that’s of a woman born.",
             "translation": "You were born from a woman. I mock any weapon held by a man born from a woman.",
-            "responses": [{ "text": "...", "next": "Macduff" }]
-        },
-        {
-            "speaker": "Macduff",
-            "text": "That way the noise is. Tyrant, show thy face! Let me find him, Fortune, And more I beg not.",
-            "responses": [{ "text": "...", "next": "Siward" }]
-        },
-        {
-            "speaker": "Siward",
-            "text": "This way, my lord. The castle’s gently rendered. The day almost itself professes yours, And little is to do.",
-            "responses": [{ "text": "...", "next": "Malcolm" }]
-        },
-        {
-            "speaker": "Malcolm",
-            "text": "We have met with foes That strike beside us.",
-            "responses": [{ "text": "...", "next": "Siward" }]
-        },
-        {
-            "speaker": "Siward",
-            "text": "Enter, sir, the castle.",
             "endScene": true
         }
     ]
