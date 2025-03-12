@@ -12,12 +12,12 @@
         },
         {
             "question" : "What title is given to Macbeth for his bravery in battle?",
-            "answers" : ["Thane of Cawdor", "Thane of Glamis", "Thane of Ross", "Thane of Skibidi"],
+            "answers" : ["Becoming thane of Cawdor", "Becoming thane of Glamis", "Becoming thane of Ross", "Becoming thane of Fife"],
             "correct" : "Thane of Cawdor"
         },
         {
             "question" : "What do the witches predict in Act 1, Scene 3 for Macbeth?",
-            "answers" : ["He will be king", "He will be Thane of Cawdor", "He will have many sons", "He will be a great warrior"],
+            "answers" : ["He will be king", "He will be tried for treason", "He will have many sons", "He will be a great warrior"],
             "correct" : "He will be king"
         },
         {
@@ -27,7 +27,7 @@
         },
         {
             "question" : "What do the witches predict in Act 1, Scene 3 for Banquo?",
-            "answers" : ["He will be king", "His children will be kings", "He will be Thane of Cawdor", "He will be a great warrior"],
+            "answers" : ["He will be king", "His children will be kings", "He'll be the new Thane of Cawdor", "He will be a great warrior"],
             "correct" : "His children will be kings"
         },
         {
@@ -42,6 +42,11 @@
         {
             "question":"Who is planed to take the blame for killing Duncan?",
             "answers":["Banquo", "Macbeth","Lady Macbeth", "The Chamber Maids"],
+            "correct":"The Chamber Maids"
+        },
+        {
+            "question":"How does Macbeth reacte to the witches' prophecies?",
+            "answers":["He is ecstatic about it", "He is frightened by it", "He is absorbed by the idea", "He disapointed by the grim news"],
             "correct":"The Chamber Maids"
         }
 
