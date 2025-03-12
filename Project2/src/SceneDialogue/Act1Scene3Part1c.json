@@ -1,0 +1,49 @@
+{
+    "Act1Scene3Part1b": [
+        {
+            "speaker": "Banquo",
+            "text": "The earth hath bubbles, as the water has, and these are of them. Whither are they vanished?",
+            "translation": "The earth has bubbles, like the water has, and these are some of them. Where have they gone?",
+            "responses": [{ "text": "...", "next": "Macbeth" }]
+        },
+        { 
+            "speaker": "Macbeth",
+            "text": "Into the air, and what seemed corporal melted, as breath into the wind. Would they had stayed!", 
+            "translation": "They vanished into thin air, like a breath of wind. I wish they had stayed to tell me more!",
+            "responses": [{ "text": "...", "next": "Banquo2" }] 
+        },
+        { 
+            "speaker": "Banquo",
+            "text": "Were such things here as we do speak about? Or have we eaten on the insane root That takes the reason prisoner?", 
+            "translation": "Did we really see what we think we saw? Or have we eaten some crazy plant that makes us hallucinate?",
+            "responses": [{ "text": "...", "next": "Macbeth2" }] 
+        },
+        { 
+            "speaker": "Macbeth",
+            "text": "Your children shall be kings.", 
+            "responses": [{ "text": "...", "next": "Banquo3" }] 
+        },
+        { 
+            "speaker": "Banquo",
+            "text": "You shall be king",
+            "responses": [{ "text": "...", "next": "Macbeth3" }] 
+        },
+        { 
+            "speaker": "Banquo",
+            "text": "And Thane of Cawdor too. Went it not so?", 
+            "translation": "And Thane of Cawdor too. Isn't that right?",
+            "responses": [{ "text": "...", "next": "Banquo4" }] 
+        },
+        { 
+            "speaker": "Banquo",
+            "text": "To th’ selfsame tune and words. —Who’s here?", 
+            "translation": "In the same way and with the same words. —Who goes there?",
+            "responses": [{ "text": "...", "next": "FinalLine" }] 
+        },
+        {   
+            "speaker": "Stage Direction", 
+            "text": "- Enter Ross and Angus -", 
+            "endScene": true
+        }
+    ]
+}

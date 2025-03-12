@@ -76,11 +76,15 @@
             "speaker": "Macbeth", 
             "text": "Say from whence you owe this strange intelligence, or why upon this blasted heath you stop our way with such prophetic greeting. Speak, I charge you.", 
             "translation": "Tell me where you got this strange knowledge, or why you are standing here blocking our path with such prophetic words. Speak, I command you.",
-            "responses": [{ "text": "...", "next": "FinalLine" }] 
+            "responses": [{ "text": "...", "next": "Stage Directions" }] 
         },
         {   
-            "speaker": "Stage Direction", 
-            "text": "<i>[The Witches vanish.]</i>",
+            "speaker": "Stage Directions", 
+            "text": " - The Witches vanish. - "
+        },
+        {   
+            "speaker": "end", 
+            "text": "",
             "endScene": true 
         }
     ]

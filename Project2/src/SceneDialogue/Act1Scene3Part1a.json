@@ -67,7 +67,7 @@
         },
         {   
             "speaker": "First Witch", 
-            "text": "Here I have a pilot’s thumb,\nWracked as homeward he did come.\n <i>[Drum within...]</i>", 
+            "text": "Here I have a pilot’s thumb,\nWracked as homeward he did come.\n\n - Drum within... -", 
             "responses": [{ "text": "...", "next": "ThirdWitch3" }] 
         },
         {   
@@ -76,7 +76,7 @@
             "responses": [{ "text": "...", "next": "All" }] 
         },
         {   
-            "speaker": "All", 
+            "speaker": "The Witches", 
             "text": "The Weïrd Sisters, hand in hand,\n Posters of the sea and land,\nThus do go about, about,\nThrice to thine and thrice to mine.\nAnd thrice again, to make up nine.\nPeace, the charm’s wound up.", 
             "translation": "The Weird Sisters (or witches) chant this incantation while preparing their brew. It’s part of their dark magic, and the repetition of the number nine has mystical significance.",
             "responses": [{ "text": "...", "next": "Banquo" }] 
@@ -84,7 +84,11 @@
         {   
             "speaker": "Banquo", 
             "text": "How far is ’t called to Forres? — What are these???",
-            "translation": "Banquo is asking how far it is to Forres, where they are to meet with king Duncan. However this is cut short upon seeing these wicked witches.",
+            "translation": "Banquo is asking how far it is to Forres, where they are to meet with king Duncan. However this is cut short upon seeing these wicked witches."
+        },
+        {   
+            "speaker": "", 
+            "text": "",
             "endScene": true 
         }
     ]
