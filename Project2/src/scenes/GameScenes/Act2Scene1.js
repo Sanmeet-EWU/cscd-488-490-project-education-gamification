@@ -87,7 +87,7 @@ export class Act2Scene1 extends BaseGameScene {
     // Call parent create method
     super.create(data);
     const { width, height } = this.scale;
-    
+    this.nextSceneKey = 'Act2Scene2';
     // Check required assets
     const requiredAssets = [
       'Act2Scene1Bg'

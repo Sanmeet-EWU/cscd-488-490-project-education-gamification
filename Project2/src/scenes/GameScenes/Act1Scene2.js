@@ -35,7 +35,7 @@ export class Act1Scene2 extends BaseGameScene {
   create(data) {
     // Call parent method but avoid player creation from parent
     super.create(data);
-    
+    this.nextSceneKey = 'Act1Scene3Part1';
     const { width, height } = this.scale;
     // Setup background
     this.background = this.add.rectangle(0, 0, width, height, 0x333333)
@@ -166,7 +166,50 @@ export class Act1Scene2 extends BaseGameScene {
     this.floor.add(ground);
     ground.setVisible(false);
   }
-  
+  setupPlayer() {
+    // Use Duncan's atlas for the player if available, or fallback
+    let texture, frame, animation;
+    
+    if (this.textures.exists('duncan_idle_atlas')) {
+      texture = 'duncan_idle_atlas';
+      frame = 'sprite1';
+      animation = 'duncan_idle';
+    } else if (this.textures.exists('guard')) {
+      texture = 'guard';
+      frame = 'sprite1';
+      animation = 'idle';
+    } else {
+      texture = 'guard';
+      frame = 'sprite1';
+      animation = 'idle';
+    }
+    
+    // Define player configuration
+    const playerConfig = {
+      texture: texture,
+      frame: frame,
+      scale: 2.0, // Adjust scale as needed
+      displayName: 'Duncan',
+      animation: animation,
+      movementConstraint: 'horizontal'
+    };
+    
+    // Create the player
+    this.player = this.createPlayer(playerConfig);
+    
+    // Position Duncan on left side of scene
+    if (this.player) {
+      const { width, height } = this.scale;
+      this.player.setPosition(width * 0.3, height * 0.8);
+      
+      // Apply specific configuration
+      this.player.setScale(2.5);
+      this.player.setOrigin(0.5, 1.0);
+      this.player.setCollideWorldBounds(true);
+      this.physics.add.existing(this.player, false);
+      this.physics.world.enable(this.player);
+    }
+  }
   setupGuardAtlas() {
     const guardData = this.cache.json.get('guardData');
     if (guardData) {

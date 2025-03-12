@@ -71,7 +71,20 @@ export class Act1Minigame extends BaseGameScene {
         this.load.audio('correct', 'assets/audio/CauldronMixing.mp3');
         this.load.audio('incorrect', 'assets/audio/explosion.mp3');
         this.load.audio('pickup', 'assets/audio/swoosh.mp3');
-
+              // Load Macbeth sprite sheets and JSON data
+        if (!this.textures.exists('macbeth_idle_sheet')) {
+            this.load.image('macbeth_idle_sheet', 'assets/characters/MacbethIdle.png');
+        }
+        if (!this.textures.exists('macbeth_run_sheet')) {
+            this.load.image('macbeth_run_sheet', 'assets/characters/MacbethRun.png');
+        }
+        if (!this.cache.json.exists('macbeth_idle_json')) {
+            this.load.json('macbeth_idle_json', 'assets/characters/MacbethIdle.json');
+        }
+        if (!this.cache.json.exists('macbeth_run_json')) {
+            this.load.json('macbeth_run_json', 'assets/characters/MacbethRun.json');
+        }
+      
         this.load.image('ingredient1', 'assets/act1/ingredient1.png');
         this.load.image('ingredient2', 'assets/act1/ingredient2.png');
         this.load.image('ingredient3', 'assets/act1/ingredient3.png');
@@ -81,6 +94,7 @@ export class Act1Minigame extends BaseGameScene {
         this.load.image('ingredient7', 'assets/act1/ingredient7.png');
 
         this.load.image('MacbethImage', 'assets/characters/MacbethBackupImage.png');
+        
 
         this.load.on('loaderror', (fileObj) => {
             console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);
@@ -99,59 +113,47 @@ export class Act1Minigame extends BaseGameScene {
     create(data) {
         super.create(data);
         const { width, height } = this.scale;
-
+    
         //For saving the score later
         this.db = getFirestore();
         this.auth = getAuth();
-
+    
         this.gameActive = false;//lock out player movement until the game starts
-
+    
         this.background = this.add.image(0, 0, 'bg')
             .setOrigin(0, 0)
             .setDisplaySize(width, height)
             .setDepth(-5);
-
+    
         this.createFloor();
-
+    
         this.cameras.main.setBounds(0, 0, width, height);
         this.cameras.main.fadeIn(1000, 0, 0, 0);
-
+    
         this.audioController = this.sys.game.globals.audioController;
         if (this.audioController) {
           this.audioController.stopMusic();
         }
-
+    
         this.physics.world.setBounds(0, 0, width, height * .85);//Im setting the Y higher up to act as the floor
         this.physics.world.gravity.y = 1000;
-
-        //this.player = this.physics.add.sprite(width * 0.1, height * 0.8, 'macbeth_idle_sheet', 'sprite1');
-        this.player = this.physics.add.sprite(width * 0.1, height * 0.8, 'MacbethImage');
-
-        //this.setupPlayer();
-        this.player.setScale(2.5);
-        this.player.setOrigin(0.5, 1.0);
-        this.player.setCollideWorldBounds(true);
-        this.physics.add.existing(this.player, false);
-        this.physics.world.enable(this.player);
-
-        //Position the player
-        this.player.x = width / 2;
-        this.player.y = height * 4 / 5;
-        this.player.setDepth(2);
-        this.physics.add.collider(this.player, this.floor);
-
-        //Load the questionSet, and make a deep copy of it
+    
+        // IMPORTANT: Call these methods to set up Macbeth's animations and player
+        this.setupMacbethAtlas();
+        this.setupPlayer();
+    
+        // The rest of your create() method remains the same
         this.questionSet = this.cache.json.get('Act1Questions').Act1Questions.map(a => {return {...a}})
         if(this.quizOverlay){
             console.log("destroying quiz overlay");
             this.quizOverlay.destroy();
             this.quizOverlay = null;
         }
-
+    
         //Esure score is reset
         this.score = 0;
         this.multiplier = 1;
-
+    
         //Set the starting time
         const startingTime = 30;
         
@@ -184,7 +186,6 @@ export class Act1Minigame extends BaseGameScene {
             strokeThickness: 8,
             align: 'center'
         }).setOrigin(.5);
-
     }
 
     //Displays the rules and start button
@@ -267,21 +268,169 @@ export class Act1Minigame extends BaseGameScene {
             this.startButton.destroy();
         });
     }
-
-    // setupPlayer() {
-    //     // REPLACE: Define player configuration
-    //     const playerConfig = {
-    //       texture: 'WitchIdle',
-    //       frame: 0,
-    //       scale: 1.5,
-    //       displayName: 'Player',
-    //       animation: 'idleAnim',
-    //       movementConstraint: 'horizontal' // or 'topdown'
-    //     };
+    
+    setupPlayer() {
+        // Use Macbeth atlas for the player, or fallback to older options
+        let texture, frame, animation;
         
-    //     // Use the base class method to create player
-    //     this.player = this.createPlayer(playerConfig);
-    // }
+        if (this.textures.exists('macbeth_idle_atlas')) {
+            texture = 'macbeth_idle_atlas';
+            frame = 'sprite1';
+            animation = 'macbeth_idle';
+        } else if (this.textures.exists('macbeth')) {
+            texture = 'macbeth';
+            frame = 0;
+            animation = 'idle';
+        } else {
+            texture = 'guard';
+            frame = 'sprite1';
+            animation = 'idle';
+        }
+    
+        // Define player configuration
+        const playerConfig = {
+            texture: texture,
+            frame: frame,
+            scale: 3.0,
+            displayName: 'Macbeth',
+            animation: animation,
+        };
+        
+        // Create the player using the base class method
+        this.player = this.createPlayer(playerConfig);
+        
+        // Apply your specific configuration
+        if (this.player) {
+            const { width, height } = this.scale;
+            
+            this.player.setScale(4);
+            this.player.setOrigin(0.5, 1.0);
+            this.player.setCollideWorldBounds(true);
+            this.physics.add.existing(this.player, false);
+            this.physics.world.enable(this.player);
+            
+            // Make sure animation is playing
+            if (playerConfig.animation && this.anims.exists(playerConfig.animation)) {
+                this.player.play(playerConfig.animation);
+            }
+        }
+    }
+
+    createAnimations() {
+        // REPLACE: Set up your character animations
+    
+        if (!this.anims.exists('witchIdleAnim')) {
+          this.anims.create({
+            key: 'witchIdleAnim',
+            frames: this.anims.generateFrameNumbers('WitchIdle', { start: 0, end: 5 }),
+            frameRate: 6,
+            repeat: -1
+          });
+        }
+    
+        // Setup Macbeth's animations
+        
+        // Example animation setup
+        if (!this.anims.exists('idleAnim')) {
+          this.anims.create({
+            key: 'idleAnim',
+            frames: [{ key: 'characterSprite', frame: 0 }],
+            frameRate: 10
+          });
+        }
+    
+        if (!this.anims.exists('walkLeft')) {
+          this.anims.create({
+            key: 'walkLeft',
+            frames: this.anims.generateFrameNumbers('characterSprite', { 
+              start: 0, end: 3 
+            }),
+            frameRate: 8,
+            repeat: -1
+          });
+        }
+        
+        if (!this.anims.exists('walkRight')) {
+          this.anims.create({
+            key: 'walkRight',
+            frames: this.anims.generateFrameNumbers('characterSprite', { 
+              start: 4, end: 7 
+            }),
+            frameRate: 8,
+            repeat: -1
+          });
+        }
+      }
+      setupMacbethAtlas() {
+        // Setup Macbeth's atlases
+        if (this.textures.exists('macbeth_idle_sheet') && this.cache.json.exists('macbeth_idle_json')) {
+          // Convert the JSON to Phaser atlas format
+          const idleJsonData = this.cache.json.get('macbeth_idle_json');
+          const idlePhaserAtlas = { frames: {} };
+          
+          idleJsonData.forEach(frame => {
+            idlePhaserAtlas.frames[frame.name] = {
+              frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+              rotated: false,
+              trimmed: false,
+              sourceSize: { w: frame.width, h: frame.height },
+              spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+            };
+          });
+          
+          // Add atlas to texture manager
+          this.textures.addAtlas(
+            'macbeth_idle_atlas',
+            this.textures.get('macbeth_idle_sheet').getSourceImage(),
+            idlePhaserAtlas
+          );
+          
+          // Create idle animation
+          this.anims.create({
+            key: 'macbeth_idle',
+            frames: idleJsonData.map(frame => ({ key: 'macbeth_idle_atlas', frame: frame.name })),
+            frameRate: 8,
+            repeat: -1
+          });
+        }
+        
+        // Do the same for run animation
+        if (this.textures.exists('macbeth_run_sheet') && this.cache.json.exists('macbeth_run_json')) {
+          const runJsonData = this.cache.json.get('macbeth_run_json');
+          const runPhaserAtlas = { frames: {} };
+          
+          runJsonData.forEach(frame => {
+            runPhaserAtlas.frames[frame.name] = {
+              frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+              rotated: false,
+              trimmed: false,
+              sourceSize: { w: frame.width, h: frame.height },
+              spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+            };
+          });
+          
+          this.textures.addAtlas(
+            'macbeth_run_atlas',
+            this.textures.get('macbeth_run_sheet').getSourceImage(),
+            runPhaserAtlas
+          );
+          
+          // Create run animations
+          this.anims.create({
+            key: 'macbeth_left',
+            frames: runJsonData.map(frame => ({ key: 'macbeth_run_atlas', frame: frame.name })),
+            frameRate: 10,
+            repeat: -1
+          });
+          
+          this.anims.create({
+            key: 'macbeth_right',
+            frames: runJsonData.map(frame => ({ key: 'macbeth_run_atlas', frame: frame.name })),
+            frameRate: 10,
+            repeat: -1
+          });
+        }
+      }
 
     spawnCauldron() {
         //Initialize the cauldron
@@ -289,7 +438,7 @@ export class Act1Minigame extends BaseGameScene {
         this.cauldron = this.add.image(this.scale.width * 0.5, this.scale.height * 0.6, 'cauldron')
             .setOrigin(0.5)
             .setDepth(1)
-            .setScale(0.5);
+            .setScale(0.75);
         this.physics.add.existing(this.cauldron, true);
         this.physics.world.enable(this.cauldron);
         //You need to define the body size as well, its not set automatically based on sprite size
@@ -711,14 +860,14 @@ export class Act1Minigame extends BaseGameScene {
     update() {
         super.update();
         this.countdown.update();
-
+    
         if(!this.gameActive || this.isPaused) {
             return;//Should probably lock player movement here
         }
-
+    
         //Needs to consider the screen size a little
         const speed = 250 + this.scale.width * 0.2;
-
+    
         // Handle player movement
         if (this.keys.left.isDown && this.keys.right.isDown) {
             this.player.setVelocityX(0);
@@ -726,38 +875,47 @@ export class Act1Minigame extends BaseGameScene {
         else if(this.keys.left.isDown) {
             this.player.setVelocityX(-speed);
             this.player.flipX = true;
-            //this.player.anims.play('left', true);
+            
+            // Use Macbeth-specific animation if available
+            if (this.anims.exists('macbeth_left')) {
+                this.player.anims.play('macbeth_left', true);
+            } else {
+                // Fallback to generic animation
+                this.player.anims.play('left', true);
+            }
         } else if (this.keys.right.isDown) {
             this.player.setVelocityX(speed);
             this.player.flipX = false;
-            //this.player.anims.play('right', true);
+            
+            // Use Macbeth-specific animation if available
+            if (this.anims.exists('macbeth_right')) {
+                this.player.anims.play('macbeth_right', true);
+            } else {
+                // Fallback to generic animation  
+                this.player.anims.play('right', true);
+            }
         } else {
             this.player.setVelocityX(0);
-            //this.player.anims.play('idle', true);
+            
+            // Use Macbeth-specific idle animation if available
+            if (this.anims.exists('macbeth_idle')) {
+                this.player.anims.play('macbeth_idle', true);
+            } else {
+                // Fallback to generic animation
+                this.player.anims.play('idle', true);
+            }
         }
+        
         //Jump only when in contact with the floor
         if ((this.keys.up.isDown || this.keys.space.isDown) && this.player.body.touching.down) {
             this.player.setVelocityY(-550);
         }
-
-        //Debugging
-        // if(this.keys.down.isDown) {
-        //     console.log("item 1:  " + this.ingredients.ingredient1.body.x + "," + this.ingredients.ingredient1.body.y);
-        //     console.log("item 2:  " + this.ingredients.ingredient2.body.x + "," + this.ingredients.ingredient2.body.y);
-        //     console.log("item 3:  " + this.ingredients.ingredient3.body.x + "," + this.ingredients.ingredient3.body.y);
-        //     console.log("item 4:  " + this.ingredients.ingredient4.body.x + "," + this.ingredients.ingredient4.body.y);
-        //     if(this.heldIngredient) console.log("held: " + this.heldIngredient.body.x + "," + this.heldIngredient.body.y);
-        // }
-
+    
         //Handle the position of the held ingredient
         if(this.heldIngredient){
             this.heldIngredient.x = this.player.x;
             this.heldIngredient.y = this.player.y;
-            // this.heldIngredient.body.reset(this.heldIngredient.x, this.heldIngredient.y);
         }
-
-        
-
     }
 
 }

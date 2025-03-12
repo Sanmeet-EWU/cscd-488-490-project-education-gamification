@@ -7,7 +7,6 @@ import { Leaderboard } from './scenes/Leaderboard';
 import { Settings } from './scenes/Settings';
 import { Act1Scene1 } from './scenes/GameScenes/Act1Scene1.js';
 import { Act1Scene2 } from './scenes/GameScenes/Act1Scene2.js';
-import { Act1Scene3 } from './scenes/GameScenes/Act1Scene3.js';
 import { Act1Scene4 } from './scenes/GameScenes/Act1Scene4.js';
 import AudioController from './AudioController.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
@@ -84,7 +83,6 @@ const config = {
     Act1Scene3Part1,
     Act1Scene3Part2,
     Act1Scene3Part3,
-    Act1Scene3,
     Act1Minigame,
     Act1Scene2Minigame,
     Act1Scene4,

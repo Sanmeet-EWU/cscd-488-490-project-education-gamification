@@ -590,7 +590,7 @@ export class Act1Scene2Minigame extends BaseGameScene {
   
   endMinigame() {
     // Return to main game - optionally pass score back
-    this.switchScene('Act1Scene2');
+    this.switchScene('Act1Scene3Part1', { score: this.score });
   }
   
   update(time, delta) {

@@ -13,6 +13,11 @@ export class BaseGameScene extends BaseScene {
     this.npcs = {};
     this.interactText = null;
     this.debugText = null;
+    
+    // Scene transition properties
+    this.sceneDialogueCompleted = false;
+    this.nextSceneKey = null; // To be set in child scenes
+    this.transitionActive = false; // Flag to prevent multiple transitions
   }
 
   init(data) {
@@ -303,12 +308,29 @@ export class BaseGameScene extends BaseScene {
         this.player.body.setVelocity(0, 0);
       }
       
-      // Start dialogue with the NPC
-      this.dialogueManager.startDialogue(npcKey, () => {
-        console.log(`Dialogue with ${npcKey} completed`);
-        // Override in child classes for custom behavior
+      // Start dialogue with the NPC, capturing if it actually started
+      const dialogueStarted = this.dialogueManager.startDialogue(npcKey, (isEndScene) => {
+        console.log(`Dialogue with ${npcKey} completed, endScene: ${isEndScene}`);
+        
+        // Mark scene dialogue as completed if endScene was reached
+        if (isEndScene) {
+          this.sceneDialogueCompleted = true;
+          console.log("Scene dialogue completed, player can now transition to next scene.");
+          
+          // Optionally show a hint that player can now exit to the right
+          this.showExitHint();
+        }
+        
+        // Call any custom scene-specific dialogue completion handler
+        if (typeof this.onDialogueComplete === 'function') {
+          this.onDialogueComplete(npcKey, isEndScene);
+        }
       });
+      
+      return dialogueStarted;
     }
+    
+    return false;
   }
 
   /**
@@ -359,6 +381,32 @@ export class BaseGameScene extends BaseScene {
     }
   }
 
+  showExitHint() {
+    if (!this.exitHint && this.nextSceneKey) {
+      const { width, height } = this.scale;
+      this.exitHint = this.add.text(
+        width - 50, 
+        height / 2,
+        "→",
+        { 
+          fontSize: '32px', 
+          fill: '#ffff00',
+          stroke: '#000000',
+          strokeThickness: 4
+        }
+      ).setOrigin(0.5);
+      
+      // Add a pulsing animation
+      this.tweens.add({
+        targets: this.exitHint,
+        alpha: 0.6,
+        duration: 800,
+        yoyo: true,
+        repeat: -1
+      });
+    }
+  }
+
   /**
    * Verifies that all required assets are loaded
    * @param {Array} requiredAssets - Array of asset keys to check
@@ -372,6 +420,32 @@ export class BaseGameScene extends BaseScene {
       return !(hasTexture || hasAudio || hasJson);
     });
   }
+  checkSceneTransition() {
+    if (!this.sceneDialogueCompleted || !this.player || !this.nextSceneKey || this.transitionActive) {
+      return;
+    }
+    
+    const { width } = this.scale;
+    // If player is at right edge of screen (with some margin)
+    if (this.player.x > width - 50) {
+      this.transitionToNextScene();
+    }
+  }
+  transitionToNextScene() {
+    if (!this.nextSceneKey || this.transitionActive) {
+      return;
+    }
+    
+    this.transitionActive = true;
+    console.log(`Transitioning to next scene: ${this.nextSceneKey}`);
+    
+    // Fade out animation
+    this.cameras.main.fadeOut(500, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+      this.scene.start(this.nextSceneKey);
+    });
+  }
+  
 
   update(time, delta) {
     if (this.isPaused) return;
@@ -392,6 +466,9 @@ export class BaseGameScene extends BaseScene {
       // Check for NPC interaction if not a cutscene
       if (!this.isCutscene && this.player && !this.dialogueManager?.isActive) {
         this.checkInteraction();
+        
+        // Check for scene transition if dialogue is completed
+        this.checkSceneTransition();
       }
     }
     
