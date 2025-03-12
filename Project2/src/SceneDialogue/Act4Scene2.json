@@ -8,7 +8,7 @@
         {
             "speaker": "Ross",
             "text": "You must have patience, madam.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "His flight was madness", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -19,22 +19,17 @@
         {
             "speaker": "Ross",
             "text": "You know not Whether it was his wisdom or his fear.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Wisdom?", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
             "text": "Wisdom? To leave his wife, to leave his babes, His mansion and his titles in a place From whence himself does fly?",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "All is the fear, and nothing is the love", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
             "text": "All is the fear, and nothing is the love, As little is the wisdom, where the flight So runs against all reason.",
             "translation": "Macduff's leave was all fear and no love. It was not wise to run away from his wife, children, home, and titles.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
-        },
-        {
-            "speaker": "Lady Macduff",
-            "text": "All is the fear, and nothing is the love, As little is the wisdom, where the flight So runs against all reason.",
             "responses": [{ "text": "...", "next": "Ross" }]
         },
         {
@@ -45,7 +40,7 @@
         {
             "speaker": "Ross",
             "text": "I take my leave of you. Shall not be long but I’ll be here again. My pretty cousin, blessing upon you.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Sirrah, your father’s dead", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -55,7 +50,7 @@
         {
             "speaker": "Son",
             "text": "As birds do, mother.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "What", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -65,7 +60,7 @@
         {
             "speaker": "Son",
             "text": "With what I get, I mean; and so do they. My father is not dead.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Yes, he is dead", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -75,7 +70,7 @@
         {
             "speaker": "Son",
             "text": "Nay, how will you do for a husband?",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Why", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -85,7 +80,7 @@
         {
             "speaker": "Son",
             "text": "Then you’ll buy ’em to sell again.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Thou speak’st with all thy wit", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -95,7 +90,7 @@
         {
             "speaker": "Son",
             "text": "Was my father a traitor, mother?",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Ay", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -105,7 +100,7 @@
         {
             "speaker": "Son",
             "text": "What is a traitor?",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Why, one that swears and lies", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -115,7 +110,7 @@
         {
             "speaker": "Son",
             "text": "And be all traitors that do so?",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Every one that does so is a traitor and must be hanged", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -125,7 +120,7 @@
         {
             "speaker": "Son",
             "text": "And must they all be hanged that swear and lie?",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Every one", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -135,7 +130,7 @@
         {
             "speaker": "Son",
             "text": "Who must hang them?",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Why, the honest men", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -145,7 +140,7 @@
         {
             "speaker": "Son",
             "text": "Then the liars and swearers are fools, for there are liars and swearers enough to beat the honest men and hang up them.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Now God help thee, poor monkey!", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -155,7 +150,7 @@
         {
             "speaker": "Son",
             "text": "If he were dead, you’d weep for him. If you would not, it were a good sign that I should quickly have a new father.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Poor prattler, how thou talk’st!", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -170,18 +165,18 @@
         {
             "speaker": "Messenger",
             "text": "Hence with your little ones! Heaven preserve you! I dare abide no longer.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "Whither should I fly?", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
             "text": "Whither should I fly? I have done no harm.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "But I remember now I am in this earthly world", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
             "text": "But I remember now I am in this earthly world, where to do harm is often laudable, to do good sometime accounted dangerous folly.",
             "translation": "But I remember that in this world, doing harm is often praised, while doing good is sometimes considered foolish and dangerous.",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "What are these faces?", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",
@@ -191,7 +186,7 @@
         {
             "speaker": "Murderer",
             "text": "Where is your husband?",
-            "responses": [{ "text": "...", "next": "Lady Macduff" }]
+            "responses": [{ "text": "I hope in no place so unsanctified Where such as thou mayst find him", "next": "Lady Macduff" }]
         },
         {
             "speaker": "Lady Macduff",

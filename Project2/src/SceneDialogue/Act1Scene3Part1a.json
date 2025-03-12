@@ -1,0 +1,95 @@
+{
+    "Act1Scene3Part1a": [
+        {
+            "speaker": "First Witch",
+            "text": "Where hast thou been, sister?",
+            "responses": [{ "text": "...", "next": "SecondWitch" }]
+        },
+        { 
+            "speaker": "Second Witch",
+            "text": "Killing swine.", 
+            "responses": [{ "text": "...", "next": "ThirdWitch" }] 
+        },
+        { 
+            "speaker": "Third Witch",
+            "text": "Sister, where thou?", 
+            "responses": [{ "text": "...", "next": "FirstWitch2" }] 
+        },
+        { 
+            "speaker": "First Witch",
+            "text": "A sailor’s wife had chestnuts in her lap\nAnd munched and munched and munched.\n“Give me,” quoth I.", 
+            "responses": [{ "text": "...", "next": "FirstWitch3" }] 
+        },
+        { 
+            "speaker": "First Witch",
+            "text": "“Aroint thee, witch,” the rump-fed runnion cries.\nHer husband’s to Aleppo gone, master o’ th’ Tiger;\nBut in a sieve I’ll thither sail,", 
+            "responses": [{ "text": "...", "next": "FirstWitch4" }] 
+        },
+        { 
+            "speaker": "First Witch",
+            "text": "But in a sieve I’ll thither sail,\nAnd, like a rat without a tail,\nI’ll do, I’ll do, and I’ll do.", 
+            "responses": [{ "text": "...", "next": "SecondWitch2" }] 
+        },
+        { 
+            "speaker": "Second Witch",
+            "text": "I’ll give thee a wind.",
+            "responses": [{ "text": "...", "next": "ThirdWitch2" }] 
+        },
+        {   
+            "speaker": "First Witch",
+            "text": "Th’ art kind.",
+            "translation": "A contraction of “thou art kind,” meaning “you are kind”", 
+            "responses": [{ "text": "...", "next": "ThirdWitch2" }] 
+        },
+        {   "speaker": "Third Witch",
+            "text": "And I another.", 
+            "responses": [{ "text": "...", "next": "SecondWitch3" }] 
+        },
+        {   
+            "speaker": "First Witch", 
+            "text": "I myself have all the other,\nAnd the very ports they blow;\nAll the quarters that they know\nI’ th’ shipman’s card.", 
+            "responses": [{ "text": "...", "next": "FirstWitch5" }] 
+        },
+        {   
+            "speaker": "First Witch", 
+            "text": "I’ll drain him dry as hay.\nSleep shall neither night nor day\nHang upon his penthouse lid.\nHe shall live a man forbid.", 
+            "responses": [{ "text": "...", "next": "FirstWitch6" }] 
+        },
+        {   
+            "speaker": "First Witch", 
+            "text": "Weary sev’nnights, nine times nine,\nShall he dwindle, peak, and pine.\nThough his bark cannot be lost,\nYet it shall be tempest-tossed.\nLook what I have.",
+            "responses": [{ "text": "...", "next": "SecondWitch4" }] 
+        },
+        {   
+            "speaker": "Second Witch", 
+            "text": "Show me, show me.", 
+            "responses": [{ "text": "...", "next": "FirstWitch7" }] 
+        },
+        {   
+            "speaker": "First Witch", 
+            "text": "Here I have a pilot’s thumb,\nWracked as homeward he did come.\n\n - Drum within... -", 
+            "responses": [{ "text": "...", "next": "ThirdWitch3" }] 
+        },
+        {   
+            "speaker": "Third Witch", 
+            "text": "A drum, a drum!\nMacbeth doth come.", 
+            "responses": [{ "text": "...", "next": "All" }] 
+        },
+        {   
+            "speaker": "The Witches", 
+            "text": "The Weïrd Sisters, hand in hand,\n Posters of the sea and land,\nThus do go about, about,\nThrice to thine and thrice to mine.\nAnd thrice again, to make up nine.\nPeace, the charm’s wound up.", 
+            "translation": "The Weird Sisters (or witches) chant this incantation while preparing their brew. It’s part of their dark magic, and the repetition of the number nine has mystical significance.",
+            "responses": [{ "text": "...", "next": "Banquo" }] 
+        },
+        {   
+            "speaker": "Banquo", 
+            "text": "How far is ’t called to Forres? — What are these???",
+            "translation": "Banquo is asking how far it is to Forres, where they are to meet with king Duncan. However this is cut short upon seeing these wicked witches."
+        },
+        {   
+            "speaker": "", 
+            "text": "",
+            "endScene": true 
+        }
+    ]
+}

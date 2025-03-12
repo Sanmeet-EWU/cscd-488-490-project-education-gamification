@@ -42,6 +42,8 @@ export class Preloader extends Scene {
     this.load.image('toMainMenuButton', 'toMainMenuButton.png');
     this.load.image('saveGameButton', 'saveGameButton.png');
     this.load.image('controlsButton', 'controlsButton.png');
+    this.load.image('playAgainButton', 'playAgainButton.png');
+    this.load.image('continueButton', 'continueButton.png');
 
     this.load.on('complete', () => {
       if (this.cache.audio.exists('testMusic')) {

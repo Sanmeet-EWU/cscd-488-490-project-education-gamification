@@ -1,4 +1,3 @@
-// CharacterManager.js
 export class CharacterManager {
   constructor(scene) {
     this.scene = scene;
@@ -14,12 +13,38 @@ export class CharacterManager {
           right: { frames: [6, 7, 8], frameRate: 8 }
         }
       },
-      king: {
-        defaultFrame: 0,
+      duncan: {
+        defaultFrame: 'sprite1',
         animations: {
-          idle: { frames: [0], frameRate: 10 },
-          left: { frames: [3, 4, 5], frameRate: 8 },
-          right: { frames: [6, 7, 8], frameRate: 8 }
+          idle: { 
+            atlas: ['sprite1', 'sprite2', 'sprite3', 'sprite4', 'sprite5', 'sprite6', 'sprite7', 'sprite8'], 
+            frameRate: 8 
+          },
+          left: { 
+            atlas: ['sprite1', 'sprite2', 'sprite3', 'sprite4', 'sprite5', 'sprite6', 'sprite7', 'sprite8'], 
+            frameRate: 10 
+          },
+          right: { 
+            atlas: ['sprite1', 'sprite2', 'sprite3', 'sprite4', 'sprite5', 'sprite6', 'sprite7', 'sprite8'], 
+            frameRate: 10 
+          }
+        }
+      },
+      macbeth: {
+        defaultFrame: 'sprite1',
+        animations: {
+          idle: { 
+            atlas: ['sprite1', 'sprite2', 'sprite3', 'sprite4', 'sprite5', 'sprite6', 'sprite7', 'sprite8'], 
+            frameRate: 8 
+          },
+          left: { 
+            atlas: ['sprite1', 'sprite2', 'sprite3', 'sprite4', 'sprite5', 'sprite6', 'sprite7', 'sprite8'], 
+            frameRate: 10 
+          },
+          right: { 
+            atlas: ['sprite1', 'sprite2', 'sprite3', 'sprite4', 'sprite5', 'sprite6', 'sprite7', 'sprite8'], 
+            frameRate: 10 
+          }
         }
       },
       witch: {
@@ -32,13 +57,15 @@ export class CharacterManager {
   }
 
   // Setup animations for a character type using a specific texture
-  setupAnimations(type, textureKey, frameConfig = {}) {
+  setupAnimations(type, textureKey, atlasKey = null) {
     const typeConfig = this.characterTypes[type];
     
     if (!typeConfig || !typeConfig.animations) {
       console.warn(`No animation config found for character type: ${type}`);
       return false;
     }
+    
+    const finalTextureKey = atlasKey || textureKey;
     
     // Create animations for this character type using specified texture
     Object.entries(typeConfig.animations).forEach(([animName, config]) => {
@@ -51,7 +78,7 @@ export class CharacterManager {
       if (Array.isArray(config.frames)) {
         this.scene.anims.create({
           key: animKey,
-          frames: this.scene.anims.generateFrameNumbers(textureKey, { 
+          frames: this.scene.anims.generateFrameNumbers(finalTextureKey, { 
             frames: config.frames
           }),
           frameRate: config.frameRate || 8,
@@ -62,7 +89,7 @@ export class CharacterManager {
       else if (config.atlas) {
         this.scene.anims.create({
           key: animKey,
-          frames: config.atlas.map(frame => ({ key: textureKey, frame })),
+          frames: config.atlas.map(frame => ({ key: finalTextureKey, frame })),
           frameRate: config.frameRate || 8,
           repeat: config.repeat !== undefined ? config.repeat : -1
         });
@@ -232,16 +259,87 @@ export class CharacterManager {
     if (!character || !character.sprite) return;
     
     const { sprite, type } = character;
+    const idleAnimKey = `${type}_idle`;
+    const leftAnimKey = `${type}_left`;
+    const rightAnimKey = `${type}_right`;
+    
+    // Check if these specific animations exist
+    const hasIdle = this.scene.anims.exists(idleAnimKey);
+    const hasLeft = this.scene.anims.exists(leftAnimKey);
+    const hasRight = this.scene.anims.exists(rightAnimKey);
     
     if (velocity.x < 0) {
-      sprite.anims.play(`${type}_left`, true);
+      if (hasLeft) {
+        sprite.anims.play(leftAnimKey, true);
+        sprite.flipX = false;
+      } else if (hasRight) {
+        sprite.anims.play(rightAnimKey, true);
+        sprite.flipX = true;
+      }
     } 
     else if (velocity.x > 0) {
-      sprite.anims.play(`${type}_right`, true);
+      if (hasRight) {
+        sprite.anims.play(rightAnimKey, true);
+        sprite.flipX = false;
+      } else if (hasLeft) {
+        sprite.anims.play(leftAnimKey, true);
+        sprite.flipX = true;
+      }
     }
     else {
-      sprite.anims.play(`${type}_idle`, true);
+      if (hasIdle) {
+        sprite.anims.play(idleAnimKey, true);
+      }
     }
+  }
+  
+  // Setup character-specific animations
+  setupCharacterAnimations(type, idleAtlasKey, runAtlasKey) {
+    const typeConfig = this.characterTypes[type];
+    
+    if (!typeConfig) {
+      console.warn(`Character type not found: ${type}`);
+      return false;
+    }
+    
+    // Create animations using the proper atlas keys
+    if (typeConfig.animations.idle && typeConfig.animations.idle.atlas) {
+      this.scene.anims.create({
+        key: `${type}_idle`,
+        frames: typeConfig.animations.idle.atlas.map(frame => ({ 
+          key: idleAtlasKey, 
+          frame 
+        })),
+        frameRate: typeConfig.animations.idle.frameRate || 8,
+        repeat: -1
+      });
+    }
+    
+    if (typeConfig.animations.left && typeConfig.animations.left.atlas) {
+      this.scene.anims.create({
+        key: `${type}_left`,
+        frames: typeConfig.animations.left.atlas.map(frame => ({ 
+          key: runAtlasKey, 
+          frame 
+        })),
+        frameRate: typeConfig.animations.left.frameRate || 10,
+        repeat: -1
+      });
+    }
+    
+    if (typeConfig.animations.right && typeConfig.animations.right.atlas) {
+      this.scene.anims.create({
+        key: `${type}_right`,
+        frames: typeConfig.animations.right.atlas.map(frame => ({ 
+          key: runAtlasKey, 
+          frame 
+        })),
+        frameRate: typeConfig.animations.right.frameRate || 10,
+        repeat: -1
+      });
+    }
+    
+    return true;
   }
   
   // Update all character nametags

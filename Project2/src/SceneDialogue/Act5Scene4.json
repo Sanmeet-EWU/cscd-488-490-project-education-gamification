@@ -30,7 +30,7 @@
             "speaker": "Malcolm",
             "text": "Thereby shall we shadow the numbers of our host and make discovery err in report of us.",
             "translation": "This way it will be difficult for Macbeth's spies to get an accurate report of our numbers.",
-            "responses": [{ "text": "...", "next": "Soldier" }]
+            "responses": [{ "text": "It shall be done.", "next": "Soldier" }]
         },
         {
             "speaker": "Soldier",

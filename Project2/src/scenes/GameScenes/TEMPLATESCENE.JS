@@ -214,7 +214,6 @@ export class TEMPLATESCENE extends BaseGameScene {
       const speed = 160;
       
       // Handle player movement
-      // REPLACE
       if (this.keys.left.isDown) {
         this.player.setVelocityX(-speed);
         this.player.anims.play('walkLeft', true);

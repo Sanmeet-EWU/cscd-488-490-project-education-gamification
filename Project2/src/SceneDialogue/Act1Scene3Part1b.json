@@ -1,0 +1,91 @@
+{
+    "Act1Scene3Part1b": [
+        {
+            "speaker": "Macbeth",
+            "text": "Speak if you can. What are you?",
+            "responses": [{ "text": "...", "next": "FirstWitch" }]
+        },
+        { 
+            "speaker": "First Witch",
+            "text": "All hail, Macbeth! Hail to thee, Thane of Glamis!", 
+            "responses": [{ "text": "...", "next": "SecondWitch" }] 
+        },
+        { 
+            "speaker": "Second Witch",
+            "text": "All hail, Macbeth! Hail to thee, Thane of Cawdor!", 
+            "responses": [{ "text": "...", "next": "ThirdWitch" }] 
+        },
+        { 
+            "speaker": "Third Witch",
+            "text": "All hail, Macbeth, that shalt be king hereafter!", 
+            "responses": [{ "text": "...", "next": "Banquo" }] 
+        },
+        { 
+            "speaker": "Banquo",
+            "text": "Macbeth, good sir, why do you start and seem to fear? Things that do sound so fair?",
+            "translation": "How could you be scared by such good fortune?",
+            "responses": [{ "text": "...", "next": "Banquo2" }] 
+        },
+        { 
+            "speaker": "Banquo",
+            "text": "My noble partner You greet with present grace and great prediction of noble having and of royal hope. That he seems rapt withal.", 
+            "translation": "Macbeth, you seem completely absorbed by the idea of wealth and royal power.",
+            "responses": [{ "text": "...", "next": "Banquo3" }] 
+        },
+        { 
+            "speaker": "Banquo",
+            "text": "To me you speak not. If you can look into the seeds of time And say which grain will grow and which will not. Speak, then, to me, who neither beg nor fear", 
+            "translation": "Talk to me dawg, I ain't scared of you.",
+            "responses": [{ "text": "...", "next": "All" }] 
+        },
+        {   
+            "speaker": "The Witches", 
+            "text": "Hail!", 
+            "responses": [{ "text": "...", "next": "FirstWitch2" }] 
+        },
+        {   
+            "speaker": "First Witch", 
+            "text": "Lesser than Macbeth and greater.",
+            "translation": "You will have less power and wealth than Macbeth Banquo, but do far greater in other ways.",
+            "responses": [{ "text": "...", "next": "SecondWitch2" }] 
+        },
+        {   
+            "speaker": "Second Witch", 
+            "text": "Not so happy, yet much happier.", 
+            "responses": [{ "text": "...", "next": "ThirdWitch2" }] 
+        },
+        {   
+            "speaker": "Third Witch",
+            "text": "Thou shalt get kings, though thou be none. All hail, Macbeth and Banquo!", 
+            "translation": "You will never be king, but your descendants will be. All hail, Macbeth and Banquo!",
+            "responses": [{ "text": "...", "next": "FirstWitch3" }] 
+        },
+        {   
+            "speaker": "Macbeth", 
+            "text": "You imperfect speakers, Tell me more! By Sinel’s death I know I am Thane of Glamis, but how of Cawdor? ", 
+            "translation": "I know by my father's death that I am Thane of Glamis, but how can I be Thane of Cawdor when he is still alive?",
+            "responses": [{ "text": "...", "next": "Macbeth2" }] 
+        },
+        {   
+            "speaker": "Macbeth", 
+            "text": "The Thane of Cawdor lives! A prosperous gentleman, and to be king? Stands not within the prospect of belief, no more than to be Cawdor.",
+            "translation": "The Thane of Cawdor is still alive, and how can I be king? That's impossible!",
+            "responses": [{ "text": "...", "next": "Macbeth3" }] 
+        },
+        {   
+            "speaker": "Macbeth", 
+            "text": "Say from whence you owe this strange intelligence, or why upon this blasted heath you stop our way with such prophetic greeting. Speak, I charge you.", 
+            "translation": "Tell me where you got this strange knowledge, or why you are standing here blocking our path with such prophetic words. Speak, I command you.",
+            "responses": [{ "text": "...", "next": "Stage Directions" }] 
+        },
+        {   
+            "speaker": "Stage Directions", 
+            "text": " - The Witches vanish. - "
+        },
+        {   
+            "speaker": "end", 
+            "text": "",
+            "endScene": true 
+        }
+    ]
+}

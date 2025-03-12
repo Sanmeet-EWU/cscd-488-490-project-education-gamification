@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
-import { getFirestore, collection, query, where, getDocs, addDoc, setDoc, doc, getDoc, serverTimestamp, updateDoc} from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, addDoc, setDoc, doc, getDoc, serverTimestamp, updateDoc, orderBy, limit} from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -18,7 +18,7 @@ if (!app) {
 
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+export { auth, db };
 let persistenceSet = false;
 
 if (!persistenceSet) {
@@ -51,6 +51,21 @@ export async function isEmailRegistered(email) {
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
 }
+
+
+// Fetch leaderboard data
+export async function fetchLeaderboardData() {
+    const leaderboardData = {};
+    const q = query(collection(db, "Players"), orderBy("SaveData.score", 'desc'), limit(10));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.docs.forEach((doc, i) => {
+        const data = doc.data();
+        console.log(data); 
+        leaderboardData[i] = { Username: data.Username, Score: data.SaveData.score };
+    });
+    return leaderboardData;
+}
+
 
 export async function registerUser(email) {
     // const allowedDomain = "@school.edu"; // Replace with domain or set to null to allow all domains

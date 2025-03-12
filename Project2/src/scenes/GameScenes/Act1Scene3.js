@@ -21,7 +21,21 @@ export class Act1Scene3 extends BaseGameScene {
       this.load.json('Act1Scene3Data', 'SceneDialogue/Act1Scene3.json');
     }
     
-    // Load Macbeth character sprite and other characters
+    // Load Macbeth sprite sheets and JSON data
+    if (!this.textures.exists('macbeth_idle_sheet')) {
+      this.load.image('macbeth_idle_sheet', 'assets/characters/MacbethIdle.png');
+    }
+    if (!this.textures.exists('macbeth_run_sheet')) {
+      this.load.image('macbeth_run_sheet', 'assets/characters/MacbethRun.png');
+    }
+    if (!this.cache.json.exists('macbeth_idle_json')) {
+      this.load.json('macbeth_idle_json', 'assets/characters/MacbethIdle.json');
+    }
+    if (!this.cache.json.exists('macbeth_run_json')) {
+      this.load.json('macbeth_run_json', 'assets/characters/MacbethRun.json');
+    }
+    
+    // Legacy Macbeth sprite - keeping for compatibility
     if (!this.textures.exists('macbeth')) {
       this.load.spritesheet('macbeth', 'assets/characters/Macbeth.png', {
         frameWidth: 32, frameHeight: 48
@@ -95,6 +109,9 @@ export class Act1Scene3 extends BaseGameScene {
     // Setup guard atlas if needed for NPC characters
     this.setupGuardAtlas();
     
+    // Setup Macbeth atlas for animations
+    this.setupMacbethAtlas();
+    
     // Create animations
     this.createAnimations();
     
@@ -121,6 +138,24 @@ export class Act1Scene3 extends BaseGameScene {
     });
   }
 
+  createFloor() {
+    const { width, height } = this.scale;
+    const groundY = height * 0.9;
+  
+    // Create a staticGroup
+    this.floor = this.physics.add.staticGroup();
+  
+    // Add a rectangle
+    const ground = this.add.rectangle(width / 2, groundY, width, 20, 0x555555);
+  
+    // Give it a static physics body
+    this.physics.add.existing(ground, true);
+    
+    this.floor.add(ground);
+    ground.setVisible(false);
+  }
+  
+
   setupGuardAtlas() {
     const guardData = this.cache.json.get('guardData');
     if (guardData) {
@@ -142,18 +177,102 @@ export class Act1Scene3 extends BaseGameScene {
     }
   }
 
+  setupMacbethAtlas() {
+    // Setup Macbeth's atlases
+    if (this.textures.exists('macbeth_idle_sheet') && this.cache.json.exists('macbeth_idle_json')) {
+      // Convert the JSON to Phaser atlas format
+      const idleJsonData = this.cache.json.get('macbeth_idle_json');
+      const idlePhaserAtlas = { frames: {} };
+      
+      idleJsonData.forEach(frame => {
+        idlePhaserAtlas.frames[frame.name] = {
+          frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+          rotated: false,
+          trimmed: false,
+          sourceSize: { w: frame.width, h: frame.height },
+          spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+        };
+      });
+      
+      // Add atlas to texture manager
+      this.textures.addAtlas(
+        'macbeth_idle_atlas',
+        this.textures.get('macbeth_idle_sheet').getSourceImage(),
+        idlePhaserAtlas
+      );
+      
+      // Create idle animation
+      this.anims.create({
+        key: 'macbeth_idle',
+        frames: idleJsonData.map(frame => ({ key: 'macbeth_idle_atlas', frame: frame.name })),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
+    
+    // Do the same for run animation
+    if (this.textures.exists('macbeth_run_sheet') && this.cache.json.exists('macbeth_run_json')) {
+      const runJsonData = this.cache.json.get('macbeth_run_json');
+      const runPhaserAtlas = { frames: {} };
+      
+      runJsonData.forEach(frame => {
+        runPhaserAtlas.frames[frame.name] = {
+          frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+          rotated: false,
+          trimmed: false,
+          sourceSize: { w: frame.width, h: frame.height },
+          spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+        };
+      });
+      
+      this.textures.addAtlas(
+        'macbeth_run_atlas',
+        this.textures.get('macbeth_run_sheet').getSourceImage(),
+        runPhaserAtlas
+      );
+      
+      // Create run animations
+      this.anims.create({
+        key: 'macbeth_left',
+        frames: runJsonData.map(frame => ({ key: 'macbeth_run_atlas', frame: frame.name })),
+        frameRate: 10,
+        repeat: -1
+      });
+      
+      this.anims.create({
+        key: 'macbeth_right',
+        frames: runJsonData.map(frame => ({ key: 'macbeth_run_atlas', frame: frame.name })),
+        frameRate: 10,
+        repeat: -1
+      });
+    }
+  }
+
   setupPlayer() {
-    // Use Macbeth sprite, or fallback to guard if not available
-    const texture = this.textures.exists('macbeth') ? 'macbeth' : 'guard';
-    const frame = texture === 'guard' ? 'sprite1' : 0;
+    // Use Macbeth atlas for the player, or fallback to older options
+    let texture, frame, animation;
+    
+    if (this.textures.exists('macbeth_idle_atlas')) {
+      texture = 'macbeth_idle_atlas';
+      frame = 'sprite1';
+      animation = 'macbeth_idle';
+    } else if (this.textures.exists('macbeth')) {
+      texture = 'macbeth';
+      frame = 0;
+      animation = 'idle';
+    } else {
+      texture = 'guard';
+      frame = 'sprite1';
+      animation = 'idle';
+    }
     
     // Define player configuration
     const playerConfig = {
       texture: texture,
       frame: frame,
-      scale: 1.5,
+      scale: 3.0, // Larger scale for Macbeth
       displayName: 'Macbeth',
-      animation: 'idle',
+      animation: animation,
       movementConstraint: 'horizontal'
     };
     
@@ -317,21 +436,9 @@ export class Act1Scene3 extends BaseGameScene {
       });
     }
     
-    // If we have specific Macbeth animations, add them here
-    if (this.textures.exists('macbeth')) {
-      // Custom Macbeth animations would go here
-    }
+    // Macbeth's animations are set up in setupMacbethAtlas()
   }
-  
-  createFloor() {
-    const { width, height } = this.scale;
-    const groundY = height * 0.9;
-    this.floor = this.physics.add.staticGroup();
-    const ground = this.add.rectangle(width / 2, groundY, width, 20, 0x555555);
-    this.floor.add(ground);
-    ground.setVisible(false);
-  }
-  
+
   startDialogue(npcKey) {
     if (this.dialogueManager && !this.dialogueManager.isActive) {
       if (this.player?.body) {
@@ -358,13 +465,33 @@ export class Act1Scene3 extends BaseGameScene {
       // Handle player movement (Macbeth)
       if (this.keys.left.isDown) {
         this.player.setVelocityX(-speed);
-        this.player.anims.play('left', true);
+        
+        // Use Macbeth-specific animation if available
+        if (this.anims.exists('macbeth_left')) {
+          this.player.anims.play('macbeth_left', true);
+          this.player.flipX = true;
+        } else {
+          this.player.anims.play('left', true);
+        }
       } else if (this.keys.right.isDown) {
         this.player.setVelocityX(speed);
-        this.player.anims.play('right', true);
+        
+        // Use Macbeth-specific animation if available
+        if (this.anims.exists('macbeth_right')) {
+          this.player.anims.play('macbeth_right', true);
+          this.player.flipX = false;
+        } else {
+          this.player.anims.play('right', true);
+        }
       } else {
         this.player.setVelocityX(0);
-        this.player.anims.play('idle', true);
+        
+        // Use Macbeth-specific idle animation if available
+        if (this.anims.exists('macbeth_idle')) {
+          this.player.anims.play('macbeth_idle', true);
+        } else {
+          this.player.anims.play('idle', true);
+        }
       }
       
       // Check for starting dialogue
@@ -402,8 +529,26 @@ export class Act1Scene3 extends BaseGameScene {
       this.floor.clear();
       const groundY = height * 0.9;
       const ground = this.add.rectangle(width / 2, groundY, width, 20, 0x555555);
+      this.physics.add.existing(ground, true);
+      ground.body.setImmovable(true);
       this.floor.add(ground);
       ground.setVisible(false);
+      
+      // Important: Refresh the physics body
+      this.floor.refresh();
+      
+      // Re-add colliders
+      if (this.player) {
+        this.physics.add.collider(this.player, this.floor);
+      }
+      
+      if (this.npcs) {
+        Object.keys(this.npcs).forEach(key => {
+          if (!key.endsWith('Tag') && this.npcs[key]) {
+            this.physics.add.collider(this.npcs[key], this.floor);
+          }
+        });
+      }
     }
     
     // The rest of NPC repositioning is handled by super.updateNametags()

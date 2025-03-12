@@ -73,7 +73,8 @@ module.exports = {
                 { from: "public/favicon", to: "favicon" },
                 { from: "public/assets/portraits", to: "assets/portraits" },
                 { from: "public/assets/fonts", to: "font" }, // Ensure fonts are copied properly
-                { from: "src/SceneDialogue", to: "SceneDialogue" } // Copies to public folder
+                { from: "src/SceneDialogue", to: "SceneDialogue" }, // Copies to public folder
+                { from: "src/QuestionSets", to: "QuestionSets" } // Copies to public folder
             ]
         })        
     ]

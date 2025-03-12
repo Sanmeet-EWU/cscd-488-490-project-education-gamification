@@ -4,24 +4,24 @@ export class TEMPLATESCENE extends BaseGameScene {
   constructor() {
     // REPLACE: 'TEMPLATESCENE' with your actual scene key (e.g., 'Act2Scene1')
     super('Act5Scene8Part2');
-    
+
     // Set to true if this is a cutscene without player movement
     this.isCutscene = true;
   }
 
   preload() {
     // REPLACE: Load your scene specific assets
-    
+
     // Background
     if (!this.textures.exists('background_act5scene8part2')) {
       this.load.svg('background_act5scene8part2', 'assets/act5/act5scene8part2.svg', { width: 2560, height: 1440 });
     }
-    
+
     // Dialogue JSON
     if (!this.cache.json.exists('Act5Scene8Part2DialogueData')) {
       this.load.json('Act5Scene8Part2DialogueData', 'SceneDialogue/Act5Scene8Part2.json');
     }
-    
+
     // Character spritesheets
     if (!this.textures.exists('macduff')) {
       this.load.spritesheet('macduff', 'assets/characters/Macduff.png', {
@@ -43,19 +43,19 @@ export class TEMPLATESCENE extends BaseGameScene {
         frameWidth: 32, frameHeight: 48
       });
     }
-    
+
     // Character portraits for dialogue
     this.load.image("Macduff", "assets/portraits/Macduff.png");
     this.load.image("Malcolm", "assets/portraits/Malcolm.png");
     this.load.image("Siward", "assets/portraits/Siward.png");
     this.load.image("Ross", "assets/portraits/Ross.png");
-    
+
     // Scene music
     this.load.audio('act5scene8part2music', 'assets/audio/act5scene8part2music.mp3');
-    
+
     // Sound effects
     this.load.audio('soundEffect1', 'assets/audio/effect.mp3');
-    
+
     // Error handling for asset loading
     this.load.on('loaderror', (fileObj) => {
       console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);
@@ -66,7 +66,7 @@ export class TEMPLATESCENE extends BaseGameScene {
     // Call parent create method
     super.create(data);
     const { width, height } = this.scale;
-    
+
     // Check required assets
     const requiredAssets = [
       'background_act5scene8part2', 'macduff', 'malcolm', 'siward', 'ross', 'act5scene8part2music',
@@ -92,38 +92,41 @@ export class TEMPLATESCENE extends BaseGameScene {
       .setOrigin(0, 0)
       .setDisplaySize(width, height)
       .setDepth(-1);
-    
+
     // Create animations
     this.createAnimations();
-    
+
     // Play scene music
     if (this.audioController && this.cache.audio.exists('act5scene8part2music')) {
       this.audioController.playMusic('act5scene8part2music', this, { volume: 1, loop: true });
     }
-    
+
     // Create player if not a cutscene
     if (!this.isCutscene) {
       this.setupPlayer();
     }
-    
+
     // Create NPCs
     this.setupNPCs();
-    
+
     // Setup dialogue
     this.setupSceneDialogue();
-    
+
     // Start dialogue for cutscenes
     if (this.isCutscene && this.dialogueManager) {
       // For cutscenes, automatically start dialogue
       this.dialogueManager.startDialogue("Act5Scene8Part2", () => {
-        // Fade out scene at the end of dialogue
-        this.cameras.main.fadeOut(2000, 0, 0, 0);
+        // Replace 'NextSceneName' with your next scene
+        this.cameras.main.fadeOut(1000, 0, 0, 0);
+        this.cameras.main.once('camerafadeoutcomplete', () => {
+          this.switchScene('Leaderboard');
+        });
       });
     }
-    
+
     // Handle scene resize
     this.scale.on('resize', this.onResize, this);
-    
+
     // Cleanup on shutdown
     this.events.on('shutdown', () => {
       this.scale.off('resize', this.onResize, this);
@@ -176,19 +179,20 @@ export class TEMPLATESCENE extends BaseGameScene {
         animationKey: 'idleAnim',
         interactive: true,
         displayName: 'Ross'
-      }
+      },
+      // Add more NPCs as needed
     ];
-    
+
     // Use the base class method to create NPCs
     this.createNPCs(npcConfigs);
   }
 
   setupSceneDialogue() {
-    if (!this.cache.json.exists('Act5Scene8Part2Data')) return;
-    
+    if (!this.cache.json.exists('Act5ScenePart2Data')) return;
+
     try {
       const dialogueData = this.cache.json.get('Act5Scene8Part2Data');
-      
+
       // REPLACE: Map character names to portrait texture keys
       const portraitMap = {
         "Macduff": "Macduff",
@@ -204,24 +208,76 @@ export class TEMPLATESCENE extends BaseGameScene {
     }
   }
 
+  createAnimations() {
+    // REPLACE: Set up your character animations
+
+    // Example animation setup
+    if (!this.anims.exists('idleAnim')) {
+      this.anims.create({
+        key: 'idleAnim',
+        frames: [{ key: 'characterSprite', frame: 0 }],
+        frameRate: 10
+      });
+    }
+
+    if (!this.anims.exists('walkLeft')) {
+      this.anims.create({
+        key: 'walkLeft',
+        frames: this.anims.generateFrameNumbers('characterSprite', {
+          start: 0, end: 3
+        }),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
+
+    if (!this.anims.exists('walkRight')) {
+      this.anims.create({
+        key: 'walkRight',
+        frames: this.anims.generateFrameNumbers('characterSprite', {
+          start: 4, end: 7
+        }),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
+  }
+
   update(time, delta) {
     // Call parent update - handles pause, nametags, interaction, and dialogue indicators
     super.update(time, delta);
-    
+
     // Skip additional updates if paused or in dialogue
     if (this.isPaused || this.dialogueManager?.isActive) return;
+
+    if (this.player) {
+      const speed = 160;
+
+      // Handle player movement
+      // REPLACE
+      if (this.keys.left.isDown) {
+        this.player.setVelocityX(-speed);
+        this.player.anims.play('walkLeft', true);
+      } else if (this.keys.right.isDown) {
+        this.player.setVelocityX(speed);
+        this.player.anims.play('walkRight', true);
+      } else {
+        this.player.setVelocityX(0);
+        this.player.anims.play('idleAnim', true);
+      }
+    }
   }
-  
+
   onResize(gameSize) {
-    if (!this.scene.isActive('SceneTemplate')) return; // REPLACE: Scene key
-    
+    if (!this.scene.isActive('Act5Scene8Part2')) return; // REPLACE: Scene key
+
     const { width, height } = gameSize;
-    
+
     // Resize background
     if (this.background?.active) {
       this.background.setDisplaySize(width, height);
     }
-    
+
     // The rest of NPC repositioning is now handled by super.updateNametags()
   }
 }

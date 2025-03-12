@@ -42,7 +42,8 @@ export class BaseGameScene extends BaseScene {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
       interact: Phaser.Input.Keyboard.KeyCodes.E,
-      pause: Phaser.Input.Keyboard.KeyCodes.ESC
+      pause: Phaser.Input.Keyboard.KeyCodes.ESC,
+      space: Phaser.Input.Keyboard.KeyCodes.SPACE
     });
 
     // Setup physics world
@@ -364,11 +365,11 @@ export class BaseGameScene extends BaseScene {
    * @return {Array} Array of missing assets, empty if all assets loaded
    */
   checkRequiredAssets(requiredAssets) {
-    if (!requiredAssets || !Array.isArray(requiredAssets)) return [];
-    
     return requiredAssets.filter(asset => {
-      // Check for both texture and audio assets
-      return !(this.textures.exists(asset) || this.cache.audio.exists(asset));
+      const hasTexture = this.textures.exists(asset);
+      const hasAudio   = this.cache.audio.exists(asset);
+      const hasJson    = this.cache.json.exists(asset); // new
+      return !(hasTexture || hasAudio || hasJson);
     });
   }
 
