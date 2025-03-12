@@ -99,7 +99,7 @@ export async function registerUser(email) {
             Username: username,
             SaveData: {
                 scene: "Act1Scene1",
-                score: 0,
+                score: 1,
                 inventory: [],
                 position: { x: 100, y: 100 },
                 lastSaved: serverTimestamp()
