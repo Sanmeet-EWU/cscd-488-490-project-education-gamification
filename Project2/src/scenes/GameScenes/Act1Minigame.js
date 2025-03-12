@@ -281,12 +281,44 @@ export class Act1Minigame extends BaseGameScene {
             texture = 'macbeth';
             frame = 0;
             animation = 'idle';
-        } else {
-            texture = 'guard';
-            frame = 'sprite1';
-            animation = 'idle';
-        }
-    
+        } 
+
+            const runJsonData = this.cache.json.get('macbeth_run_json');
+            const runPhaserAtlas = { frames: {} };
+            
+            runJsonData.forEach(frame => {
+              runPhaserAtlas.frames[frame.name] = {
+                frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                rotated: false,
+                trimmed: false,
+                sourceSize: { w: frame.width, h: frame.height },
+                spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+              };
+            });
+            
+            // Add a new atlas named 'macbeth_run_atlas' to the texture manager
+            this.textures.addAtlas(
+              'macbeth_run_atlas',
+              this.textures.get('macbeth_run_sheet').getSourceImage(),
+              runPhaserAtlas
+            );
+            
+            // Create Macbeth running-left animation
+            this.anims.create({
+              key: 'macbeth_left',
+              frames: runJsonData.map(frame => ({ key: 'macbeth_run_atlas', frame: frame.name })),
+              frameRate: 10,
+              repeat: -1
+            });
+            
+            // Create Macbeth running-right animation
+            this.anims.create({
+              key: 'macbeth_right',
+              frames: runJsonData.map(frame => ({ key: 'macbeth_run_atlas', frame: frame.name })),
+              frameRate: 10,
+              repeat: -1
+            });
+          
         // Define player configuration
         const playerConfig = {
             texture: texture,

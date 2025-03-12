@@ -20,6 +20,20 @@ export class Act1Scene2 extends BaseGameScene {
     this.load.image('guardImg', 'assets/characters/Guard.png');
     this.load.json('guardData', 'assets/characters/guard.json');
     
+    // Load Duncan character sprite sheets and JSON data
+    if (!this.textures.exists('duncan_idle_sheet')) {
+      this.load.image('duncan_idle_sheet', 'assets/characters/DuncanIdle.png');
+    }
+    if (!this.textures.exists('duncan_run_sheet')) {
+      this.load.image('duncan_run_sheet', 'assets/characters/DuncanRun.png');
+    }
+    if (!this.cache.json.exists('duncan_idle_json')) {
+      this.load.json('duncan_idle_json', 'assets/characters/DuncanIdle.json');
+    }
+    if (!this.cache.json.exists('duncan_run_json')) {
+      this.load.json('duncan_run_json', 'assets/characters/DuncanRun.json');
+    }
+    
     // Load portrait assets
     this.load.image("Captain", "assets/portraits/Captain.png");
     this.load.image("Malcolm", "assets/portraits/Malcolm.png");
@@ -56,12 +70,17 @@ export class Act1Scene2 extends BaseGameScene {
     // Create the guard atlas directly
     this.setupGuardAtlas();
     
-    // Create the player (Duncan)
+    // Setup Duncan's atlas
+    this.setupDuncanAtlas();
+    
+    // THE IMPORTANT PART: Keep using guard sprite for physics but load Duncan animations
+    // Create the player (Duncan) USING THE ORIGINAL WORKING CODE
     this.player = this.physics.add.sprite(width * 0.1, height * 0.8, 'guard', 'sprite1');
-    this.player.setScale(1.5);
+    this.player.setScale(2.0);
     this.player.setOrigin(0.5, 1.0);
     this.player.setCollideWorldBounds(true);
     this.player.depth = 10; // Ensure player is above other elements
+    this.player.displayName = 'Duncan'; // Add this for animation logic
     
     // Add floor collision for player
     if (this.floor) {
@@ -166,50 +185,71 @@ export class Act1Scene2 extends BaseGameScene {
     this.floor.add(ground);
     ground.setVisible(false);
   }
-  setupPlayer() {
-    // Use Duncan's atlas for the player if available, or fallback
-    let texture, frame, animation;
-    
-    if (this.textures.exists('duncan_idle_atlas')) {
-      texture = 'duncan_idle_atlas';
-      frame = 'sprite1';
-      animation = 'duncan_idle';
-    } else if (this.textures.exists('guard')) {
-      texture = 'guard';
-      frame = 'sprite1';
-      animation = 'idle';
-    } else {
-      texture = 'guard';
-      frame = 'sprite1';
-      animation = 'idle';
+  
+  setupDuncanAtlas() {
+    // Setup Duncan's atlases
+    if (this.textures.exists('duncan_idle_sheet') && this.cache.json.exists('duncan_idle_json')) {
+      // Convert the JSON to Phaser atlas format
+      const idleJsonData = this.cache.json.get('duncan_idle_json');
+      const idlePhaserAtlas = { frames: {} };
+      
+      idleJsonData.forEach(frame => {
+        idlePhaserAtlas.frames[frame.name] = {
+          frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+          rotated: false,
+          trimmed: false,
+          sourceSize: { w: frame.width, h: frame.height },
+          spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+        };
+      });
+      
+      // Add atlas to texture manager
+      this.textures.addAtlas(
+        'duncan_idle_atlas',
+        this.textures.get('duncan_idle_sheet').getSourceImage(),
+        idlePhaserAtlas
+      );
+      
+      // Create idle animation
+      this.anims.create({
+        key: 'duncan_idle',
+        frames: idleJsonData.map(frame => ({ key: 'duncan_idle_atlas', frame: frame.name })),
+        frameRate: 8,
+        repeat: -1
+      });
     }
     
-    // Define player configuration
-    const playerConfig = {
-      texture: texture,
-      frame: frame,
-      scale: 2.0, // Adjust scale as needed
-      displayName: 'Duncan',
-      animation: animation,
-      movementConstraint: 'horizontal'
-    };
-    
-    // Create the player
-    this.player = this.createPlayer(playerConfig);
-    
-    // Position Duncan on left side of scene
-    if (this.player) {
-      const { width, height } = this.scale;
-      this.player.setPosition(width * 0.3, height * 0.8);
+    // Do the same for run animation
+    if (this.textures.exists('duncan_run_sheet') && this.cache.json.exists('duncan_run_json')) {
+      const runJsonData = this.cache.json.get('duncan_run_json');
+      const runPhaserAtlas = { frames: {} };
       
-      // Apply specific configuration
-      this.player.setScale(2.5);
-      this.player.setOrigin(0.5, 1.0);
-      this.player.setCollideWorldBounds(true);
-      this.physics.add.existing(this.player, false);
-      this.physics.world.enable(this.player);
+      runJsonData.forEach(frame => {
+        runPhaserAtlas.frames[frame.name] = {
+          frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+          rotated: false,
+          trimmed: false,
+          sourceSize: { w: frame.width, h: frame.height },
+          spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+        };
+      });
+      
+      this.textures.addAtlas(
+        'duncan_run_atlas',
+        this.textures.get('duncan_run_sheet').getSourceImage(),
+        runPhaserAtlas
+      );
+      
+      // Create run animations - we'll use this animation for both left and right movement
+      this.anims.create({
+        key: 'duncan_run',
+        frames: runJsonData.map(frame => ({ key: 'duncan_run_atlas', frame: frame.name })),
+        frameRate: 10,
+        repeat: -1
+      });
     }
   }
+  
   setupGuardAtlas() {
     const guardData = this.cache.json.get('guardData');
     if (guardData) {
@@ -259,7 +299,7 @@ export class Act1Scene2 extends BaseGameScene {
   createMinigamePortal(width, height) {
     // Create an interactive portal/station at the far right of the screen
     const portalX = width * 0.95;
-    const portalY = height * 0.8;
+    const portalY = height * 0.9;
     
     // Create portal sprite or rectangle
     if (this.textures.exists('minigame_portal')) {
@@ -388,11 +428,14 @@ export class Act1Scene2 extends BaseGameScene {
   }
 
   update(time, delta) {
-    // Call parent update (from BaseGameScene, not BaseScene)
+    // Call parent update
     super.update(time, delta);
     
-    if (this.player && !this.dialogueManager?.isActive) {
-      const speed = 160;
+    // Skip additional updates if paused or in dialogue
+    if (this.isPaused || this.dialogueManager?.isActive) return;
+    
+    if (this.player) {
+      const speed = 250;
       
       // Update player nametag
       if (this.playerNameTag) {
@@ -420,13 +463,33 @@ export class Act1Scene2 extends BaseGameScene {
       // Handle player movement
       if (this.keys.left.isDown) {
         this.player.setVelocityX(-speed);
-        this.player.anims.play('left', true);
+        
+        // Use Duncan-specific animation if available
+        if (this.anims.exists('duncan_run')) {
+          this.player.anims.play('duncan_run', true);
+          this.player.flipX = true; // Flip sprite horizontally when moving left
+        } else {
+          this.player.anims.play('left', true);
+        }
       } else if (this.keys.right.isDown) {
         this.player.setVelocityX(speed);
-        this.player.anims.play('right', true);
+        
+        // Use Duncan-specific animation if available
+        if (this.anims.exists('duncan_run')) {
+          this.player.anims.play('duncan_run', true);
+          this.player.flipX = false; // Don't flip when moving right
+        } else {
+          this.player.anims.play('right', true);
+        }
       } else {
         this.player.setVelocityX(0);
-        this.player.anims.play('idle', true);
+        
+        // Use Duncan-specific idle animation if available
+        if (this.anims.exists('duncan_idle')) {
+          this.player.anims.play('duncan_idle', true);
+        } else {
+          this.player.anims.play('idle', true);
+        }
       }
       
       // Check for NPC interaction (E key press)
@@ -439,72 +502,23 @@ export class Act1Scene2 extends BaseGameScene {
       if (this.dialogueManager) {
         this.dialogueManager.updateIndicators();
       }
+      
+      // Scene transition logic (only after dialogue is complete)
+      if (this.dialogueFullyComplete && this.nextSceneKey) {
+        if (this.player.x > width - 50) {
+          if (!this.transitionActive) {
+            this.transitionActive = true;
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once('camerafadeoutcomplete', () => {
+              this.scene.start(this.nextSceneKey);
+            });
+          }
+        }
+      }
     }
   }
   
-  checkInteraction() {
-    if (!this.player) {
-      this.interactText.setVisible(false);
-      return;
-    }
-
-    let closestNPC = null;
-    let closestDistance = Infinity;
-    const interactDistance = 120; // Adjusted for easier interaction
-    const playerX = this.player.x;
-    const playerY = this.player.y;
-
-    // Find closest NPC
-    Object.keys(this.npcs).forEach(key => {
-      if (key.endsWith('Tag')) return;
-      const npc = this.npcs[key];
-      const dist = Phaser.Math.Distance.Between(playerX, playerY, npc.x, npc.y);
-      if (dist <= interactDistance && dist < closestDistance) {
-        closestNPC = { key, npc };
-        closestDistance = dist;
-      }
-    });
-
-    // Check proximity to minigame portal
-    const portalDist = this.minigamePortalPosition ? 
-      Phaser.Math.Distance.Between(
-        playerX, 
-        playerY, 
-        this.minigamePortalPosition.x, 
-        this.minigamePortalPosition.y
-      ) : Infinity;
-      
-    // If portal is closer than NPCs, prioritize it
-    if (portalDist < interactDistance && portalDist < closestDistance) {
-      this.interactText.setPosition(
-        this.minigamePortalPosition.x,
-        this.minigamePortalPosition.y - 140
-      );
-      this.interactText.setText('Press E to Start Minigame');
-      this.interactText.setVisible(true);
-      
-      if (Phaser.Input.Keyboard.JustDown(this.keys.interact)) {
-        this.startMinigame();
-      }
-      return;
-    }
-
-    // Otherwise, handle NPC interaction as before
-    if (closestNPC) {
-      this.interactText.setText('Press E to Interact');
-      this.interactText.setPosition(
-        closestNPC.npc.x, 
-        closestNPC.npc.y - (closestNPC.npc.height * 1.5) - 20
-      );
-      this.interactText.setVisible(true);
-      if (Phaser.Input.Keyboard.JustDown(this.keys.interact)) {
-        console.log(`Interaction key pressed near ${closestNPC.key}`);
-        this.startDialogue(closestNPC.key);
-      }
-    } else {
-      this.interactText.setVisible(false);
-    }
-  }
+ 
   
   checkMinigamePortal() {
     // Check if player is within the minigame zone
@@ -553,10 +567,39 @@ export class Act1Scene2 extends BaseGameScene {
       if (this.player?.body) {
         this.player.body.setVelocity(0, 0);
       }
-      // Pass the actual npcKey instead of hardcoding "Act1Scene2"
-      this.dialogueManager.startDialogue(npcKey, () => {
-        console.log("Dialogue completed");
-        this.dialogueFullyComplete = true;
+      // Pass the actual npcKey
+      this.dialogueManager.startDialogue(npcKey, (isEndScene) => {
+        console.log("Dialogue completed, endScene:", isEndScene);
+        if (isEndScene) {
+          this.dialogueFullyComplete = true;
+          this.showExitHint();
+        }
+      });
+    }
+  }
+  
+  showExitHint() {
+    if (!this.exitHint && this.nextSceneKey) {
+      const { width, height } = this.scale;
+      this.exitHint = this.add.text(
+        width - 50, 
+        height / 2,
+        "→",
+        { 
+          fontSize: '32px', 
+          fill: '#ffff00',
+          stroke: '#000000',
+          strokeThickness: 4
+        }
+      ).setOrigin(0.5).setDepth(100);
+      
+      // Add a pulsing animation
+      this.tweens.add({
+        targets: this.exitHint,
+        alpha: 0.6,
+        duration: 800,
+        yoyo: true,
+        repeat: -1
       });
     }
   }
