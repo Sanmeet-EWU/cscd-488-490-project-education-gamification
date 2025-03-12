@@ -60,7 +60,7 @@ export class Act1Scene7 extends BaseGameScene {
     
     // Scene music
     if (!this.cache.audio.exists('act1scene7Music')) {
-      this.load.audio('act1scene7Music', 'assets/audio/act1scene1.ogg');
+      this.load.audio('act1scene7Music', 'assets/audio/act1scene1.mp3');
     }
     
     this.load.on('loaderror', (fileObj) => {

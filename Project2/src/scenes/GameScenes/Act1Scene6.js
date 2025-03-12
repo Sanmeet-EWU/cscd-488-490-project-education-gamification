@@ -50,7 +50,7 @@ export class Act1Scene6 extends BaseGameScene {
     this.load.image("Lady Macbeth", "assets/portraits/LadyMacbeth.png");
     
     // Scene music
-    this.load.audio('act1scene6Music', 'assets/audio/act1scene4.ogg');
+    this.load.audio('act1scene6Music', 'assets/audio/act1scene4.mp3');
     
     this.load.on('loaderror', (fileObj) => {
       console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);
