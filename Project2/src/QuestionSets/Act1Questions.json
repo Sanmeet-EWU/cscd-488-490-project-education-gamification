@@ -13,7 +13,7 @@
         {
             "question" : "What title is given to Macbeth for his bravery in battle?",
             "answers" : ["Becoming thane of Cawdor", "Becoming thane of Glamis", "Becoming thane of Ross", "Becoming thane of Fife"],
-            "correct" : "Thane of Cawdor"
+            "correct" : "Becoming thane of Cawdor"
         },
         {
             "question" : "What do the witches predict in Act 1, Scene 3 for Macbeth?",
@@ -47,7 +47,7 @@
         {
             "question":"How does Macbeth reacte to the witches' prophecies?",
             "answers":["He is ecstatic about it", "He is frightened by it", "He is absorbed by the idea", "He disapointed by the grim news"],
-            "correct":"The Chamber Maids"
+            "correct":"He is absorbed by the idea"
         }
 
     ]
