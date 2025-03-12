@@ -39,6 +39,7 @@ export class Act1Scene3Part1a extends BaseGameScene {
     this.load.image('witch2portrait', 'assets/portraits/witch2portrait.png');
     this.load.image('witch3portrait', 'assets/portraits/witch3portrait.png');
     this.load.image('banquoportrait', 'assets/portraits/Banquo.png');
+    this.load.image('witchPortriatAll', 'assets/portraits/witchPortraitAll.png');
     
     // Scene music
     this.load.audio('witchMusic', 'assets/audio/act1scene1.mp3');//Same music from first time seeing the witch den
@@ -116,18 +117,11 @@ export class Act1Scene3Part1a extends BaseGameScene {
     // Position the other assets here //
     ////////////////////////////////////
 
-    this.cauldron = this.add.image(width * 0.5, height * 0.7, 'cauldron').setScale(width * 0.0005).setDepth(2);
-    this.gas = this.add.image(width * 0.5, height * 0.5, 'cauldronGas').setScale(width * 0.0005).setDepth(1);
+    this.cauldron = this.add.image(width * 0.5, height * 0.7, 'cauldron').setScale(width * 0.0004).setDepth(2);
+    this.gas = this.add.image(width * 0.5, height * 0.5, 'cauldronGas').setScale(width * 0.0004).setDepth(1);
 
-    
-    // Start dialogue for cutscenes
-    if (this.isCutscene && this.dialogueManager) {
-      // For cutscenes, automatically start dialogue
-      this.dialogueManager.startDialogue("MainDialogue", () => {
-        // Replace 'NextSceneName' with your next scene
-        this.switchScene('Act1Scene3Part1b');//NextSceneName
-      });
-    }
+    // wait a little bit before starting dialogue
+    this.time.delayedCall(1000, () => this.start());
     
     // Handle scene resize
     this.scale.on('resize', this.onResize, this);
@@ -137,6 +131,20 @@ export class Act1Scene3Part1a extends BaseGameScene {
       this.scale.off('resize', this.onResize, this);
     });
   }
+
+  start() {
+    // Start dialogue for cutscenes
+    console.log("Is this a cutscene? " + this.isCutscene + "  Is dialogue manager initialized? " + this.dialogueManager);
+    if (this.isCutscene && this.dialogueManager) {
+      console.log("Starting dialogue for cutscene...");
+      // For cutscenes, automatically start dialogue
+      this.dialogueManager.startDialogue("FirstWitch", () => {
+        // Replace 'NextSceneName' with your next scene
+        this.switchScene('Act1Scene3Part1b');//NextSceneName
+      });
+    }
+  }
+
 
   setupPlayer() {
     // REPLACE: Define player configuration
@@ -162,29 +170,29 @@ export class Act1Scene3Part1a extends BaseGameScene {
         y: this.scale.height * 0.8,
         texture: 'WitchIdle',
         frame: 0,
-        scale: 3,
-        animationKey: 'witchIdleAnimw',
+        scale: 5,
+        animationKey: 'witchIdleAnim',
         interactive: true,
         displayName: 'First Witch'
       },
       {
         key: "Witch2",
-        x: this.scale.width * 0.25,
+        x: this.scale.width * 0.65,
         y: this.scale.height * 0.8,
-        texture: 'witchIdleAnim',
+        texture: 'WitchIdle',
         frame: 0,
-        scale: 3,
-        animationKey: 'idleAnim',
+        scale: 5,
+        animationKey: 'witchIdleAnim',
         interactive: true,
         displayName: 'Second Witch'
       },
       {
         key: "Witch3",
-        x: this.scale.width * 0.25,
+        x: this.scale.width * 0.80,
         y: this.scale.height * 0.8,
         texture: 'WitchIdle',
         frame: 0,
-        scale: 3,
+        scale: 5,
         animationKey: 'witchIdleAnim',
         interactive: true,
         displayName: 'Third Witch'
@@ -197,6 +205,8 @@ export class Act1Scene3Part1a extends BaseGameScene {
   }
 
   setupSceneDialogue() {
+    console.log("Setting up scene dialogue...");
+    console.log(this.cache.json.exists('Act1Scene3Part1aData'));
     if (!this.cache.json.exists('Act1Scene3Part1aData')) return;
     
     try {
@@ -208,11 +218,26 @@ export class Act1Scene3Part1a extends BaseGameScene {
         "Second Witch": "witch2portrait",
         "Third Witch": "witch3portrait",
         "Banquo": "banquoportrait",
-        "All": "witch1portrait" // just default to the first witch I guess
+        "The Witches": "witchPortriatAll", // just default to the first witch I guess
+        "Stage Directions": null
       };
 
       // Use base class method to setup dialogue
-      //this.setupDialogue(dialogueData, portraitMap, "PlayerCharacterName"); // no player character in this scene
+      this.setupDialogue(dialogueData, portraitMap, null); // no player character in this scene
+
+      // Register NPCs with dialogue manager
+      setTimeout(() => {
+        Object.keys(this.npcs).forEach(key => {
+          if (!key.endsWith('Tag')) {
+            console.log("Registering: " + key + ", " + this.npcs[key] + ", " + this.npcs[key+ "Tag"]);
+            this.dialogueManager?.registerNPC(key, this.npcs[key], this.npcs[key + "Tag"]);
+          }
+        });
+      }, 100);
+
+      if(!this.dialogueManager) console.log("DialogueManager is null.");
+
+      console.log("Dialogue setup complete.");
     } catch (error) {
       console.error("Error setting up dialogue:", error);
     }
@@ -294,7 +319,45 @@ export class Act1Scene3Part1a extends BaseGameScene {
     if (this.background?.active) {
       this.background.setDisplaySize(width, height);
     }
+
+    // Resize other scene elements here
+    if (this.cauldron) {
+      this.cauldron.setPosition(width * 0.5, height * 0.7);
+      this.cauldron.setScale(width * 0.0004);
+    }
+    if (this.gas) {
+      this.gas.setPosition(width * 0.5, height * 0.5);
+      this.gas.setScale(width * 0.0004);
+    }
+
+
+    if (this.npcs) {
+      Object.keys(this.npcs).forEach(key => {
+        if (!key.endsWith('Tag') && this.npcs[key] == "Witch1") {
+          console.log("in here")
+          this.npcs[key].setPosition(width * 0.25, height * 0.8);
+        }
+      });
+    }
+
+    // // Reposition NPCs
+    // if (this.npcs[key] == "Witch1") this.npcs[key].setPosition(width * 0.25, height * 0.8);
+    // if (this.npcs[key] == "Witch2") this.npcs[key].setPosition(width * 0.65, height * 0.8);
+    // if (this.npcs[key] == "Witch3") this.npcs[key].setPosition(width * 0.85, height * 0.8);
+    // // Resize the witches
+    // if (this.npcs) {
+    //   Object.keys(this.npcs).forEach(key => {
+    //     if (!key.endsWith('Tag') && this.npcs[key]) {
+    //       this.npcs[key].setScale(5);
+    //       // if (this.npcs[key + 'Tag']) {
+    //       //   this.npcs[key + 'Tag'].setPosition(this.npcs[key].x, this.npcs[key].y - 40);
+    //       // }
+    //     }
+    //   });
+    // }
+    
     
     // The rest of NPC repositioning is now handled by super.updateNametags()
+    super.updateNametags();
   }
 }
