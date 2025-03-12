@@ -3,7 +3,7 @@
         {
             "speaker": "Second Witch",
             "text": "Something wicked this way comes. Open, locks, Whoever knocks.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "How now, you secret, black, and midnight hags?", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -13,11 +13,11 @@
         {
             "speaker": "All",
             "text": "A deed without a name.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "I conjure you by that which you profess", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
-            "text": "I conjure you by that which you profess (Howe’er you come to know it), answer me.",
+            "text": "I conjure you by that which you profess, answer me.",
             "responses": [{"text": "...", "next": "First Witch"}]
         },
         {
@@ -38,7 +38,7 @@
         {
             "speaker": "First Witch",
             "text": "Say if th’ hadst rather hear it from our mouths Or from our masters’.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Call ’em", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -53,7 +53,7 @@
         {
             "speaker": "First Apparition",
             "text": "Macbeth! Macbeth! Macbeth! Beware Macduff! Beware the Thane of Fife! Dismiss me. Enough.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Whate’er thou art", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -63,7 +63,7 @@
         {
             "speaker": "Second Apparition",
             "text": "Macbeth! Macbeth! Macbeth!—",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Had I three ears", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -74,12 +74,12 @@
             "speaker": "Second Apparition",
             "text": "Laugh to scorn the power of man, for none of woman born shall harm Macbeth.",
             "translation": "Mock the power of man, for none born from a woman will harm Macbeth",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Then live, Macduff", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
             "text": "Then live, Macduff; what need I fear of thee? But yet I’ll make assurance double sure And take a bond of fate.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Thou shalt not live", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -89,7 +89,7 @@
         {
             "speaker": "Third Apparition",
             "text": "Macbeth shall never vanquished be until Great Birnam Wood to high Dunsinane Hill Shall come against him.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Sweet bodements, good!", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -114,7 +114,7 @@
         {
             "speaker": "All",
             "text": "Show his eyes and grieve his heart. Come like shadows; so depart.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Horrible sight!", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -124,7 +124,7 @@
         {
             "speaker": "First Witch",
             "text": "Ay, sir, all this is so. Come, sisters, cheer we up his sprites And show the best of our delights. That this great king may kindly say Our duties did his welcome pay.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Where are they?", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -134,7 +134,7 @@
         {
             "speaker": "Lennox",
             "text": "What’s your Grace’s will?",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Saw you the Weïrd Sisters?", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
@@ -144,13 +144,13 @@
         {
             "speaker": "Lennox",
             "text": "No, my lord.",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "The castle of Macduff I will surprise", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",
             "text": "The castle of Macduff I will surprise, seize upon Fife, give to th’ edge o’ th’ sword his wife, his babes, and all unfortunate souls That trace him in his line.",
             "translation": "I'll launch a surprise attack on Macduff's castle, kill his wife, children, and anyone related to him",
-            "responses": [{"text": "...", "next": "Macbeth"}]
+            "responses": [{"text": "Where are these gentlemen?", "next": "Macbeth"}]
         },
         {
             "speaker": "Macbeth",

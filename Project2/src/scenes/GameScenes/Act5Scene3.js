@@ -19,7 +19,7 @@ export class TEMPLATESCENE extends BaseGameScene {
 
         // Dialogue JSON
         if (!this.cache.json.exists('Act5Scene3Data')) {
-            this.load.json('Act5Scene5Data', 'SceneDialogue/Act5Scene3.json');
+            this.load.json('Act5Scene3Data', 'SceneDialogue/Act5Scene3.json');
         }
 
         // Character spritesheets

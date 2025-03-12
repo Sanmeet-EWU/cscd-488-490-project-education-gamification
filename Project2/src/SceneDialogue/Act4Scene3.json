@@ -3,7 +3,7 @@
         {
             "speaker": "Malcolm",
             "text": "Let us seek out some desolate shade and there weep our sad bosoms empty.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "Let us rather hold fast the mortal sword", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -23,7 +23,7 @@
         {
             "speaker": "Malcolm",
             "text": "I am young, but something You may deserve of him through me, and wisdom To offer up a weak, poor, innocent lamb T’ appease an angry god.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "I am not treacherous", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -33,7 +33,7 @@
         {
             "speaker": "Malcolm",
             "text": "But Macbeth is. A good and virtuous nature may recoil In an imperial charge. But I shall crave your pardon.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "I have lost my hopes", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -59,17 +59,17 @@
         {
             "speaker": "Malcolm",
             "text": "You may be rightly just, whatever I shall think.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "Bleed, bleed, poor country!", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
             "text": "Bleed, bleed, poor country! Great tyranny, lay thou thy basis sure, For goodness dare not check thee. ",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "Wear thou thy wrongs", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
             "text": "Wear thou thy wrongs; The title is affeered.—Fare thee well, lord.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "I would not be the villain that thou think’st", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -94,7 +94,7 @@
         {
             "speaker": "Malcolm",
             "text": "I thank you, doctor.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "What’s the disease he means?", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -104,7 +104,7 @@
         {
             "speaker": "Malcolm",
             "text": "’Tis called the evil: A most miraculous work in this good king, Which often since my here-remain in England I have seen him do.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "See who comes here", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -114,7 +114,7 @@
         {
             "speaker": "Malcolm",
             "text": "My countryman, but yet I know him not.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "My ever-gentle cousin", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -129,7 +129,7 @@
         {
             "speaker": "Ross",
             "text": "Sir, amen.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "Stands Scotland where it did?", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -139,7 +139,7 @@
         {
             "speaker": "Ross",
             "text": "Alas, poor country, Almost afraid to know itself.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "O relation too nice and yet too true!", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -154,7 +154,7 @@
         {
             "speaker": "Ross",
             "text": "That of an hour’s age doth hiss the speaker. Each minute teems a new one.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "How does my wife?", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -164,7 +164,7 @@
         {
             "speaker": "Ross",
             "text": "Why, well.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "And all my children?", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -174,7 +174,7 @@
         {
             "speaker": "Ross",
             "text": "Well too.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "The tyrant has not battered at their peace?", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -184,7 +184,7 @@
         {
             "speaker": "Ross",
             "text": "No, they were well at peace when I did leave ’em.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "Be not a niggard of your speech", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -204,7 +204,7 @@
         {
             "speaker": "Ross",
             "text": "Would I could answer This comfort with the like. But I have words That would be howled out in the desert air, Where hearing should not latch them.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "What concern they", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -214,7 +214,7 @@
         {
             "speaker": "Ross",
             "text": "But in it shares some woe, though the main part Pertains to you alone.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "If it be mine, Keep it not from me", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -229,7 +229,7 @@
         {
             "speaker": "Malcolm",
             "text": "Merciful heaven!— What, man, ne’er pull your hat upon your brows.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "My children too?", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -239,7 +239,7 @@
         {
             "speaker": "Ross",
             "text": "Wife, children, servants, all that could be found.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "And I must be from thence?", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -254,7 +254,7 @@
         {
             "speaker": "Malcolm",
             "text": "Be comforted. Let’s make us med’cines of our great revenge To cure this deadly grief.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "All my pretty chickens and their dam At one fell swoop?", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -264,7 +264,7 @@
         {
             "speaker": "Malcolm",
             "text": "Dispute it like a man.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "I shall do so", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
@@ -275,7 +275,7 @@
             "speaker": "Malcolm",
             "text": "Be this the whetstone of your sword. Let grief Convert to anger. Blunt not the heart; enrage it.",
             "translation": "Use your grief as a whetstone to sharpen your sword. Let your sorrow turn into anger. Don't dull your heart; make it furious.",
-            "responses": [{"text": "...", "next": "Macduff"}]
+            "responses": [{"text": "O, I could play the woman with mine eyes And braggart with my tongue!", "next": "Macduff"}]
         },
         {
             "speaker": "Macduff",
