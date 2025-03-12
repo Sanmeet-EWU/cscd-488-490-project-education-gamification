@@ -1,5 +1,5 @@
 {
-    "Act1Scene3Part1b": [
+    "Act1Scene3Part3a": [
         {
             "speaker": "Banquo",
             "text": "The earth hath bubbles, as the water has, and these are of them. Whither are they vanished?",
@@ -38,7 +38,7 @@
             "speaker": "Banquo",
             "text": "To th’ selfsame tune and words. —Who’s here?", 
             "translation": "In the same way and with the same words. —Who goes there?",
-            "responses": [{ "text": "...", "next": "FinalLine" }] 
+            "responses": [{ "text": "...", "next": "Stage Direction" }] 
         },
         {   
             "speaker": "Stage Direction", 

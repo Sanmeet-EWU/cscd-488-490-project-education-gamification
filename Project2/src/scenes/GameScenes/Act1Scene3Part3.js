@@ -1,12 +1,12 @@
 import { BaseGameScene } from '../BaseGameScene.js';
 
-export class Act1Scene3Part1b extends BaseGameScene {
+export class Act1Scene3Part3 extends BaseGameScene {
   constructor() {
     // REPLACE: 'TEMPLATESCENE' with your actual scene key (e.g., 'Act2Scene1')
-    super('Act1Scene3Part1b');
+    super('Act1Scene3Part3');
     
     // Set to true if this is a cutscene without player movement
-    this.isCutscene = false;
+    this.isCutscene = true;
   }
 
   // Macbeth and Banquo are on their way back to Fores to report to King Duncan after their victory, however they stumble upon three witches who make prophecies about their future.
@@ -17,35 +17,16 @@ export class Act1Scene3Part1b extends BaseGameScene {
       this.load.svg('background_witchden', 'assets/act1/Act1Scene1EmptyBg.svg', { width: 2560, height: 1440 });
     }
     
-    // Dialogue JSON
-    if (!this.cache.json.exists('Act1Scene3Part1bData')) {
-      this.load.json('Act1Scene3Part1bData', 'SceneDialogue/Act1Scene3Part1b.json');
+    // Dialogue JSON #1
+    if (!this.cache.json.exists('Act1Scene3Part3aData')) {
+      this.load.json('Act1Scene3Part3aData', 'SceneDialogue/Act1Scene3Part3a.json');
+    }
+    // Dialogue JSON #2
+    if (!this.cache.json.exists('Act1Scene3Part3bData')) {
+      this.load.json('Act1Scene3Part3bData', 'SceneDialogue/Act1Scene3Part3b.json');
     }
 
-    // Load other character sprites (using guard as a generic sprite if needed)
-    if (!this.textures.exists('witchData')) {
-      console.log("Loading generic witch json");
-      this.load.json('witchData', 'assets/characters/witchIdle.json');
-    }
-    console.log("Loading witch json complete");
-    // Character spritesheets
-    if (!this.textures.exists('WitchIdle')) {
-      this.load.spritesheet('WitchIdle', 'assets/characters/B_witch_idle.png', {
-        frameWidth: 32, frameHeight: 48
-      });
-    }
-
-    // Character spritesheets
-
-      // Witches
-      if (!this.textures.exists('witchData')) {
-        this.load.json('witchData', 'assets/characters/witchIdle.json');
-      }
-      if (!this.textures.exists('WitchIdle')) {
-        this.load.spritesheet('WitchIdle', 'assets/characters/B_witch_idle.png', {
-          frameWidth: 32, frameHeight: 48
-        });
-      }
+    // Character spritesheets - just need banquo and macbeth, and later ross and angus
 
       // Backup guard
       if (!this.textures.exists('guardImg')) {
@@ -77,12 +58,9 @@ export class Act1Scene3Part1b extends BaseGameScene {
       }
 
     // Character portraits for dialogue
-    this.load.image('witch1portrait', 'assets/portraits/witch1portrait.png');
-    this.load.image('witch2portrait', 'assets/portraits/witch2portrait.png');
-    this.load.image('witch3portrait', 'assets/portraits/witch3portrait.png');
     this.load.image('banquoportrait', 'assets/portraits/Banquo.png');
     this.load.image('macbethpotrait', 'assets/portraits/Macbeth.png');
-    this.load.image('witchPortriatAll', 'assets/portraits/witchPortraitAll.png');
+    this.load.image('rossportrait', 'assets/portraits/Ross.png');
     
     // Scene music
     this.load.audio('witchMusic', 'assets/audio/act1scene1.mp3');//Same music from first time seeing the witch den
@@ -108,13 +86,10 @@ export class Act1Scene3Part1b extends BaseGameScene {
     // Check required assets
     const requiredAssets = [
       'background_witchden', 
-      'WitchIdle', 
-      'witchMusic',
-      'witch1portrait', 
-      'witch2portrait', 
-      'witch3portrait', 
+      'witchMusic', 
       'banquoportrait',
-      'macbethpotrait',
+      'macbethpotrait'
+
     ];
     const missing = this.checkRequiredAssets(requiredAssets);
     if (missing.length > 0) {
@@ -157,9 +132,10 @@ export class Act1Scene3Part1b extends BaseGameScene {
     }
     
     // Create player if not a cutscene
-    if (!this.isCutscene) {
-      this.setupPlayer();
-    }
+    // if (!this.isCutscene) {
+    //   this.setupPlayer();
+    // }
+    this.setupPlayer();
     
     // Create NPCs
     this.setupNPCs();
@@ -176,19 +152,12 @@ export class Act1Scene3Part1b extends BaseGameScene {
     this.cauldron = this.add.image(width * 0.7, height * 0.7, 'cauldron').setScale(width * 0.0003).setDepth(2);
     this.gas = this.add.image(width * 0.7, height * 0.5, 'cauldronGas').setScale(width * 0.0003).setDepth(1);
 
+
+    // wait a little bit before starting dialogue
+    this.time.delayedCall(1000, () => this.start());
+
     
-    // Start dialogue for cutscenes
-    // console.log("Is this a cutscene? " + this.isCutscene + "  Is dialogue manager initialized? " + this.dialogueManager);
-    // if (this.isCutscene && this.dialogueManager) {
-    //   console.log("Starting dialogue for cutscene...");
-    //   // For cutscenes, automatically start dialogue
-    //   this.dialogueManager.startDialogue("Macbeth", () => {
-    //     // Replace 'NextSceneName' with your next scene
-    //     this.switchScene('Act1Minigame');//NextSceneName
-    //   });
-    // }
-
-
+    
     
     // Handle scene resize
     this.scale.on('resize', this.onResize, this);
@@ -197,6 +166,24 @@ export class Act1Scene3Part1b extends BaseGameScene {
     this.events.on('shutdown', () => {
       this.scale.off('resize', this.onResize, this);
     });
+  }
+
+  start() {//Im trying two sets of dialogue, one to open with and the other for when ross and angus enter the scene
+    //Start dialogue for cutscenes
+
+      if (this.isCutscene && this.dialogueManager) {
+        // For cutscenes, automatically start dialogue
+        this.dialogueManager.startDialogue("Macbeth", () => {
+
+          console.log("Ross and Angus enter the scene");
+
+            this.setupNPCs2();
+            // Setup dialogue
+            this.setupSceneDialogue2();
+
+          //this.switchScene('Act1Minigame');//NextSceneName
+        });
+      }
   }
 
   setupPlayer() {
@@ -227,56 +214,24 @@ export class Act1Scene3Part1b extends BaseGameScene {
           movementConstraint: 'horizontal'
       };
       
-      // Create the player (positioned on the left side)
+      // Create the player
       this.player = this.createPlayer(playerConfig);
       
-      // Position Macbeth on center-left of screen
+      // Position Macbeth on center
       if (this.player) {
           const { width, height } = this.scale;
-          this.player.setPosition(width * 0.3, height * 0.8);
+          this.player.setPosition(width * 0.5, height * 0.8);
+          this.player.setFlipX(true);
       }
   }
 
-  setupNPCs() {
+  setupNPCs() {//Banquo is the only NPC to start out
     const { width, height } = this.scale;
-    // REPLACE: Define your NPCs
+
     const npcConfigs = [
       {
-        key: "Witch1",
-        x: width * 0.6,
-        y: height * 0.8,
-        texture: 'WitchIdle',
-        frame: 0,
-        scale: 5,
-        animationKey: 'witchIdleAnim',
-        interactive: true,
-        displayName: 'First Witch'
-      },
-      {
-        key: "Witch2",
-        x: width * 0.8,
-        y: height * 0.8,
-        texture: 'WitchIdle',
-        frame: 0,
-        scale: 5,
-        animationKey: 'witchIdleAnim',
-        interactive: true,
-        displayName: 'Second Witch'
-      },
-      {
-        key: "Witch3",
-        x: width * 0.9,
-        y: height * 0.8,
-        texture: 'WitchIdle',
-        frame: 0,
-        scale: 5,
-        animationKey: 'witchIdleAnim',
-        interactive: true,
-        displayName: 'Third Witch'
-      },
-      {
         key: "Banquo",
-        x: width * 0.2,
+        x: width * 0.4,
         y: height * 0.8,
         texture: 'guard',
         frame: 'sprite1',
@@ -292,19 +247,84 @@ export class Act1Scene3Part1b extends BaseGameScene {
     this.createNPCs(npcConfigs);
   }
 
+  setupNPCs2() {//Ross and Angus
+    const { width, height } = this.scale;
+
+    const npcConfigs = [
+      {
+        key: "Ross",
+        x: width * 0.65,
+        y: height * 0.9,
+        texture: 'guard',
+        frame: 'sprite1',
+        scale: 1.8,
+        animationKey: 'idle',
+        interactive: true,
+        displayName: 'Ross'
+      },
+      {
+        key: "Angus",
+        x: width * 0.8,
+        y: height * 0.9,
+        texture: 'guard',
+        frame: 'sprite1',
+        scale: 1.8,
+        animationKey: 'idle',
+        interactive: true,
+        displayName: 'Ross'
+      }
+      // Add more NPCs as needed
+    ];
+    
+    // Use the base class method to create NPCs
+    this.createNPCs(npcConfigs);
+
+    // Make them look closer ot the fron of the stage
+    this.npcs["Ross"].setDepth(100);
+    this.npcs["Angus"].setDepth(100);
+
+  }
+
   setupSceneDialogue() {
-    if (!this.cache.json.exists('Act1Scene3Part1bData')) return;
+    if (!this.cache.json.exists('Act1Scene3Part3aData')) return;
     
     try {
-      const dialogueData = this.cache.json.get('Act1Scene3Part1bData');
+      const dialogueData = this.cache.json.get('Act1Scene3Part3aData');
       // REPLACE: Map character names to portrait texture keys
       const portraitMap = {
-        "First Witch": "witch1portrait",
-        "Second Witch": "witch2portrait",
-        "Third Witch": "witch3portrait",
         "Banquo": "banquoportrait",
         "Macbeth": "macbethpotrait",
-        "The Witches": "witchPortriatAll"
+        "Stage Directions": null
+      };
+
+      // Use base class method to setup dialogue
+      this.setupDialogue(dialogueData, portraitMap, null); // no player character in this scene
+
+      // Register NPCs with dialogue manager
+      setTimeout(() => {
+        Object.keys(this.npcs).forEach(key => {
+          if (!key.endsWith('Tag')) {
+            this.dialogueManager?.registerNPC(key, this.npcs[key], this.npcs[key + "Tag"]);
+          }
+        });
+      }, 100);
+    } catch (error) {
+      console.error("Error setting up dialogue:", error);
+    }
+  }
+
+  setupSceneDialogue2() {
+    if (!this.cache.json.exists('Act1Scene3Part3bData')) return;
+    
+    try {
+      const dialogueData = this.cache.json.get('Act1Scene3Part3bData');
+      // REPLACE: Map character names to portrait texture keys
+      const portraitMap = {
+        "Banquo": "banquoportrait",
+        "Macbeth": "macbethpotrait",
+        "Ross": "rossportrait",
+        "Angus": "",
+        "Stage Directions": null
       };
 
       // Use base class method to setup dialogue
@@ -323,20 +343,10 @@ export class Act1Scene3Part1b extends BaseGameScene {
     }
   }
   
+  
   createAnimations() {
     // REPLACE: Set up your character animations
 
-    if (!this.anims.exists('witchIdleAnim')) {
-      this.anims.create({
-        key: 'witchIdleAnim',
-        frames: this.anims.generateFrameNumbers('WitchIdle', { start: 0, end: 5 }),
-        frameRate: 6,
-        repeat: -1
-      });
-    }
-
-    // Setup Macbeth's animations
-    
     // Example animation setup
     if (!this.anims.exists('idleAnim')) {
       this.anims.create({
@@ -519,7 +529,7 @@ export class Act1Scene3Part1b extends BaseGameScene {
   }
   
   onResize(gameSize) {
-    if (!this.scene.isActive('Act1Scene3Part1a')) return; // REPLACE: Scene key
+    if (!this.scene.isActive('Act1Scene3Part3')) return; // REPLACE: Scene key
     
     const { width, height } = gameSize;
     

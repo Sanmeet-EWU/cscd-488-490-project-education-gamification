@@ -1,9 +1,9 @@
 import { BaseGameScene } from '../BaseGameScene.js';
 
-export class Act1Scene3Part1a extends BaseGameScene {
+export class Act1Scene3Part1 extends BaseGameScene {
   constructor() {
-    // REPLACE: 'TEMPLATESCENE' with your actual scene key (e.g., 'Act2Scene1')
-    super('Act1Scene3Part1a');
+
+    super('Act1Scene3Part1');
     
     // Set to true if this is a cutscene without player movement
     this.isCutscene = true;
@@ -17,8 +17,8 @@ export class Act1Scene3Part1a extends BaseGameScene {
     }
     
     // Dialogue JSON
-    if (!this.cache.json.exists('Act1Scene3Part1aData')) {
-      this.load.json('Act1Scene3Part1aData', 'SceneDialogue/Act1Scene3Part1a.json');
+    if (!this.cache.json.exists('Act1Scene3Part1Data')) {
+      this.load.json('Act1Scene3Part1Data', 'SceneDialogue/Act1Scene3Part1.json');
     }
 
     // Load other character sprites (using guard as a generic sprite if needed)
@@ -140,7 +140,7 @@ export class Act1Scene3Part1a extends BaseGameScene {
       // For cutscenes, automatically start dialogue
       this.dialogueManager.startDialogue("FirstWitch", () => {
         // Replace 'NextSceneName' with your next scene
-        this.switchScene('Act1Scene3Part1b');//NextSceneName
+        this.switchScene('Act1Scene3Part2');//NextSceneName
       });
     }
   }
@@ -202,15 +202,20 @@ export class Act1Scene3Part1a extends BaseGameScene {
     
     // Use the base class method to create NPCs
     this.createNPCs(npcConfigs);
+
+    //Flip witches
+    this.npcs["Witch2"].flipX = true;
+    this.npcs["Witch3"].flipX = true;
+
   }
 
   setupSceneDialogue() {
     console.log("Setting up scene dialogue...");
-    console.log(this.cache.json.exists('Act1Scene3Part1aData'));
-    if (!this.cache.json.exists('Act1Scene3Part1aData')) return;
+    console.log(this.cache.json.exists('Act1Scene3Data'));
+    if (!this.cache.json.exists('Act1Scene3Part1Data')) return;
     
     try {
-      const dialogueData = this.cache.json.get('Act1Scene3Part1aData');
+      const dialogueData = this.cache.json.get('Act1Scene3Part1Data');
       
       // REPLACE: Map character names to portrait texture keys
       const portraitMap = {
@@ -291,27 +296,11 @@ export class Act1Scene3Part1a extends BaseGameScene {
     
     // Skip additional updates if paused or in dialogue
     if (this.isPaused || this.dialogueManager?.isActive) return;
-
     
-    // if (this.player) { // no playe in this scene
-    //   const speed = 160;
-      
-    //   // Handle player movement
-    //   if (this.keys.left.isDown) {
-    //     this.player.setVelocityX(-speed);
-    //     this.player.anims.play('walkLeft', true);
-    //   } else if (this.keys.right.isDown) {
-    //     this.player.setVelocityX(speed);
-    //     this.player.anims.play('walkRight', true);
-    //   } else {
-    //     this.player.setVelocityX(0);
-    //     this.player.anims.play('idleAnim', true);
-    //   }
-    // }
   }
   
   onResize(gameSize) {
-    if (!this.scene.isActive('Act1Scene3Part1a')) return; // REPLACE: Scene key
+    if (!this.scene.isActive('Act1Scene3Part1')) return; // REPLACE: Scene key
     
     const { width, height } = gameSize;
     

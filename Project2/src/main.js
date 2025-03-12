@@ -16,8 +16,9 @@ import { PauseMenu } from './scenes/PauseMenu.js';
 import { BaseGameScene } from './scenes/BaseGameScene.js';
 import { Act1Minigame } from './scenes/GameScenes/Act1Minigame.js';
 import { Act1Scene2Minigame } from './scenes/GameScenes/Act1Scene2Minigame.js';
-import { Act1Scene3Part1a } from './scenes/GameScenes/Act1Scene3Part1a.js';
-import { Act1Scene3Part1b } from './scenes/GameScenes/Act1Scene3Part1b.js';
+import { Act1Scene3Part1 } from './scenes/GameScenes/Act1Scene3Part1.js';
+import { Act1Scene3Part2 } from './scenes/GameScenes/Act1Scene3Part2.js';
+import { Act1Scene3Part3 } from './scenes/GameScenes/Act1Scene3Part3.js';
 import { Act1Scene5 } from './scenes/GameScenes/Act1Scene5.js';
 import { Act1Scene6 } from './scenes/GameScenes/Act1Scene6.js';
 import { Act1Scene7 } from './scenes/GameScenes/Act1Scene7.js';
@@ -41,6 +42,7 @@ import { Act5Scene6 } from './scenes/GameScenes/Act5Scene6.js';
 import { Act5Scene7 } from './scenes/GameScenes/Act5Scene7.js';
 import { Act5Scene8Part1 } from './scenes/GameScenes/Act5Scene8Part1.js';
 import { Act5Scene8Part2 } from './scenes/GameScenes/Act5Scene8Part2.js';
+
 
 let game;
 
@@ -79,8 +81,9 @@ const config = {
     Settings,
     Act1Scene1,
     Act1Scene2,
-    Act1Scene3Part1a,
-    Act1Scene3Part1b,
+    Act1Scene3Part1,
+    Act1Scene3Part2,
+    Act1Scene3Part3,
     Act1Scene3,
     Act1Minigame,
     Act1Scene2Minigame,

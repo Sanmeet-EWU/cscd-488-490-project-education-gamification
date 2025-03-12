@@ -1,0 +1,48 @@
+{
+    "Act1Scene3Part3a": [
+        {
+            "speaker": "Ross",
+            "text": "The King hath happily received, Macbeth, The news of thy success",
+            "responses": [{ "text": "...", "next": "Ross" }]
+        },
+        { 
+            "speaker": "Angus",
+            "text": "We are sent To give thee from our royal master thanks, only to herald thee into his sight, not pay thee", 
+            "translation": "We are sent to give you thanks from our royal master King Duncan, only to bring you to him, not to pay you.",
+            "responses": [{ "text": "...", "next": "Ross" }] 
+        },
+        { 
+            "speaker": "Ross",
+            "text": "And for an earnest of a greater honor, he bade me, from him,\ncall thee Thane of Cawdor, in which addition, hail, most worthy thane, for it is thine. ", 
+            "translation": "And as a down payment on an even greater honor, he told me to call you Thane of Cawdor. So hail, most worthy thane, because it's yours now.",
+            "responses": [{ "text": "...", "next": "Banquo" }] 
+        },
+        { 
+            "speaker": "Banquo",
+            "text": "What, can the devil speak true?", 
+            "responses": [{ "text": "...", "next": "Macbeth" }] 
+        },
+        { 
+            "speaker": "Macbeth",
+            "text": "The Thane of Cawdor lives. Why do you dress me In borrowed robes?",
+            "translation": "The Thane of Cawdor is still alive. Why are you addressing me as if I where him?",
+            "responses": [{ "text": "...", "next": "Angus" }] 
+        },
+        { 
+            "speaker": "Angus",
+            "text": "Who was the Thane lives yet, But under heavy judgment bears that life which he deserves to lose", 
+            "responses": [{ "text": "...", "next": "Angus" }] 
+        },
+        { 
+            "speaker": "Angus",
+            "text": "He labored in his country’s wrack, I know not;\nBut treasons capital, confessed and proved,\nHave overthrown him.", 
+            "translation": "He worked against his country, I don't know how. But he confessed to and was found guilty of high treason, and that's why he was overthrown.",
+            "responses": [{ "text": "...", "next": "Macbeth" }] 
+        },
+        {   
+            "speaker": "Stage Direction", 
+            "text": "- Enter Ross and Angus -", 
+            "endScene": true
+        }
+    ]
+}

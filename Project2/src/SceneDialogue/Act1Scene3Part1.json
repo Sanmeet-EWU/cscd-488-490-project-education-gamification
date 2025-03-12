@@ -1,5 +1,5 @@
 {
-    "Act1Scene3Part1a": [
+    "Act1Scene3Part1": [
         {
             "speaker": "First Witch",
             "text": "Where hast thou been, sister?",
@@ -73,7 +73,7 @@
         {   
             "speaker": "Third Witch", 
             "text": "A drum, a drum!\nMacbeth doth come.", 
-            "responses": [{ "text": "...", "next": "All" }] 
+            "responses": [{ "text": "...", "next": "The Witches" }] 
         },
         {   
             "speaker": "The Witches", 
