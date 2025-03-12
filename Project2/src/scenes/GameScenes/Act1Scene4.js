@@ -55,7 +55,7 @@ export class Act1Scene4 extends BaseGameScene {
     this.load.image("Banquo", "assets/portraits/Banquo.png");
     
     // Scene music
-    this.load.audio('act1scene4Music', 'assets/audio/act1scene2.ogg');
+    this.load.audio('act1scene4Music', 'assets/audio/act1scene4.ogg');
     
     this.load.on('loaderror', (fileObj) => {
       console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);

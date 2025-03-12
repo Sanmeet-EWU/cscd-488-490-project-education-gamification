@@ -15,7 +15,7 @@ export class Act2Scene1 extends BaseGameScene {
     
     // Background
     if (!this.textures.exists('Act2Scene1Bg')) {
-      this.load.svg('Act2Scene1Bg', 'assets/act2/Act2Scene1Bg.svg', { width: 2560, height: 1440 });
+      this.load.svg('Act2Scene1Bg', 'assets/act2/Act2Scene1BG.svg', { width: 2560, height: 1440 });
     }
     
     // Dialogue JSON
@@ -88,6 +88,7 @@ export class Act2Scene1 extends BaseGameScene {
     super.create(data);
     const { width, height } = this.scale;
     this.nextSceneKey = 'Act2Scene2';
+    
     // Check required assets
     const requiredAssets = [
       'Act2Scene1Bg'
@@ -103,43 +104,33 @@ export class Act2Scene1 extends BaseGameScene {
       }).setOrigin(0.5);
       return;
     }
-
+  
     // Fade in scene
     this.cameras.main.fadeIn(1000, 0, 0, 0);
-
+  
     // Setup background
     this.background = this.add.image(0, 0, 'Act2Scene1Bg')
       .setOrigin(0, 0)
       .setDisplaySize(width, height)
       .setDepth(-1);
     
+    // Create floor for characters to stand on
+    this.createFloor();
+    
+    // Setup Macbeth's atlas and animations BEFORE creating player
+    this.setupMacbethAtlas();
+    
     // Create animations
     this.createAnimations();
     
-    // Play scene music
-    if (this.audioController && this.cache.audio.exists('sceneMusic')) {
-      this.audioController.playMusic('sceneMusic', this, { volume: 1, loop: true });
-    }
-    
-    // Create player if not a cutscene
-    if (!this.isCutscene) {
-      this.setupPlayer();
-    }
+    // Create player
+    this.setupPlayer();
     
     // Create NPCs
     this.setupNPCs();
     
     // Setup dialogue
     this.setupSceneDialogue();
-    
-    // Start dialogue for cutscenes
-    if (this.isCutscene && this.dialogueManager) {
-      // For cutscenes, automatically start dialogue
-      this.dialogueManager.startDialogue("MainDialogue", () => {
-        // Replace 'NextSceneName' with your next scene
-        this.switchScene('NextSceneName');
-      });
-    }
     
     // Handle scene resize
     this.scale.on('resize', this.onResize, this);
