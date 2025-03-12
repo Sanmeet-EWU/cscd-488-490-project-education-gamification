@@ -2,7 +2,7 @@
     "Act1Questions": [
         {
             "question" : "What does Duncan call Macbeth when he hears that Macbeth has defeated Macdonwald?",
-            "answers" : ["A traitor", "A coward", "A fine worrior", "A worthy gentleman"],
+            "answers" : ["A traitor", "A coward", "A fine warrior", "A worthy gentleman"],
             "correct" : "A worthy gentleman"
         },
         {
@@ -41,8 +41,8 @@
         },
         {
             "question":"Who is planed to take the blame for killing Duncan?",
-            "answers":["Banquo", "Macbeth","Lady Macbeth", "The Chamber Maids"],
-            "correct":"The Chamber Maids"
+            "answers":["Banquo", "Macbeth","Lady Macbeth", "The Chamberlains"],
+            "correct":"The Chamberlains"
         },
         {
             "question":"How does Macbeth reacte to the witches' prophecies?",
