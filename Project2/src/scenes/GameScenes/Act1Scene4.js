@@ -4,8 +4,6 @@ import { DialogueManager } from '../../DialogueManager.js';
 export class Act1Scene4 extends BaseGameScene {
   constructor() {
     super('Act1Scene4');
-    
-    // This scene features Macbeth in Duncan's court
     this.isCutscene = false;
   }
 
@@ -20,14 +18,29 @@ export class Act1Scene4 extends BaseGameScene {
       this.load.json('Act1Scene4Data', 'SceneDialogue/Act1Scene4.json');
     }
     
-    // Load Macbeth character sprite and other characters
-    if (!this.textures.exists('macbeth')) {
-      this.load.spritesheet('macbeth', 'assets/characters/Macbeth.png', {
-        frameWidth: 32, frameHeight: 48
-      });
+    // Load Macbeth's idle and run animations
+    if (!this.textures.exists('macbeth_idle_sheet')) {
+      this.load.image('macbeth_idle_sheet', 'assets/characters/MacbethIdle.png');
+    }
+    if (!this.textures.exists('macbeth_run_sheet')) {
+      this.load.image('macbeth_run_sheet', 'assets/characters/MacbethRun.png');
+    }
+    if (!this.cache.json.exists('macbeth_idle_json')) {
+      this.load.json('macbeth_idle_json', 'assets/characters/MacbethIdle.json');
+    }
+    if (!this.cache.json.exists('macbeth_run_json')) {
+      this.load.json('macbeth_run_json', 'assets/characters/MacbethRun.json');
     }
     
-    // Load other character sprites (using guard as a generic sprite if needed)
+    // Load Duncan's idle animation
+    if (!this.textures.exists('duncan_idle_sheet')) {
+      this.load.image('duncan_idle_sheet', 'assets/characters/DuncanIdle.png');
+    }
+    if (!this.cache.json.exists('duncan_idle_json')) {
+      this.load.json('duncan_idle_json', 'assets/characters/DuncanIdle.json');
+    }
+    
+    // Load fallback sprites (guard)
     if (!this.textures.exists('guardImg')) {
       this.load.image('guardImg', 'assets/characters/Guard.png');
     }
@@ -42,7 +55,7 @@ export class Act1Scene4 extends BaseGameScene {
     this.load.image("Banquo", "assets/portraits/Banquo.png");
     
     // Scene music
-    this.load.audio('act1scene4Music', 'assets/audio/act1scene2.ogg');
+    this.load.audio('act1scene4Music', 'assets/audio/act1scene4.mp3');
     
     this.load.on('loaderror', (fileObj) => {
       console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);
@@ -50,14 +63,12 @@ export class Act1Scene4 extends BaseGameScene {
   }
 
   create(data) {
-    // Call parent create method
     super.create(data);
     const { width, height } = this.scale;
-    
-    // Check required assets
-    const requiredAssets = [
-      'background_act1scene4'
-    ];
+    this.dialogueFullyComplete = false;  // Tracks if the dialogue has fully ended
+    this.transitionActive = false;       // Prevents multiple transitions
+    this.nextSceneKey = 'Act1Scene5'; 
+    const requiredAssets = ['background_act1scene4'];
     const missing = this.checkRequiredAssets(requiredAssets);
     if (missing.length > 0) {
       this.add.text(width / 2, height / 2, "Error: Missing assets\n" + missing.join(', '), {
@@ -70,52 +81,38 @@ export class Act1Scene4 extends BaseGameScene {
       return;
     }
 
-    // Fade in scene
     this.cameras.main.fadeIn(1000, 0, 0, 0);
 
-    // Setup background - fallback to a plain color if the background image isn't available
     if (this.textures.exists('background_act1scene4')) {
       this.background = this.add.image(0, 0, 'background_act1scene4')
         .setOrigin(0, 0)
         .setDisplaySize(width, height)
         .setDepth(-1);
     } else {
-      // Fallback to a color background - use a castle/court color
       this.background = this.add.rectangle(0, 0, width, height, 0x482c1c)
         .setOrigin(0, 0)
         .setDepth(-1);
     }
     
-    // Create floor for characters to stand on
     this.createFloor();
-    
-    // Setup guard atlas if needed for NPC characters
     this.setupGuardAtlas();
-    
-    // Create animations
+    this.setupMacbethAtlas();
+    this.setupDuncanAtlas();
     this.createAnimations();
-    
-    // Play scene music
     if (this.audioController && this.cache.audio.exists('act1scene4Music')) {
       this.audioController.playMusic('act1scene4Music', this, { volume: 1, loop: true });
     }
     
-    // Create player (Macbeth)
     this.setupPlayer();
-    
-    // Create NPCs for the scene
     this.setupNPCs();
-    
-    // Setup dialogue
     this.setupSceneDialogue();
-    
-    // Handle scene resize
+    this.physics.world.gravity.y = 300;
+    this.player.setMaxVelocity(500, 1000);
     this.scale.on('resize', this.onResize, this);
-    
-    // Cleanup on shutdown
     this.events.on('shutdown', () => {
       this.scale.off('resize', this.onResize, this);
     });
+    
   }
 
   setupGuardAtlas() {
@@ -139,25 +136,107 @@ export class Act1Scene4 extends BaseGameScene {
     }
   }
 
-  setupPlayer() {
-    // Use Macbeth sprite, or fallback to guard if not available
-    const texture = this.textures.exists('macbeth') ? 'macbeth' : 'guard';
-    const frame = texture === 'guard' ? 'sprite1' : 0;
+  setupMacbethAtlas() {
+    if (this.textures.exists('macbeth_idle_sheet') && this.cache.json.exists('macbeth_idle_json')) {
+      const idleJsonData = this.cache.json.get('macbeth_idle_json');
+      const idlePhaserAtlas = { frames: {} };
+      idleJsonData.forEach(frame => {
+        idlePhaserAtlas.frames[frame.name] = {
+          frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+          rotated: false,
+          trimmed: false,
+          sourceSize: { w: frame.width, h: frame.height },
+          spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+        };
+      });
+      this.textures.addAtlas(
+        'macbeth_idle_atlas',
+        this.textures.get('macbeth_idle_sheet').getSourceImage(),
+        idlePhaserAtlas
+      );
+      this.anims.create({
+        key: 'macbeth_idle',
+        frames: idleJsonData.map(frame => ({ key: 'macbeth_idle_atlas', frame: frame.name })),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
     
-    // Define player configuration
+    if (this.textures.exists('macbeth_run_sheet') && this.cache.json.exists('macbeth_run_json')) {
+      const runJsonData = this.cache.json.get('macbeth_run_json');
+      const runPhaserAtlas = { frames: {} };
+      runJsonData.forEach(frame => {
+        runPhaserAtlas.frames[frame.name] = {
+          frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+          rotated: false,
+          trimmed: false,
+          sourceSize: { w: frame.width, h: frame.height },
+          spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+        };
+      });
+      this.textures.addAtlas(
+        'macbeth_run_atlas',
+        this.textures.get('macbeth_run_sheet').getSourceImage(),
+        runPhaserAtlas
+      );
+      this.anims.create({
+        key: 'macbeth_run',
+        frames: runJsonData.map(frame => ({ key: 'macbeth_run_atlas', frame: frame.name })),
+        frameRate: 10,
+        repeat: -1
+      });
+    }
+  }
+
+  setupDuncanAtlas() {
+    if (this.textures.exists('duncan_idle_sheet') && this.cache.json.exists('duncan_idle_json')) {
+      const idleJsonData = this.cache.json.get('duncan_idle_json');
+      const idlePhaserAtlas = { frames: {} };
+      idleJsonData.forEach(frame => {
+        idlePhaserAtlas.frames[frame.name] = {
+          frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+          rotated: false,
+          trimmed: false,
+          sourceSize: { w: frame.width, h: frame.height },
+          spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+        };
+      });
+      this.textures.addAtlas(
+        'duncan_idle_atlas',
+        this.textures.get('duncan_idle_sheet').getSourceImage(),
+        idlePhaserAtlas
+      );
+      this.anims.create({
+        key: 'duncan_idle',
+        frames: idleJsonData.map(frame => ({ key: 'duncan_idle_atlas', frame: frame.name })),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
+  }
+
+  setupPlayer() {
+    let texture, frame, animation;
+    if (this.textures.exists('macbeth_idle_atlas')) {
+      texture = 'macbeth_idle_atlas';
+      frame = 'sprite1';
+      animation = 'macbeth_idle';
+    } else {
+      texture = 'guard';
+      frame = 'sprite1';
+      animation = 'idle';
+    }
+    
     const playerConfig = {
       texture: texture,
       frame: frame,
-      scale: 1.5,
+      scale: 3,
       displayName: 'Macbeth',
-      animation: 'idle',
+      animation: animation,
       movementConstraint: 'horizontal'
     };
     
-    // Create the player (positioned on the left side)
     this.player = this.createPlayer(playerConfig);
-    
-    // Position Macbeth on right side of scene
     if (this.player) {
       const { width, height } = this.scale;
       this.player.setPosition(width * 0.3, height * 0.8);
@@ -167,16 +246,15 @@ export class Act1Scene4 extends BaseGameScene {
   setupNPCs() {
     const { width, height } = this.scale;
     
-    // Define the NPCs for this scene - position them in a court setting
     const npcConfigs = [
       {
         key: "Duncan",
         x: width * 0.5,
         y: height * 0.8,
-        texture: 'guard',
+        texture: this.textures.exists('duncan_idle_atlas') ? 'duncan_idle_atlas' : 'guard',
         frame: 'sprite1',
         scale: 1.5,
-        animationKey: 'idle',
+        animationKey: this.anims.exists('duncan_idle') ? 'duncan_idle' : 'idle',
         interactive: true,
         displayName: 'King Duncan'
       },
@@ -204,10 +282,8 @@ export class Act1Scene4 extends BaseGameScene {
       }
     ];
     
-    // Create NPCs using base class method
     this.createNPCs(npcConfigs);
     
-    // Add floor collision for NPCs
     if (this.floor) {
       Object.keys(this.npcs).forEach(key => {
         if (!key.endsWith('Tag') && this.npcs[key]) {
@@ -225,19 +301,14 @@ export class Act1Scene4 extends BaseGameScene {
     
     try {
       const dialogueData = this.cache.json.get('Act1Scene4Data');
-      
-      // Map character names to portrait texture keys
       const portraitMap = {
         "Macbeth": "Macbeth",
         "Duncan": "Duncan",
         "Malcolm": "Malcolm",
         "Banquo": "Banquo"
       };
-
-      // Use base class method to setup dialogue with Macbeth as player character
       this.setupDialogue(dialogueData, portraitMap, "Macbeth");
       
-      // Register NPCs with dialogue manager
       setTimeout(() => {
         Object.keys(this.npcs).forEach(key => {
           if (!key.endsWith('Tag')) {
@@ -245,16 +316,12 @@ export class Act1Scene4 extends BaseGameScene {
           }
         });
       }, 100);
-      
     } catch (error) {
       console.error("Error setting up dialogue:", error);
     }
   }
 
   createAnimations() {
-    // Basic animations for all characters
-    
-    // Idle animation
     if (!this.anims.exists('idle')) {
       this.anims.create({
         key: 'idle',
@@ -263,7 +330,6 @@ export class Act1Scene4 extends BaseGameScene {
       });
     }
     
-    // Walking animations
     if (!this.anims.exists('left')) {
       this.anims.create({
         key: 'left',
@@ -289,11 +355,6 @@ export class Act1Scene4 extends BaseGameScene {
         repeat: -1
       });
     }
-    
-    // If we have specific Macbeth animations, add them here
-    if (this.textures.exists('macbeth')) {
-      // Custom Macbeth animations would go here
-    }
   }
   
   createFloor() {
@@ -310,43 +371,45 @@ export class Act1Scene4 extends BaseGameScene {
       if (this.player?.body) {
         this.player.body.setVelocity(0, 0);
       }
-      
-      // Start the scene directly with Duncan speaking
       this.dialogueManager.startDialogue("Duncan", () => {
         console.log(`Dialogue completed`);
-        // If this is a complete scene, we could auto-advance to the next scene
-        this.time.delayedCall(2000, () => {
-          // Example: Switch to next scene after dialogue completes
-          // this.switchScene('Act1Scene5');
-        });
       });
     }
   }
 
   update(time, delta) {
-    // Call parent update - handles pause, nametags, interaction, and dialogue indicators
     super.update(time, delta);
     
-    // Skip additional updates if paused or in dialogue
     if (this.isPaused || this.dialogueManager?.isActive) return;
     
     if (this.player) {
-      const speed = 160;
+      const speed = 300;
       
-      // Handle player movement (Macbeth)
       if (this.keys.left.isDown) {
         this.player.setVelocityX(-speed);
-        this.player.anims.play('left', true);
+        if (this.anims.exists('macbeth_run')) {
+          this.player.anims.play('macbeth_run', true);
+          this.player.flipX = true;
+        } else {
+          this.player.anims.play('left', true);
+        }
       } else if (this.keys.right.isDown) {
         this.player.setVelocityX(speed);
-        this.player.anims.play('right', true);
+        if (this.anims.exists('macbeth_run')) {
+          this.player.anims.play('macbeth_run', true);
+          this.player.flipX = false;
+        } else {
+          this.player.anims.play('right', true);
+        }
       } else {
         this.player.setVelocityX(0);
-        this.player.anims.play('idle', true);
+        if (this.anims.exists('macbeth_idle')) {
+          this.player.anims.play('macbeth_idle', true);
+        } else {
+          this.player.anims.play('idle', true);
+        }
       }
       
-      // Check for starting dialogue
-      // If player is near Duncan, automatically start the scene dialogue
       const distToDuncan = this.npcs.Duncan ? 
         Phaser.Math.Distance.Between(
           this.player.x, this.player.y,
@@ -358,6 +421,18 @@ export class Act1Scene4 extends BaseGameScene {
         this.startDialogue("Duncan");
       }
     }
+    if (this.dialogueFullyComplete && this.nextSceneKey) {
+      const { width } = this.scale;
+      if (this.player.x > width - 50) {  // Player is near right edge
+          if (!this.transitionActive) {  // Prevent multiple transitions
+              this.transitionActive = true;
+              this.cameras.main.fadeOut(500, 0, 0, 0);  // Fade out over 500ms
+              this.cameras.main.once('camerafadeoutcomplete', () => {
+                  this.scene.start(this.nextSceneKey);  // Start next scene
+              });
+          }
+      }
+  }
   }
   
   onResize(gameSize) {
@@ -365,7 +440,6 @@ export class Act1Scene4 extends BaseGameScene {
     
     const { width, height } = gameSize;
     
-    // Resize background
     if (this.background?.active) {
       if (this.background.type === 'Image') {
         this.background.setDisplaySize(width, height);
@@ -375,7 +449,6 @@ export class Act1Scene4 extends BaseGameScene {
       }
     }
     
-    // Update floor position
     if (this.floor?.clear) {
       this.floor.clear();
       const groundY = height * 0.9;
@@ -384,7 +457,6 @@ export class Act1Scene4 extends BaseGameScene {
       ground.setVisible(false);
     }
     
-    // Reposition characters
     if (this.player) {
       this.player.setPosition(width * 0.3, height * 0.8);
     }
@@ -401,11 +473,45 @@ export class Act1Scene4 extends BaseGameScene {
       this.npcs.Banquo.setPosition(width * 0.4, height * 0.8);
     }
     
-    // The rest of nametag repositioning is handled by super.updateNametags()
-    
-    // Update dialogue box if active
     if (this.dialogueManager?.isActive && this.dialogueManager.adjustBoxSize) {
       this.dialogueManager.adjustBoxSize(width, height);
     }
   }
+  startDialogue(npcKey) {
+    if (this.dialogueManager && !this.dialogueManager.isActive) {
+        if (this.player?.body) {
+            this.player.body.setVelocity(0, 0);  // Stop player movement during dialogue
+        }
+        this.dialogueManager.startDialogue("Duncan", () => {
+            console.log("Dialogue completed");
+            this.dialogueFullyComplete = true;  // Mark dialogue as complete
+            this.showExitHint();                // Show the hint
+        });
+    }
+}
+showExitHint() {
+  if (!this.exitHint && this.nextSceneKey) {
+      const { width, height } = this.scale;  // Get current screen dimensions
+      this.exitHint = this.add.text(
+          width - 50,                        // Position near right edge
+          height / 2,                        // Center vertically
+          "→",                               // Arrow pointing right
+          { 
+              fontSize: '32px', 
+              fill: '#ffff00',               // Yellow color
+              stroke: '#000000',             // Black outline
+              strokeThickness: 4             // Outline thickness
+          }
+      ).setOrigin(0.5).setDepth(100);       // Center the text and set depth
+
+      // Add a pulsing animation for visibility
+      this.tweens.add({
+          targets: this.exitHint,
+          alpha: 0.6,                        // Fade to 60% opacity
+          duration: 800,                     // 800ms per pulse
+          yoyo: true,                        // Fade back to full opacity
+          repeat: -1                         // Repeat indefinitely
+      });
+  }
+}
 }

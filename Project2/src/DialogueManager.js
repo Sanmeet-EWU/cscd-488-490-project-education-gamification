@@ -5,17 +5,17 @@ export class DialogueManager {
     this.portraitMap = portraitMap || {};
     this.isLinearDialogue = isLinearDialogue;
     this.playerKey = playerKey;
-
+  
     // Core dialogue UI objects
     this.dialogueContainer = null;
     this.bg = null;
     this.nameText = null;
     this.dialogueText = null;
     this.portrait = null;
-
+  
     // Response containers for options (to manage layering)
     this.responseContainers = [];
-
+  
     // Typing effect
     this.typingSpeed = 30;
     this.fullText = "";
@@ -23,7 +23,7 @@ export class DialogueManager {
     this.textIndex = 0;
     this.textTimer = null;
     this.typeTextCallback = null; // Callback to call when typing is finished
-
+  
     // Dialogue flow
     this.currentDialogue = null;
     this.currentDialogueIndex = 0;
@@ -32,14 +32,17 @@ export class DialogueManager {
     this.onComplete = null;
     this.isActive = false;
     this.isPaused = false;
-
+  
+    // Track completed dialogues to prevent restarting
+    this.completedDialogues = new Set();
+  
     // NPC indicators
     this.interactableNpcs = new Map();
     this.indicators = new Map();
-
+  
     // Identify the first speaker in the scene's JSON
     this.findFirstSpeaker();
-
+  
     // Handle resizing
     this.resizeListener = (gameSize) => {
       if (this.isActive && this.dialogueContainer) {
@@ -170,13 +173,20 @@ export class DialogueManager {
 
   startDialogue(npcKey, onComplete = null) {
     console.log(`Starting dialogue with: ${npcKey}`);
+    
+    // Check if this dialogue has been completed
+    if (this.completedDialogues.has(npcKey)) {
+      console.log(`Dialogue with ${npcKey} has already been completed.`);
+      return false; // Return false to indicate dialogue didn't start
+    }
+    
     this.npcKey = npcKey;
     this.onComplete = onComplete;
     const sceneKey = Object.keys(this.dialogueData)[0];
     const sceneDialogue = this.dialogueData[sceneKey];
     if (!sceneDialogue) {
       console.warn(`No dialogue found for scene key: ${sceneKey}`);
-      return;
+      return false;
     }
     if (this.isPaused) {
       console.log(`Resuming dialogue from index ${this.currentDialogueIndex}`);
@@ -188,7 +198,7 @@ export class DialogueManager {
     }
     if (!this.currentDialogue.length) {
       console.warn("No dialogue content found");
-      return;
+      return false;
     }
     this.removeAllIndicators();
     if (this.scene.player?.body) {
@@ -205,7 +215,10 @@ export class DialogueManager {
     } else {
       this.endDialogue();
     }
+    
+    return true; // Return true to indicate dialogue started successfully
   }
+  
 
   createDialogueBox() {
     const cam = this.scene.cameras.main;
@@ -260,16 +273,22 @@ export class DialogueManager {
   nextDialogue() {
     if (this.dialogueQueue.length === 0) {
       this.endDialogue();
-      if (this.onComplete) this.onComplete();
+      if (this.onComplete) this.onComplete(false); // Not an endScene
       return;
     }
+    
     const dialogueNode = this.dialogueQueue.shift();
     this.currentDialogueIndex++;
+    
     if (dialogueNode.endScene) {
+      // Mark this dialogue as completed when endScene is true
+      this.completedDialogues.add(this.npcKey);
+      
       this.endDialogue();
-      if (this.onComplete) this.onComplete();
+      if (this.onComplete) this.onComplete(true); // Pass true to indicate endScene was reached
       return;
     }
+    
     this.updateSpeaker(dialogueNode.speaker);
     const isPlayerSpeaking = dialogueNode.speaker === this.playerKey;
     
@@ -285,7 +304,6 @@ export class DialogueManager {
       });
     } else {
       // For NPC lines, type the text automatically.
-      // FIXED: Using dialogueNode.text instead of dialogueText
       this.typeText(dialogueNode.text);
       if (dialogueNode.responses && dialogueNode.responses.length > 0) {
         this.showResponses(dialogueNode.responses, null, dialogueNode.translation);
