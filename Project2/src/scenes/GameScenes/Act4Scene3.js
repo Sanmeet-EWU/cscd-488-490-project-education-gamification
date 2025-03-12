@@ -1,6 +1,6 @@
 import { BaseGameScene } from '../BaseGameScene.js';
 
-export class TEMPLATESCENE extends BaseGameScene {
+export class Act4Scene3 extends BaseGameScene {
     constructor() {
         // REPLACE: 'TEMPLATESCENE' with your actual scene key (e.g., 'Act2Scene1')
         super('Act4Scene3');
