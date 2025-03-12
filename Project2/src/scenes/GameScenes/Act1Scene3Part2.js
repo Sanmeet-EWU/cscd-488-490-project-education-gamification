@@ -89,6 +89,7 @@ export class Act1Scene3Part2 extends BaseGameScene {
     
     // Sound effects
     this.load.audio('bubblingSounds', 'assets/audio/CauldronMixing.mp3');
+    this.load.audio('explosion', 'assets/audio/explosion.mp3');
 
     // Load additional assets as needed
     this.load.image('cauldron', 'assets/act1/witchPot.png');
@@ -177,14 +178,36 @@ export class Act1Scene3Part2 extends BaseGameScene {
     
     // Start dialogue for cutscenes
     // console.log("Is this a cutscene? " + this.isCutscene + "  Is dialogue manager initialized? " + this.dialogueManager);
-    // if (this.isCutscene && this.dialogueManager) {
-    //   console.log("Starting dialogue for cutscene...");
-    //   // For cutscenes, automatically start dialogue
-    //   this.dialogueManager.startDialogue("Macbeth", () => {
-    //     // Replace 'NextSceneName' with your next scene
-    //     this.switchScene('Act1Minigame');//NextSceneName
-    //   });
-    // }
+    if (this.dialogueManager) {
+      console.log("Starting dialogue for cutscene...");
+      // For cutscenes, automatically start dialogue
+      this.dialogueManager.startDialogue("Macbeth", () => {
+
+        if(this.npcs["Witch1"]) this.npcs["Witch1"].destroy();
+        if(this.npcs["Witch2"]) this.npcs["Witch2"].destroy();
+        if(this.npcs["Witch3"]) this.npcs["Witch3"].destroy();
+
+        this.sound.add('explosion').play({ loop: false, volume: this.audioController.soundVolume*1.5});//kinda quiet
+
+        if(this.cauldron){
+          this.cauldron.setInteractive();
+          this.cauldron.on('pointerover', () => {
+            this.cauldron.setScale(width * 0.00035);
+          });
+          this.cauldron.on('pointerout', () => {
+            this.cauldron.setScale(width * 0.0003);
+          });
+          this.cauldron.on('pointerdown', () => {
+            this.sound.add('bubblingSounds').play({ loop: false, volume: this.audioController.soundVolume*1.5});
+            this.switchScene('Act1Minigame');//NextSceneName
+        });
+        }
+        else{//If somehow the cauldron is not there, just move on
+          this.switchScene('Act1Minigame');//NextSceneName
+        }
+
+      });
+    }
 
 
     

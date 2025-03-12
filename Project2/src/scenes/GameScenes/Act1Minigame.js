@@ -80,6 +80,8 @@ export class Act1Minigame extends BaseGameScene {
         this.load.image('ingredient6', 'assets/act1/ingredient6.png');
         this.load.image('ingredient7', 'assets/act1/ingredient7.png');
 
+        this.load.image('MacbethImage', 'assets/characters/MacbethBackupImage.png');
+
         this.load.on('loaderror', (fileObj) => {
             console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);
           });
@@ -122,10 +124,11 @@ export class Act1Minigame extends BaseGameScene {
         this.physics.world.setBounds(0, 0, width, height * .85);//Im setting the Y higher up to act as the floor
         this.physics.world.gravity.y = 1000;
 
-        this.player = this.physics.add.sprite(width * 0.1, height * 0.8, 'witchIdle', 'sprite1');
+        //this.player = this.physics.add.sprite(width * 0.1, height * 0.8, 'macbeth_idle_sheet', 'sprite1');
+        this.player = this.physics.add.sprite(width * 0.1, height * 0.8, 'MacbethImage');
 
         //this.setupPlayer();
-        this.player.setScale(1.5);
+        this.player.setScale(2.5);
         this.player.setOrigin(0.5, 1.0);
         this.player.setCollideWorldBounds(true);
         this.physics.add.existing(this.player, false);
@@ -134,7 +137,7 @@ export class Act1Minigame extends BaseGameScene {
         //Position the player
         this.player.x = width / 2;
         this.player.y = height * 4 / 5;
-        this.player.setDepth(1);
+        this.player.setDepth(2);
         this.physics.add.collider(this.player, this.floor);
 
         //Load the questionSet, and make a deep copy of it
@@ -203,7 +206,7 @@ export class Act1Minigame extends BaseGameScene {
         this.introContainer = this.add.container(introX, introY);
         this.introContainer.add([
             this.rexUI.add.roundRectangle(0, 0, introWidth, introHeight, 20, 0x3B2823).setStrokeStyle(3, 0x674F49).setOrigin(0.5),
-            this.title = this.add.text(0, -introHeight*3/8, 'Help the witches brew up something in the cauldron!', {
+            this.title = this.add.text(0, -introHeight*3/8, 'Brew up something in the cauldron!', {
                 fontFamily: 'Inknut Antiqua',
                 fontSize: `${titleSize}px`,
                 color: '#ffffff',
@@ -215,13 +218,13 @@ export class Act1Minigame extends BaseGameScene {
             this.portraitContainer = this.add.container(0, this.title.y + height/7),
             this.portraitContainer.add([
                 this.subBg = this.rexUI.add.roundRectangle(0, 0, introWidth*7/8, introHeight/8, 10, 0x1A0F0D).setStrokeStyle(3, 0x674F49).setOrigin(0.5),
-                this.portrait3 = this.add.image(0, 0, 'witch3portrait')
+                this.portrait3 = this.add.image(0, 0, 'ingredient1')
                     .setOrigin(0.5)
                     .setDisplaySize(this.subBg.height - this.subBg.height*.2, this.subBg.height - 20),
-                this.portrait2 = this.add.image(this.portrait3.x-this.portrait3.width*.2, this.portrait3.y, 'witch2portrait')
+                this.portrait2 = this.add.image(this.portrait3.x-this.portrait3.width*.5, this.portrait3.y, 'ingredient2')
                     .setOrigin(0.5)
                     .setDisplaySize(this.subBg.height - this.subBg.height*.2, this.subBg.height - 20),
-                this.portrait1 = this.add.image(this.portrait3.x+this.portrait3.width*.2, this.portrait3.y, 'witch1portrait')
+                this.portrait1 = this.add.image(this.portrait3.x+this.portrait3.width*.5, this.portrait3.y, 'ingredient3')
                     .setOrigin(0.5)
                     .setDisplaySize(this.subBg.height - this.subBg.height*.2, this.subBg.height - 20)
                     .setFlipX(true),
@@ -439,10 +442,10 @@ export class Act1Minigame extends BaseGameScene {
 
         //Spawn new ingredients
         this.ingredients = {
-            ingredient1: this.add.image(this.scale.width  * 0.1, this.scale.height * 0.85, usingSprties[0]).setDepth(2),
-            ingredient2: this.add.image(this.scale.width  * 0.3, this.scale.height * 0.85, usingSprties[1]).setDepth(2),
-            ingredient3: this.add.image(this.scale.width  * 0.7, this.scale.height * 0.85, usingSprties[2]).setDepth(2),
-            ingredient4: this.add.image(this.scale.width  * 0.9, this.scale.height * 0.85, usingSprties[3]).setDepth(2)
+            ingredient1: this.add.image(this.scale.width  * 0.1, this.scale.height * 0.85, usingSprties[0]).setDepth(3),
+            ingredient2: this.add.image(this.scale.width  * 0.3, this.scale.height * 0.85, usingSprties[1]).setDepth(3),
+            ingredient3: this.add.image(this.scale.width  * 0.7, this.scale.height * 0.85, usingSprties[2]).setDepth(3),
+            ingredient4: this.add.image(this.scale.width  * 0.9, this.scale.height * 0.85, usingSprties[3]).setDepth(3)
         }
 
         switch(setCorrect) {
@@ -606,8 +609,6 @@ export class Act1Minigame extends BaseGameScene {
             this.quizOverlay = null;
         }
 
-        
-
         //Ensure game is over
         this.gameActive = false;
         console.log(this.gameActive);
@@ -647,7 +648,7 @@ export class Act1Minigame extends BaseGameScene {
             this.switchScene('MainMenu');
         });
         this.endGameOverlay.getAt(5).on('pointerdown', () => {
-            this.switchScene('Act1Scene2');
+            this.switchScene('Act1Scene3Part3');
         });
 
         //Button animations
@@ -724,9 +725,11 @@ export class Act1Minigame extends BaseGameScene {
         }
         else if(this.keys.left.isDown) {
             this.player.setVelocityX(-speed);
+            this.player.flipX = true;
             //this.player.anims.play('left', true);
         } else if (this.keys.right.isDown) {
             this.player.setVelocityX(speed);
+            this.player.flipX = false;
             //this.player.anims.play('right', true);
         } else {
             this.player.setVelocityX(0);
