@@ -7,6 +7,8 @@
 The current live site is: ![https://macbethrpg.netlify.app](https://macbethrpg.netlify.app)
 
 ## How to install:
+* clone the repo
+  * We are using Phaser for the game engine and Firebase for the server
 
 ## How to run:
 * Our project only works on Windows, so GitHub Codespace will not work
