@@ -23,45 +23,80 @@ export class Act4Scene1 extends BaseGameScene {
         }
 
         // Character spritesheets
-        if (!this.textures.exists('macbeth')) {
-            this.load.spritesheet('macbeth', 'assets/characters/Macbeth.png', {
+        
+        // Load Macbeth's idle animation
+        if (!this.textures.exists('macbeth_idle_sheet')) {
+            this.load.image('macbeth_idle_sheet', 'assets/characters/MacbethIdle.png');
+        }
+        if (!this.cache.json.exists('macbeth_idle_json')) {
+            this.load.json('macbeth_idle_json', 'assets/characters/MacbethIdle.json');
+        }
+  
+        // Load Macbeth's run animation
+        if (!this.textures.exists('macbeth_run_sheet')) {
+            this.load.image('macbeth_run_sheet', 'assets/characters/MacbethRun.png');
+        }
+        if (!this.cache.json.exists('macbeth_run_json')) {
+            this.load.json('macbeth_run_json', 'assets/characters/MacbethRun.json');
+        }
+
+        // Load 1st witch idle animation
+        if (!this.textures.exists('firstWitch_idle_sheet')) {
+            this.load.spritesheet('firstWitch_idle_sheet', 'assets/characters/FirstWitch.png', {
                 frameWidth: 32, frameHeight: 48
             });
         }
-        if (!this.textures.exists('firstWitch')) {
-            this.load.spritesheet('firstWitch', 'assets/characters/FirstWitch.png', {
+        
+        //load 2nd witch idle
+        if (!this.textures.exists('secondWitch_idle_sheet')) {
+            this.load.spritesheet('secondWitch_idle_sheet', 'assets/characters/SecondWitch.png', {
                 frameWidth: 32, frameHeight: 48
             });
         }
-        if (!this.textures.exists('secondWitch')) {
-            this.load.spritesheet('secondWitch', 'assets/characters/SecondWitch.png', {
+        if (!this.cache.json.exists('secondWitch_json')) {
+            this.load.json('secondWitch_json', 'assets/characters/SecondWitch.json');
+        }
+        //load 3rd witch
+        if (!this.textures.exists('thirdWitch_idle_sheet')) {
+            this.load.spritesheet('thirdWitch_idle_sheet', 'assets/characters/ThirdWitch.png', {
                 frameWidth: 32, frameHeight: 48
             });
         }
-        if (!this.textures.exists('thirdWitch')) {
-            this.load.spritesheet('thirdWitch', 'assets/characters/ThirdWitch.png', {
-                frameWidth: 32, frameHeight: 48
-            });
+        if (!this.cache.json.exists('thirdtWitch_json')) {
+            this.load.json('thirdWitch_json', 'assets/characters/ThirdWitch.json');
         }
+        //load apparitions
         if (!this.textures.exists('firstApparition')) {
             this.load.spritesheet('firstApparition', 'assets/characters/FirstApparition.png', {
                 frameWidth: 32, frameHeight: 48
             });
+        }
+        if (!this.cache.json.exists('firstApparition_json')) {
+            this.load.json('firstApparition_json', 'assets/characters/FirstApparition.json');
         }
         if (!this.textures.exists('secondApparition')) {
             this.load.spritesheet('secondApparition', 'assets/characters/SecondApparition.png', {
                 frameWidth: 32, frameHeight: 48
             });
         }
+        if (!this.cache.json.exists('secondApparition_json')) {
+            this.load.json('secondApparition_json', 'assets/characters/SecondApparition.json');
+        }
         if (!this.textures.exists('thirdApparition')) {
             this.load.spritesheet('thirdApparition', 'assets/characters/ThirdApparition.png', {
                 frameWidth: 32, frameHeight: 48
             });
         }
+        if (!this.cache.json.exists('thirdApparition_json')) {
+            this.load.json('thirdApparition_json', 'assets/characters/ThirdApparition.json');
+        }
         if (!this.textures.exists('lennnox')) {
             this.load.spritesheet('lennnox', 'assets/characters/Lennnox.png', {
                 frameWidth: 32, frameHeight: 48
             });
+        }
+        if (!this.cache.json.exists('lennnox_json')) {
+            this.load.json('lennnox_json', 'assets/characters/Lennnox.json');
         }
 
         

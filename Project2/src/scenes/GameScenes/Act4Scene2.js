@@ -28,20 +28,32 @@ export class Act4Scene2 extends BaseGameScene {
                 frameWidth: 32, frameHeight: 48
             });
         }
+        if (!this.cache.json.exists('ladyMacduff_json')) {
+            this.load.json('ladyMacduff_json', 'assets/characters/LadyMacduff.json');
+        }
         if (!this.textures.exists('ross')) {
             this.load.spritesheet('ross', 'assets/characters/Ross.png', {
                 frameWidth: 32, frameHeight: 48
             });
+        }
+        if (!this.cache.json.exists('ross_json')) {
+            this.load.json('ross_json', 'assets/characters/Ross.json');
         }
         if (!this.textures.exists('son')) {
             this.load.spritesheet('son', 'assets/characters/Son.png', {
                 frameWidth: 32, frameHeight: 48
             });
         }
+        if (!this.cache.json.exists('son_json')) {
+            this.load.json('son_json', 'assets/characters/Son.json');
+        }
         if (!this.textures.exists('murderer')) {
             this.load.spritesheet('murderer', 'assets/characters/Murderer.png', {
                 frameWidth: 32, frameHeight: 48
             });
+        }
+        if (!this.cache.json.exists('murderer_json')) {
+            this.load.json('murderer_json', 'assets/characters/Murderer.json');
         }
 
 
