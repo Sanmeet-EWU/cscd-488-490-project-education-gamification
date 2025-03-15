@@ -2,94 +2,146 @@ import { BaseGameScene } from '../BaseGameScene.js';
 
 export class Act5Scene4 extends BaseGameScene {
     constructor() {
-        // REPLACE: 'TEMPLATESCENE' with your actual scene key (e.g., 'Act2Scene1')
         super('Act5Scene4');
 
-        // Set to true if this is a cutscene without player movement
         this.isCutscene = false;
     }
 
     preload() {
-        // REPLACE: Load your scene specific assets
-
-        // Background
         if (!this.textures.exists('background_act5scene4')) {
             this.load.svg('background_act5scene4', 'assets/act5/scene4.svg', { width: 2560, height: 1440 });
         }
 
-        // Dialogue JSON
         if (!this.cache.json.exists('Act5Scene4Data')) {
             this.load.json('Act5Scene4Data', 'SceneDialogue/Act5Scene4.json');
         }
 
-        // Character spritesheets
-        if (!this.textures.exists('soldier')) {
-            this.load.spritesheet('soldier', 'assets/characters/soldier.png', {
-                frameWidth: 32, frameHeight: 48
+        if (!this.textures.exists('soldier_idle_sheet')) {
+            this.load.image('soldier_idle_sheet', 'assets/characters/SoldierIdle.png');
+        }
+        if (!this.cache.json.exists('soldier_idle_json')) {
+            this.load.json('soldier_idle_json', 'assets/characters/SoldierIdle.json');
+        }
+
+        if (!this.textures.exists('soldier_run_sheet')) {
+            this.load.image('soldier_run_sheet', 'assets/characters/SoldierRun.png');
+        }
+        if (!this.cache.json.exists('soldier_run_json')) {
+            this.load.json('soldier_run_json', 'assets/characters/SoldierRun.json');
+        }
+        if (!this.textures.exists('young_siward')) {
+            this.load.spritesheet('young_siward', 'assets/characters/YoungSiward.png', {
+            frameWidth: 32, frameHeight: 48
             });
         }
+
         if (!this.textures.exists('malcolm')) {
-            this.load.spritesheet('malcolm', 'assets/characters/malcolm.png', {
-                frameWidth: 32, frameHeight: 48
+            this.load.spritesheet('malcolm', 'assets/characters/Malcolm.png', {
+            frameWidth: 32, frameHeight: 48
             });
         }
+
         if (!this.textures.exists('siward')) {
-            this.load.spritesheet('siward', 'assets/characters/siward.png', {
-                frameWidth: 32, frameHeight: 48
+            this.load.spritesheet('siward', 'assets/characters/Siward.png', {
+            frameWidth: 32, frameHeight: 48
             });
         }
+
         if (!this.textures.exists('macduff')) {
-            this.load.spritesheet('macduff', 'assets/characters/macduff.png', {
-                frameWidth: 32, frameHeight: 48
+            this.load.spritesheet('macduff', 'assets/characters/Macduff.png', {
+            frameWidth: 32, frameHeight: 48
             });
         }
-        if (!this.textures.exists('youngSiward')) {
-            this.load.spritesheet('youngSiward', 'assets/characters/youngSiward.png', {
-                frameWidth: 32, frameHeight: 48
+
+        if (!this.textures.exists('menteith')) {
+            this.load.spritesheet('menteith', 'assets/characters/Menteith.png', {
+            frameWidth: 32, frameHeight: 48
             });
         }
-        if (!this.textures.exists('monteith')) {
-            this.load.spritesheet('monteith', 'assets/characters/monteith.png', {
-                frameWidth: 32, frameHeight: 48
-            });
-        }
+
         if (!this.textures.exists('caithness')) {
-            this.load.spritesheet('caithness', 'assets/characters/caithness.png', {
-                frameWidth: 32, frameHeight: 48
+            this.load.spritesheet('caithness', 'assets/characters/Caithness.png', {
+            frameWidth: 32, frameHeight: 48
             });
         }
 
-        // Character portraits for dialogue
-        this.load.image("Soldier", "assets/portraits/Soldier.png");
-        this.load.image("Malcolm", "assets/portraits/Malcolm.png");
-        this.load.image("Siward", "assets/portraits/Siward.png");
-        this.load.image("Macduff", "assets/portraits/Macduff.png");
-        this.load.image("YoungSiward", "assets/portraits/YoungSiward.png");
-        this.load.image("Monteith", "assets/portraits/Monteith.png");
-        this.load.image("Caithness", "assets/portraits/Caithness.png");
+        if (!this.textures.exists('young_siward_idle_sheet')) {
+            this.load.image('young_siward_idle_sheet', 'assets/characters/YoungSiwardIdle.png');
+        }
+        if (!this.cache.json.exists('young_siward_idle_json')) {
+            this.load.json('young_siward_idle_json', 'assets/characters/YoungSiwardIdle.json');
+        }
 
-        // Scene music
-        this.load.audio('act5scene4music', 'assets/audio/act5scene4music.mp3');
+        if (!this.textures.exists('malcolm_idle_sheet')) {
+            this.load.image('malcolm_idle_sheet', 'assets/characters/MalcolmIdle.png');
+        }
+        if (!this.cache.json.exists('malcolm_idle_json')) {
+            this.load.json('malcolm_idle_json', 'assets/characters/MalcolmIdle.json');
+        }
 
-        // Sound effects
-        this.load.audio('soundEffect1', 'assets/audio/effect.mp3');
+        if (!this.textures.exists('siward_idle_sheet')) {
+            this.load.image('siward_idle_sheet', 'assets/characters/SiwardIdle.png');
+        }
+        if (!this.cache.json.exists('siward_idle_json')) {
+            this.load.json('siward_idle_json', 'assets/characters/SiwardIdle.json');
+        }
 
-        // Error handling for asset loading
+        if (!this.textures.exists('macduff_idle_sheet')) {
+            this.load.image('macduff_idle_sheet', 'assets/characters/MacduffIdle.png');
+        }
+        if (!this.cache.json.exists('macduff_idle_json')) {
+            this.load.json('macduff_idle_json', 'assets/characters/MacduffIdle.json');
+        }
+
+        if (!this.textures.exists('monteith_idle_sheet')) {
+            this.load.image('menteith_idle_sheet', 'assets/characters/MonteithIdle.png');
+        }
+        if (!this.cache.json.exists('monteith_idle_json')) {
+            this.load.json('menteith_idle_json', 'assets/characters/MonteithIdle.json');
+        }
+
+        if (!this.textures.exists('caithness_idle_sheet')) {
+            this.load.image('caithness_idle_sheet', 'assets/characters/CaithnessIdle.png');
+        }
+        if (!this.cache.json.exists('caithness_idle_json')) {
+            this.load.json('caithness_idle_json', 'assets/characters/CaithnessIdle.json');
+        }
+
+        
+
+        if (!this.textures.exists('guardImg')) {
+            this.load.image('guardImg', 'assets/characters/Guard.png');
+        }
+        if (!this.cache.json.exists('guardData')) {
+            this.load.json('guardData', 'assets/characters/guard.json');
+        }
+
+        if (!this.textures.exists('Soldier')) {
+            this.load.image('Soldier', 'assets/portraits/Soldier.png');
+        }
+        if (!this.textures.exists('YoungSiward')) {
+            this.load.image('YoungSiward', 'assets/portraits/YoungSiward.png');
+        }
+
+        if (!this.cache.audio.exists('act5scene4music')) {
+            this.load.audio('act5scene4music', 'assets/audio/act5scene4.mp3');
+        }
+
         this.load.on('loaderror', (fileObj) => {
             console.error(`Failed to load asset: ${fileObj.key} (${fileObj.url})`);
         });
     }
 
     create(data) {
-        // Call parent create method
         super.create(data);
         const { width, height } = this.scale;
+        this.nextSceneKey = 'Act5Scene5';
+        this.dialogueStarted = false;
+        this.dialogueFullyComplete = false;
+        this.transitionActive = false;
+        this.soliloquyStarted = false;
 
-        // Check required assets
-        const requiredAssets = [
-            'background_act5scene4', 'soldier', 'malcolm', 'siward', 'macduff', 'youngSiward', 'monteith', 'caithness', 'act5scene8part1music',
-            'Soldier', 'Malcolm', 'Siward', 'Macduff', 'YoungSiward', 'Monteith', 'Caithness'
-        ];
+        const requiredAssets = ['background_act5scene4'];
         const missing = this.checkRequiredAssets(requiredAssets);
         if (missing.length > 0) {
             this.add.text(width / 2, height / 2, "Error: Missing assets\n" + missing.join(', '), {
@@ -102,260 +154,609 @@ export class Act5Scene4 extends BaseGameScene {
             return;
         }
 
-        // Fade in scene
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
-        // Setup background
-        this.background = this.add.image(0, 0, 'background_act5scene4')
-            .setOrigin(0, 0)
-            .setDisplaySize(width, height)
-            .setDepth(-1);
+        if (this.textures.exists('background_act5scene4')) {
+            this.background = this.add.image(0, 0, 'background_act5scene4')
+                .setOrigin(0, 0)
+                .setDisplaySize(width, height)
+                .setDepth(-1);
+        } else {
+            this.background = this.add.rectangle(0, 0, width, height, 0x210e04)
+                .setOrigin(0, 0)
+                .setDepth(-1);
+        }
 
-        // Create animations
+        this.createFloor();
+        this.setupGuardAtlas();
+        this.setupSoldierAtlas();
+        this.setupYoungSiwardAtlas();
+        this.setupMalcolmAtlas();
+        this.setupSiwardAtlas();
+        this.setupMacduffAtlas();
+        this.setupMenteithAtlas();
+        this.setupCaithnessAtlas();
         this.createAnimations();
 
-        // Play scene music
         if (this.audioController && this.cache.audio.exists('act5scene4music')) {
             this.audioController.playMusic('act5scene4music', this, { volume: 1, loop: true });
         }
 
-        // Create player if not a cutscene
         if (!this.isCutscene) {
             this.setupPlayer();
         }
 
-        // Create NPCs
         this.setupNPCs();
-
-        // Setup dialogue
         this.setupSceneDialogue();
 
-        // Start dialogue for cutscenes
         if (this.isCutscene && this.dialogueManager) {
-            // For cutscenes, automatically start dialogue
             this.dialogueManager.startDialogue("Act5Scene4", () => {
-                // Replace 'NextSceneName' with your next scene
                 this.switchScene('Act5Scene5');
             });
         }
 
-        // Handle scene resize
         this.scale.on('resize', this.onResize, this);
 
-        // Cleanup on shutdown
         this.events.on('shutdown', () => {
             this.scale.off('resize', this.onResize, this);
         });
     }
 
+    setupGuardAtlas() {
+        const guardData = this.cache.json.get('guardData');
+        if (guardData) {
+            const phaserAtlas = { frames: {} };
+            guardData.forEach(frame => {
+                phaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas('guard', this.textures.get('guardImg').getSourceImage(), phaserAtlas);
+        }
+    }
+
+    setupSoldierAtlas() {
+        if (this.textures.exists('soldier_idle_sheet') && this.cache.json.exists('soldier_idle_json')) {
+            const idleJsonData = this.cache.json.get('soldier_idle_json');
+            const idlePhaserAtlas = { frames: {} };
+            idleJsonData.forEach(frame => {
+                idlePhaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas(
+                'soldier_idle_atlas',
+                this.textures.get('soldier_idle_sheet').getSourceImage(),
+                idlePhaserAtlas
+            );
+            this.anims.create({
+                key: 'soldier_idle',
+                frames: idleJsonData.map(frame => ({ key: 'soldier_idle_atlas', frame: frame.name })),
+                frameRate: 8,
+                repeat: -1
+            });
+        }
+
+        if (this.textures.exists('soldier_run_sheet') && this.cache.json.exists('soldier_run_json')) {
+            const runJsonData = this.cache.json.get('soldier_run_json');
+            const runPhaserAtlas = { frames: {} };
+            runJsonData.forEach(frame => {
+                runPhaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas(
+                'soldier_run_atlas',
+                this.textures.get('soldier_run_sheet').getSourceImage(),
+                runPhaserAtlas
+            );
+            this.anims.create({
+                key: 'soldier_run',
+                frames: runJsonData.map(frame => ({ key: 'soldier_run_atlas', frame: frame.name })),
+                frameRate: 10,
+                repeat: -1
+            });
+        }
+    }
+
+    setupYoungSiwardAtlas() {
+        if (this.textures.exists('young_siward_idle_sheet') && this.cache.json.exists('young_siward_idle_json')) {
+            const idleJsonData = this.cache.json.get('young_siward_idle_json');
+            const idlePhaserAtlas = { frames: {} };
+            idleJsonData.forEach(frame => {
+                idlePhaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas(
+                'young_siward_idle_atlas',
+                this.textures.get('young_siward_idle_sheet').getSourceImage(),
+                idlePhaserAtlas
+            );
+            this.anims.create({
+                key: 'young_siward_idle',
+                frames: idleJsonData.map(frame => ({ key: 'young_siward_idle_atlas', frame: frame.name })),
+                frameRate: 8,
+                repeat: -1
+            });
+        }
+    }
+
+    setupMalcolmAtlas() {
+        if (this.textures.exists('malcolm_idle_sheet') && this.cache.json.exists('malcolm_idle_json')) {
+            const idleJsonData = this.cache.json.get('malcolm_idle_json');
+            const idlePhaserAtlas = { frames: {} };
+            idleJsonData.forEach(frame => {
+                idlePhaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas(
+                'malcolm_idle_atlas',
+                this.textures.get('malcolm_idle_sheet').getSourceImage(),
+                idlePhaserAtlas
+            );
+            this.anims.create({
+                key: 'malcolm_idle',
+                frames: idleJsonData.map(frame => ({ key: 'malcolm_idle_atlas', frame: frame.name })),
+                frameRate: 8,
+                repeat: -1
+            });
+        }
+    }
+
+    setupSiwardAtlas() {
+        if (this.textures.exists('siward_idle_sheet') && this.cache.json.exists('siward_idle_json')) {
+            const idleJsonData = this.cache.json.get('siward_idle_json');
+            const idlePhaserAtlas = { frames: {} };
+            idleJsonData.forEach(frame => {
+                idlePhaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas(
+                'siward_idle_atlas',
+                this.textures.get('siward_idle_sheet').getSourceImage(),
+                idlePhaserAtlas
+            );
+            this.anims.create({
+                key: 'siward_idle',
+                frames: idleJsonData.map(frame => ({ key: 'siward_idle_atlas', frame: frame.name })),
+                frameRate: 8,
+                repeat: -1
+            });
+        }
+    }
+
+    setupMacduffAtlas() {
+        if (this.textures.exists('macduff_idle_sheet') && this.cache.json.exists('macduff_idle_json')) {
+            const idleJsonData = this.cache.json.get('macduff_idle_json');
+            const idlePhaserAtlas = { frames: {} };
+            idleJsonData.forEach(frame => {
+                idlePhaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas(
+                'macduff_idle_atlas',
+                this.textures.get('macduff_idle_sheet').getSourceImage(),
+                idlePhaserAtlas
+            );
+            this.anims.create({
+                key: 'macduff_idle',
+                frames: idleJsonData.map(frame => ({ key: 'macduff_idle_atlas', frame: frame.name })),
+                frameRate: 8,
+                repeat: -1
+            });
+        }
+    }
+
+    setupMenteithAtlas() {
+        if (this.textures.exists('menteith_idle_sheet') && this.cache.json.exists('menteith_idle_json')) {
+            const idleJsonData = this.cache.json.get('menteith_idle_json');
+            const idlePhaserAtlas = { frames: {} };
+            idleJsonData.forEach(frame => {
+                idlePhaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas(
+                'menteith_idle_atlas',
+                this.textures.get('menteith_idle_sheet').getSourceImage(),
+                idlePhaserAtlas
+            );
+            this.anims.create({
+                key: 'menteith_idle',
+                frames: idleJsonData.map(frame => ({ key: 'menteith_idle_atlas', frame: frame.name })),
+                frameRate: 8,
+                repeat: -1
+            });
+        }
+    }
+
+    setupCaithnessAtlas() {
+        if (this.textures.exists('caithness_idle_sheet') && this.cache.json.exists('caithness_idle_json')) {
+            const idleJsonData = this.cache.json.get('caithness_idle_json');
+            const idlePhaserAtlas = { frames: {} };
+            idleJsonData.forEach(frame => {
+                idlePhaserAtlas.frames[frame.name] = {
+                    frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
+                    rotated: false,
+                    trimmed: false,
+                    sourceSize: { w: frame.width, h: frame.height },
+                    spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
+                };
+            });
+            this.textures.addAtlas(
+                'caithness_idle_atlas',
+                this.textures.get('caithness_idle_sheet').getSourceImage(),
+                idlePhaserAtlas
+            );
+            this.anims.create({
+                key: 'caithness_idle',
+                frames: idleJsonData.map(frame => ({ key: 'caithness_idle_atlas', frame: frame.name })),
+                frameRate: 8,
+                repeat: -1
+            });
+        }
+    }
+
     setupPlayer() {
-        // REPLACE: Define player configuration
+        let texture = 'soldier_idle_atlas';
+        let frame = 'sprite1';
+        let animation = 'soldier_idle';
+
+        if (!this.textures.exists('soldier_idle_atlas')) {
+            texture = 'guard';
+            frame = 'sprite1';
+            animation = 'idle';
+        }
+
         const playerConfig = {
-            texture: 'soldier',
-            frame: 0,
-            scale: 1.5,
+            texture: texture,
+            frame: frame,
+            scale: 2.0,
             displayName: 'Soldier',
-            animation: 'idleAnim',
-            movementConstraint: 'horizontal' // or 'topdown'
+            animation: animation,
+            movementConstraint: 'horizontal'
         };
 
-        // Use the base class method to create player
         this.player = this.createPlayer(playerConfig);
+
+        if (this.player) {
+            const { width, height } = this.scale;
+            this.player.setPosition(width * 0.3, height * 0.85);
+            this.player.body.setGravityY(0);
+            if (this.floor) {
+                this.physics.add.collider(this.player, this.floor);
+            }
+            this.player.body.setSize(this.player.width, this.player.height);
+            this.player.body.setOffset(0, this.player.height / 2);
+        }
     }
 
     setupNPCs() {
-        // REPLACE: Define your NPCs
+        const { width, height } = this.scale;
+
         const npcConfigs = [
             {
+                key: "YoungSiward",
+                x: width * 0.7,
+                y: height * 0.85,
+                texture: 'young_siward_idle_atlas',
+                frame: 'sprite1',
+                scale: 1.8,
+                animationKey: 'young_siward_idle',
+                displayName: 'Young Siward'
+            },
+            {
                 key: "Malcolm",
-                x: this.scale.width * 0.5,
-                y: this.scale.height * 0.8,
-                texture: 'malcolm',
-                frame: 0,
-                scale: 1.5,
-                animationKey: 'idleAnim',
-                interactive: true,
+                x: width * 0.6,
+                y: height * 0.85,
+                texture: 'malcolm_idle_atlas',
+                frame: 'sprite1',
+                scale: 1.8,
+                animationKey: 'malcolm_idle',
                 displayName: 'Malcolm'
             },
             {
                 key: "Siward",
-                x: this.scale.width * 0.55,
-                y: this.scale.height * 0.8,
-                texture: 'siward',
-                frame: 0,
-                scale: 1.5,
-                animationKey: 'idleAnim',
-                interactive: true,
+                x: width * 0.5,
+                y: height * 0.85,
+                texture: 'siward_idle_atlas',
+                frame: 'sprite1',
+                scale: 1.8,
+                animationKey: 'siward_idle',
                 displayName: 'Siward'
             },
             {
                 key: "Macduff",
-                x: this.scale.width * 0.6,
-                y: this.scale.height * 0.8,
-                texture: 'macduff',
-                frame: 0,
-                scale: 1.5,
-                animationKey: 'idleAnim',
-                interactive: true,
+                x: width * 0.4,
+                y: height * 0.85,
+                texture: 'macduff_idle_atlas',
+                frame: 'sprite1',
+                scale: 1.8,
+                animationKey: 'macduff_idle',
                 displayName: 'Macduff'
             },
             {
-                key: "YoungSiward",
-                x: this.scale.width * 0.7,
-                y: this.scale.height * 0.8,
-                texture: 'youngSiward',
-                frame: 0,
-                scale: 1.5,
-                animationKey: 'idleAnim',
-                interactive: true,
-                displayName: 'Young Siward'
-            },
-            {
-                key: "Monteith",
-                x: this.scale.width * 0.8,
-                y: this.scale.height * 0.8,
-                texture: 'monteith',
-                frame: 0,
-                scale: 1.5,
-                animationKey: 'idleAnim',
-                interactive: true,
-                displayName: 'Monteith'
+                key: "Menteith",
+                x: width * 0.3,
+                y: height * 0.85,
+                texture: 'menteith_idle_atlas',
+                frame: 'sprite1',
+                scale: 1.8,
+                animationKey: 'menteith_idle',
+                displayName: 'Menteith'
             },
             {
                 key: "Caithness",
-                x: this.scale.width * 0.95,
-                y: this.scale.height * 0.8,
-                texture: 'caithness',
-                frame: 0,
-                scale: 1.5,
-                animationKey: 'idleAnim',
-                interactive: true,
+                x: width * 0.2,
+                y: height * 0.85,
+                texture: 'caithness_idle_atlas',
+                frame: 'sprite1',
+                scale: 1.8,
+                animationKey: 'caithness_idle',
                 displayName: 'Caithness'
-            },
-            {
-                key: "Soldier1",
-                x: this.scale.width * 0.1,
-                y: this.scale.height * 0.8,
-                texture: 'soldier',
-                frame: 0,
-                scale: 1.5,
-                animationKey: 'idleAnim',
-                interactive: true,
-                displayName: 'Soldier'
-            },
-            {
-                key: "Soldier2",
-                x: this.scale.width * 0.2,
-                y: this.scale.height * 0.8,
-                texture: 'soldier',
-                frame: 0,
-                scale: 1.5,
-                animationKey: 'idleAnim',
-                interactive: true,
-                displayName: 'Soldier'
-            },
-            // Add more NPCs as needed
+            }
         ];
 
-        // Use the base class method to create NPCs
         this.createNPCs(npcConfigs);
+
+        if (this.floor) {
+            Object.keys(this.npcs).forEach(key => {
+                if (!key.endsWith('Tag') && this.npcs[key]) {
+                    this.physics.add.collider(this.npcs[key], this.floor);
+                }
+            });
+        }
     }
 
     setupSceneDialogue() {
-        if (!this.cache.json.exists('Act5Scene4Data')) return;
+        if (!this.cache.json.exists('Act5Scene4Data')) {
+            console.error("Act5Scene4Data JSON not found");
+            return;
+        }
 
         try {
             const dialogueData = this.cache.json.get('Act5Scene4Data');
-
-            // REPLACE: Map character names to portrait texture keys
             const portraitMap = {
                 "Soldier": "Soldier",
-                "Soldier1": "Soldier",
-                "Soldier2": "Soldier",
+                "YoungSiward": "YoungSiward",
                 "Malcolm": "Malcolm",
                 "Siward": "Siward",
                 "Macduff": "Macduff",
-                "Young Siward": "YoungSiward",
-                "Monteith": "Monteith",
+                "Menteith": "Menteith",
                 "Caithness": "Caithness"
             };
 
-            // Use base class method to setup dialogue
             this.setupDialogue(dialogueData, portraitMap, "Soldier");
+
+            setTimeout(() => {
+                Object.keys(this.npcs).forEach(key => {
+                    if (!key.endsWith('Tag')) {
+                        this.dialogueManager?.registerNPC(key, this.npcs[key], this.npcs[key + "Tag"]);
+                    }
+                });
+            }, 100);
         } catch (error) {
             console.error("Error setting up dialogue:", error);
         }
     }
 
     createAnimations() {
-        // REPLACE: Set up your character animations
-
-        // Example animation setup
-        if (!this.anims.exists('idleAnim')) {
+        if (!this.anims.exists('idle')) {
             this.anims.create({
-                key: 'idleAnim',
-                frames: [{ key: 'soldier', frame: 0 }],
+                key: 'idle',
+                frames: [{ key: 'guard', frame: 'sprite1' }],
                 frameRate: 10
             });
         }
 
-        if (!this.anims.exists('walkLeft')) {
+        if (!this.anims.exists('left')) {
             this.anims.create({
-                key: 'walkLeft',
-                frames: this.anims.generateFrameNumbers('soldier', {
-                    start: 0, end: 3
-                }),
+                key: 'left',
+                frames: [
+                    { key: 'guard', frame: 'sprite4' },
+                    { key: 'guard', frame: 'sprite5' },
+                    { key: 'guard', frame: 'sprite6' }
+                ],
                 frameRate: 8,
                 repeat: -1
             });
         }
 
-        if (!this.anims.exists('walkRight')) {
+        if (!this.anims.exists('right')) {
             this.anims.create({
-                key: 'walkRight',
-                frames: this.anims.generateFrameNumbers('soldier', {
-                    start: 4, end: 7
-                }),
+                key: 'right',
+                frames: [
+                    { key: 'guard', frame: 'sprite7' },
+                    { key: 'guard', frame: 'sprite8' },
+                    { key: 'guard', frame: 'sprite9' }
+                ],
                 frameRate: 8,
                 repeat: -1
+            });
+        }
+    }
+
+    createFloor() {
+        const { width, height } = this.scale;
+        const groundY = height * 0.9;
+        this.floor = this.physics.add.staticGroup();
+        const ground = this.add.rectangle(width / 2, groundY, width, 20, 0x555555);
+        this.floor.add(ground);
+        ground.setVisible(false);
+    }
+
+    showExitHint() {
+        if (!this.exitHint && this.nextSceneKey) {
+            const { width, height } = this.scale;
+            this.exitHint = this.add.text(
+                width - 50,
+                height / 2,
+                "→",
+                { fontSize: '32px', fill: '#ffff00', stroke: '#000000', strokeThickness: 4 }
+            ).setOrigin(0.5).setDepth(100);
+
+            this.tweens.add({
+                targets: this.exitHint,
+                alpha: 0.6,
+                duration: 800,
+                yoyo: true,
+                repeat: -1
+            });
+        }
+    }
+
+    startDialogue(npcKey) {
+        if (this.dialogueManager && !this.dialogueManager.isActive) {
+            if (this.player?.body) {
+                this.player.body.setVelocity(0, 0);
+            }
+
+            this.dialogueManager.startDialogue(npcKey, () => {
+                console.log(`Dialogue with ${npcKey} completed`);
+                if (npcKey === "YoungSiward" || npcKey === "Malcolm" || npcKey === "Siward" || npcKey === "Macduff" || npcKey === "Menteith" || npcKey === "Caithness") {
+                    this.dialogueFullyComplete = true;
+                    this.showExitHint();
+                }
             });
         }
     }
 
     update(time, delta) {
-        // Call parent update - handles pause, nametags, interaction, and dialogue indicators
         super.update(time, delta);
 
-        // Skip additional updates if paused or in dialogue
         if (this.isPaused || this.dialogueManager?.isActive) return;
 
         if (this.player) {
             const speed = 160;
 
-            // Handle player movement
             if (this.keys.left.isDown) {
                 this.player.setVelocityX(-speed);
-                this.player.anims.play('walkLeft', true);
+                this.player.anims.play('soldier_run', true);
+                this.player.flipX = true;
             } else if (this.keys.right.isDown) {
                 this.player.setVelocityX(speed);
-                this.player.anims.play('walkRight', true);
+                this.player.anims.play('soldier_run', true);
+                this.player.flipX = false;
             } else {
                 this.player.setVelocityX(0);
-                this.player.anims.play('idleAnim', true);
+                this.player.anims.play('soldier_idle', true);
+            }
+
+            if (!this.soliloquyStarted) {
+                this.soliloquyStarted = true;
+                this.time.delayedCall(1000, () => {
+                    this.startDialogue("Soldier");
+                });
+            }
+
+            const npcsToCheck = ["Malcolm", "Siward", "YoungSiward", "Macduff", "Menteith", "Caithness"];
+            npcsToCheck.forEach(npcKey => {
+                if (this.npcs[npcKey] && !this.dialogueStarted) {
+                    const distToNPC = Phaser.Math.Distance.Between(
+                        this.player.x, this.player.y,
+                        this.npcs[npcKey].x, this.npcs[npcKey].y
+                    );
+                    if (distToNPC < 120) {
+                        this.dialogueStarted = true;
+                        this.startDialogue(npcKey);
+                    }
+                }
+            });
+
+            if (this.dialogueFullyComplete && this.nextSceneKey) {
+                const { width } = this.scale;
+                if (this.player.x > width - 50 && !this.transitionActive) {
+                    this.transitionActive = true;
+                    this.cameras.main.fadeOut(500, 0, 0, 0);
+                    this.cameras.main.once('camerafadeoutcomplete', () => {
+                        this.scene.start(this.nextSceneKey);
+                    });
+                }
             }
         }
     }
 
     onResize(gameSize) {
-        if (!this.scene.isActive('Act5Scene4')) return; // REPLACE: Scene key
+        if (!this.scene.isActive('Act5Scene4')) return;
 
         const { width, height } = gameSize;
 
-        // Resize background
         if (this.background?.active) {
-            this.background.setDisplaySize(width, height);
+            if (this.background.type === 'Image') {
+                this.background.setDisplaySize(width, height);
+            } else {
+                this.background.width = width;
+                this.background.height = height;
+            }
         }
 
-        // The rest of NPC repositioning is now handled by super.updateNametags()
+        if (this.floor?.clear) {
+            this.floor.clear();
+            const groundY = height * 0.9;
+            const ground = this.add.rectangle(width / 2, groundY, width, 20, 0x555555);
+            this.floor.add(ground);
+            ground.setVisible(false);
+        }
+
+        if (this.player) {
+            this.player.setPosition(width * 0.3, height * 0.85);
+        }
+        if (this.npcs["YoungSiward"]) {
+            this.npcs["YoungSiward"].setPosition(width * 0.7, height * 0.85);
+        }
+        if (this.npcs["Malcolm"]) {
+            this.npcs["Malcolm"].setPosition(width * 0.6, height * 0.85);
+        }
+        if (this.npcs["Siward"]) {
+            this.npcs["Siward"].setPosition(width * 0.5, height * 0.85);
+        }
+        if (this.npcs["Macduff"]) {
+            this.npcs["Macduff"].setPosition(width * 0.4, height * 0.85);
+        }
+        if (this.npcs["Menteith"]) {
+            this.npcs["Menteith"].setPosition(width * 0.3, height * 0.85);
+        }
+        if (this.npcs["Caithness"]) {
+            this.npcs["Caithness"].setPosition(width * 0.2, height * 0.85);
+        }
+        if (this.exitHint) {
+            this.exitHint.setPosition(width - 50, height / 2);
+        }
     }
 }
