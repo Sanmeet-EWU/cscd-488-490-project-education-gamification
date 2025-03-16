@@ -1,12 +1,12 @@
 import { BaseGameScene } from '../BaseGameScene.js';
 
-export class Act2Scene1 extends BaseGameScene {
+export class Act2Scene1Duncan extends BaseGameScene {
   constructor() {
     // REPLACE: 'TEMPLATESCENE' with your actual scene key (e.g., 'Act2Scene1')
-    super('Act2Scene1');
+    super('Act2Scene1Duncan');
     
     // Set to true if this is a cutscene without player movement
-    this.isCutscene = true;
+    this.isCutscene = false;
   }
 
   // BANQUO, FLEANCE, and MACBETH 
@@ -14,18 +14,18 @@ export class Act2Scene1 extends BaseGameScene {
     // REPLACE: Load your scene specific assets
     
     // Background
-    if (!this.textures.exists('Act2StairsBg')) {
+    if (!this.textures.exists('Act2DuncansRoom')) {
       //this.load.svg('Act2Scene1Bg', 'assets/act2/Act2Scene1BG.svg', { width: 2560, height: 1440 });
-      this.load.svg('Act2StairsBg', 'assets/act2/Act2StairsBg.svg', { width: 2560, height: 1440 });
+      this.load.svg('Act2DuncansRoom', 'assets/act2/duncans_bedroom_bg.svg', { width: 2560, height: 1440 });
     }
     
     // Dialogue JSON 1
     if (!this.cache.json.exists('Act2Scene1DataPart1')) {
-      this.load.json('Act2Scene1DataPart1', 'SceneDialogue/Act2Scene1Part1.json');
+      this.load.json('Act2Scene1DataPart1', 'SceneDialogue/Act2Scene1Duncan1.json');
     }
     // Dialogue JSON 2
     if (!this.cache.json.exists('Act2Scene1DataPart2')) {
-      this.load.json('Act2Scene1DataPart2', 'SceneDialogue/Act2Scene1Part2.json');
+      this.load.json('Act2Scene1DataPart2', 'SceneDialogue/Act2Scene1Duncan2.json');
     }
     
     ////////////////////////////
@@ -54,33 +54,13 @@ export class Act2Scene1 extends BaseGameScene {
         });
       }
 
-    // Load Fleace sprite sheets and JSON data
-        if (!this.textures.exists('fleance_idle_sheet')) {
-            this.load.image('fleance_idle_sheet', 'assets/characters/Boy_idle.png');
-        }
-        if (!this.textures.exists('fleace_walk_sheet')) {
-            this.load.image('fleace_walk_sheet', 'assets/characters/Boy_walk.png');
-        }
-        if (!this.cache.json.exists('fleance_idle_json')) {
-            this.load.json('fleance_idle_json', 'assets/characters/Boy_idle.json');
-        }
-        if (!this.cache.json.exists('fleance_walk_json')) {
-            this.load.json('fleance_walk_json', 'assets/characters/Boy_walk.json');
-        }
-
-    // Load Banquo sprite sheets and JSON data
-        if (!this.textures.exists('Banquo_idle_sheet')) {
-            this.load.image('banquo_idle_sheet', 'assets/characters/Banquo_idle.png');
-        }
-        if (!this.textures.exists('fleace_walk_sheet')) {
-            this.load.image('banquo_walk_sheet', 'assets/characters/Banquo_walk.png');
-        }
-        if (!this.cache.json.exists('banquo_idle_json')) {
-            this.load.json('banquo_idle_json', 'assets/characters/Banquo_idle.json');
-        }
-        if (!this.cache.json.exists('banquo_walk_json')) {
-            this.load.json('banquo_walk_json', 'assets/characters/Banquo_walk.json');
-        }
+    // Load duncan sprite sheets and JSON data
+    if (!this.textures.exists('duncan_idle_sheet')) {
+      this.load.image('duncan_idle_sheet', 'assets/characters/DuncanIdle.png');
+    }
+    if (!this.cache.json.exists('duncan_idle_json')) {
+      this.load.json('duncan_idle_json', 'assets/characters/DuncanIdle.json');
+    }
 
     // Backup guard
       if (!this.textures.exists('guardImg')) {
@@ -91,15 +71,17 @@ export class Act2Scene1 extends BaseGameScene {
       }
     
     // Character portraits for dialogue
-    this.load.image("banquoportrait", "assets/portraits/Banquo.png");
-    this.load.image("fleanceportrait", "assets/portraits/Fleance.png");
     this.load.image("macbethportrait", "assets/portraits/Macbeth.png");
     
     // Scene music
     this.load.audio('darkHallway', 'assets/audio/dark_hallway_synth_bg.mp3');
     
     // Sound effects
-    //this.load.audio('soundEffect1', 'assets/audio/effect.mp3');
+    this.load.audio('sting', 'assets/audio/dark_hallway_sting.mp3');
+    this.load.audio('stabbing', 'assets/audio/stabbing.mp3');
+
+    // Load additional assets
+    this.load.image('bed', 'assets/act2/bed.png');
     
     // Error handling for asset loading
     this.load.on('loaderror', (fileObj) => {
@@ -111,11 +93,11 @@ export class Act2Scene1 extends BaseGameScene {
     // Call parent create method
     super.create(data);
     const { width, height } = this.scale;
-    this.nextSceneKey = 'Act2Scene1Duncan';
+    this.nextSceneKey = 'Act2Scene2';
     
     // Check required assets
     const requiredAssets = [
-      'Act2StairsBg'
+      'Act2DuncansRoom'
     ];
     const missing = this.checkRequiredAssets(requiredAssets);
     if (missing.length > 0) {
@@ -133,7 +115,7 @@ export class Act2Scene1 extends BaseGameScene {
     this.cameras.main.fadeIn(1000, 0, 0, 0);
   
     // Setup background
-    this.background = this.add.image(0, 0, 'Act2StairsBg')
+    this.background = this.add.image(0, 0, 'Act2DuncansRoom')
       .setOrigin(0, 0)
       .setDisplaySize(width, height)
       .setDepth(-1);
@@ -148,11 +130,18 @@ export class Act2Scene1 extends BaseGameScene {
 
     // Create floor for characters to stand on
     //this.createFloor();
+
+    // Create bed
+    this.add.image(width * 0.2, height * 0.85, 'bed').setScale(.5).setDepth(1);
     
     // Create animations
     this.createAnimations();
     
-    //Usually we spawn the player here, however macbeth joins mid scene
+    // Spawn macbeth
+    this.setupPlayer();
+
+    // Play eerie sting sound effect, upon macbeths entry
+    this.sound.add('sting').play({ loop: false, volume: this.audioController.soundVolume*.75});//Its hella loud
 
     // Create NPCs
     this.setupNPCs();
@@ -181,22 +170,15 @@ export class Act2Scene1 extends BaseGameScene {
     // Start dialogue for cutscenes
     if (this.isCutscene && this.dialogueManager) {
       // For cutscenes, automatically start dialogue
-      this.dialogueManager.startDialogue("Banquo", () => {
-          // Add in macbeth
-          this.setupPlayer();
-          // Load the main set of dialogue
-          this.setupSceneDialogue2();
+      this.dialogueManager.startDialogue("Macbeth", () => {
+          
+          // Once he walks up to duncan, darken the screen, and play the stabbing sound effect
+          this.sound.add('stabbing').play({ loop: false, volume: this.audioController.soundVolume});
+          
+          //this.cameras.main.fade(1000, 0, 0, 0);
 
-          this.time.delayedCall(1000, () =>  
-            this.dialogueManager.startDialogue("Macbeth", () => {
-            //spawn in an arrow to sgnify go right up the stairs
-            this.showExitHint();
-            this.unlockExit = true;
-            })
-          );
+          //this.switchScene(this.nextSceneKey);//
 
-        // Replace 'NextSceneName' with your next scene
-        //this.switchScene('NextSceneName');
       });
     }
   }
@@ -231,7 +213,7 @@ export class Act2Scene1 extends BaseGameScene {
     // Position Macbeth on center
     if (this.player) {
         const { width, height } = this.scale;
-        this.player.setPosition(width * 0.1, height * 0.8);
+        this.player.setPosition(width * 0.7, height * 0.85);
     }
   }
 
@@ -240,44 +222,32 @@ export class Act2Scene1 extends BaseGameScene {
 
     const npcConfigs = [
       {
-        key: "Banquo",
-        x: width * 0.5,
+        key: "Duncan",
+        x: width * 0.2,
         y: height * 0.8,
-        texture: 'banquo_idle_atlas',
+        texture: 'duncan_idle_atlas',
         frame: 'sprite1',
         scale: 3,
-        animationKey: 'banquo_idle',
+        animationKey: 'duncan_idle',
         interactive: true,
-        displayName: 'Banquo'
-      },
-      {
-        key: "Fleance",
-        x: width * 0.4,
-        y: height * 0.8,
-        texture: 'fleance_idle_atlas',
-        frame: 'sprite1',
-        scale: 3,
-        animationKey: 'fleance_idle',
-        interactive: false,
-        displayName: 'Fleance'
+        displayName: 'Duncan'
       }
     ];
 
     // Use the base class method to create NPCs
     this.createNPCs(npcConfigs);
-    this.npcs["Banquo"].flipX = true;
+    this.npcs["Duncan"].angle = -90;
   }
 
   setupSceneDialogue1() {
-    if (!this.cache.json.exists('Act2Scene1DataPart1')) return;
+    if (!this.cache.json.exists('Act2Scene1DataDuncan1')) return;
     
     try {
-      const dialogueData = this.cache.json.get('Act2Scene1DataPart1');
+      const dialogueData = this.cache.json.get('Act2Scene1DataDuncan1');
       
       // REPLACE: Map character names to portrait texture keys
       const portraitMap = {
-        "Banquo": "banquoportrait",
-        "Fleance": "fleanceportrait",
+        "Macbeth": "macbethportrait",
       };
 
       // Use base class method to setup dialogue
@@ -309,17 +279,14 @@ export class Act2Scene1 extends BaseGameScene {
 
   createAnimations() {
     this.setupMacbethAtlas();
+    this.setupDuncanAtlas();
     this.setupGuardAtlas();
-    this.setupBanquoAtlas();
-    this.setupFleanceAtlas();
   }
 
-  setupBanquoAtlas() {
-    if (this.textures.exists('banquo_idle_sheet') && this.cache.json.exists('banquo_idle_json')) {
-      // Convert the JSON to Phaser atlas format
-      const idleJsonData = this.cache.json.get('banquo_idle_json');
+  setupDuncanAtlas() {
+    if (this.textures.exists('duncan_idle_sheet') && this.cache.json.exists('duncan_idle_json')) {
+      const idleJsonData = this.cache.json.get('duncan_idle_json');
       const idlePhaserAtlas = { frames: {} };
-
       idleJsonData.forEach(frame => {
         idlePhaserAtlas.frames[frame.name] = {
           frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
@@ -329,54 +296,15 @@ export class Act2Scene1 extends BaseGameScene {
           spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
         };
       });
-      
-      // Add atlas to texture manager
       this.textures.addAtlas(
-        'banquo_idle_atlas',
-        this.textures.get('banquo_idle_sheet').getSourceImage(),
+        'duncan_idle_atlas',
+        this.textures.get('duncan_idle_sheet').getSourceImage(),
         idlePhaserAtlas
       );
-      
-      // Create idle animation
       this.anims.create({
-        key: 'banquo_idle',
-        frames: idleJsonData.map(frame => ({ key: 'banquo_idle_atlas', frame: frame.name })),
-        frameRate: 7,
-        repeat: -1
-      });
-    }
-
-
-  }
-
-  setupFleanceAtlas() {
-    if (this.textures.exists('fleance_idle_sheet') && this.cache.json.exists('fleance_idle_json')) {
-      // Convert the JSON to Phaser atlas format
-      const idleJsonData = this.cache.json.get('fleance_idle_json');
-      const idlePhaserAtlas = { frames: {} };
-
-      idleJsonData.forEach(frame => {
-        idlePhaserAtlas.frames[frame.name] = {
-          frame: { x: frame.x, y: frame.y, w: frame.width, h: frame.height },
-          rotated: false,
-          trimmed: false,
-          sourceSize: { w: frame.width, h: frame.height },
-          spriteSourceSize: { x: 0, y: 0, w: frame.width, h: frame.height }
-        };
-      });
-
-      // Add atlas to texture manager
-      this.textures.addAtlas(
-        'fleance_idle_atlas',
-        this.textures.get('fleance_idle_sheet').getSourceImage(),
-        idlePhaserAtlas
-      );
-
-      // Create idle animation
-      this.anims.create({
-        key: 'fleance_idle',
-        frames: idleJsonData.map(frame => ({ key: 'fleance_idle_atlas', frame: frame.name })),
-        frameRate: 8,
+        key: 'duncan_idle',
+        frames: idleJsonData.map(frame => ({ key: 'duncan_idle_atlas', frame: frame.name })),
+        frameRate: 3, // Slower animation cuz he sleepy catchin Z's
         repeat: -1
       });
     }
@@ -513,12 +441,12 @@ export class Act2Scene1 extends BaseGameScene {
     // Check for exit
     if(this.unlockExit && this.player.x > this.scale.width * .95){
       console.log("exit")
-      this.switchScene(this.nextSceneKey);
+      this.switchScene(this.nextScene)
     }
 
     
     if (this.player) {
-      const speed = 130;
+      const speed = 100;
       
       // Handle player movement (Macbeth)
       if (this.keys.left.isDown && this.keys.right.isDown) {

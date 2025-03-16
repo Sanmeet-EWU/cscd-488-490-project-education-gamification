@@ -1,0 +1,59 @@
+{
+    "Act2Scene1":
+    [
+        {
+            "speaker":"Macbeth",
+            "text":"A friend.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"What, sir, not yet at rest? The King’s abed. He hath been in unusual pleasure, and Sent forth great largess to your offices. This diamond he greets your wife withal, By the name of most kind hostess, and shut up In measureless content.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Being unprepared, Our will became the servant to defect, Which else should free have wrought.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"All’s well. I dreamt last night of the three Weïrd Sisters.To you they have showed some truth.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"I think not of them. Yet, when we can entreat an hour to serve, We would spend it in some words upon that business.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"At your kind’st leisure.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"If you shall cleave to my consent, when ’tis, It shall make honor for you.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"So I lose none In seeking to augment it, but still keep My bosom franchised and allegiance clear, I shall be counseled.",
+            "responces":[{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Good repose the while.",
+            "responces":[{"text":"...","next":"Banquo"}]
+        },
+        {
+            "speaker":"Banquo",
+            "text":"Thanks, sir. The like to you.",
+            "responces":[{"text":"Get thee to bed.","next":"Macbeth"}]
+        },
+        {
+            "text":"- Macbeth heads to Duncan's quarters-"
+        },
+        {"endScene": true}
+    ]
+}

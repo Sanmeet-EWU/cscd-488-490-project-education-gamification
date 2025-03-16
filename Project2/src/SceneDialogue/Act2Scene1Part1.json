@@ -29,11 +29,8 @@
         },
         {
             "speaker":"Banquo",
-            "text":"Merciful powers, Restrain in me the cursèd thoughts that nature\nGives way to in repose... Give me my sword.\n\n —Who’s there?",
-            "responces":[{"text":"...","next":"Macbeth"}]
+            "text":"Merciful powers, Restrain in me the cursèd thoughts that nature\nGives way to in repose... Give me my sword.\n\n —Who’s there?"
         },
-        {
-            "endScene": true
-        }
+        {"endScene": true}
     ]
 }

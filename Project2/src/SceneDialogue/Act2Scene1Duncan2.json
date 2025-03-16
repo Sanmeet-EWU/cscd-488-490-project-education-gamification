@@ -1,0 +1,15 @@
+{
+    "Act2Scene1Duncan2":
+    [
+        {
+            "speaker":"Macbeth",
+            "text":"Thou marshal’st me the way that I was going, Mine eyes are made the fools o’ th’ other senses Or else worth all the rest. I see thee still, And, on thy blade and dudgeon, gouts of blood, Which was not so before. There’s no such thing. It is the bloody business which informs Thus to mine eyes. Whiles I threat, he lives. Words to the heat of deeds too cold breath gives. I go, and it is done. The bell invites me. Hear it not, Duncan, for it is a knell That summons thee to heaven or to hell.",
+            "responces": [{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"",
+            "endScene": true 
+        }
+    ]
+}

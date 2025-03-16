@@ -22,6 +22,7 @@ import { Act1Scene5 } from './scenes/GameScenes/Act1Scene5.js';
 import { Act1Scene6 } from './scenes/GameScenes/Act1Scene6.js';
 import { Act1Scene7 } from './scenes/GameScenes/Act1Scene7.js';
 import { Act2Scene1 } from './scenes/GameScenes/Act2Scene1.js';
+import { Act2Scene1Duncan } from './scenes/GameScenes/Act2Scene1Duncan.js';
 import { Act2Scene2 } from './scenes/GameScenes/Act2Scene2.js';
 import { Act2Scene3 } from './scenes/GameScenes/Act2Scene3.js';
 import { Act2Scene4 } from './scenes/GameScenes/Act2Scene4.js';
@@ -90,6 +91,7 @@ const config = {
     Act1Scene6,
     Act1Scene7,
     Act2Scene1,
+    Act2Scene1Duncan,
     Act2Scene2,
     Act2Scene3,
     Act2Scene4,

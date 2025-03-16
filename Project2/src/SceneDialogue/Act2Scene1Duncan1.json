@@ -1,0 +1,24 @@
+{
+    "Act2Scene1Duncan1":
+    [
+        {
+            "speaker":"Macbeth",
+            "text":"Is this a dagger which I see before me? \nThe handle toward my hand?\nCome, let me clutch thee.",
+            "responces": [{"text":"...","next":"Macbeth"}]
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"I have thee not, and yet I see thee still.\nArt thou not sensible o feeling as to sight?\nOr art thou but a false creation."
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"I have thee not, and yet I see thee still.\nArt thou not sensible o feeling as to sight?\nOr art thou but a false creation"
+        },
+        {
+            "speaker":"Macbeth",
+            "text":"Proceeding from the heat-oppressèd brain?\nI see thee yet, in form as palpable as this which now I draw.\n\n - He draws his dagger - "   
+        },
+        {"endScene": true }
+
+    ]
+}
