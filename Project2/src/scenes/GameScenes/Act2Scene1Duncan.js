@@ -20,12 +20,12 @@ export class Act2Scene1Duncan extends BaseGameScene {
     }
     
     // Dialogue JSON 1
-    if (!this.cache.json.exists('Act2Scene1DataPart1')) {
-      this.load.json('Act2Scene1DataPart1', 'SceneDialogue/Act2Scene1Duncan1.json');
+    if (!this.cache.json.exists('Act2Scene1DataDuncan1')) {
+      this.load.json('Act2Scene1DataDuncan1', 'SceneDialogue/Act2Scene1Duncan1.json');
     }
     // Dialogue JSON 2
-    if (!this.cache.json.exists('Act2Scene1DataPart2')) {
-      this.load.json('Act2Scene1DataPart2', 'SceneDialogue/Act2Scene1Duncan2.json');
+    if (!this.cache.json.exists('Act2Scene1DataDuncan2')) {
+      this.load.json('Act2Scene1DataDuncan2', 'SceneDialogue/Act2Scene1Duncan2.json');
     }
     
     ////////////////////////////
@@ -130,26 +130,28 @@ export class Act2Scene1Duncan extends BaseGameScene {
 
     // Create floor for characters to stand on
     //this.createFloor();
-
-    // Create bed
-    this.add.image(width * 0.2, height * 0.85, 'bed').setScale(.5).setDepth(1);
     
     // Create animations
     this.createAnimations();
     
     // Spawn macbeth
     this.setupPlayer();
+    this.player.setDepth(2);
+    this.player.flipX = true;//start facing the left
 
     // Play eerie sting sound effect, upon macbeths entry
     this.sound.add('sting').play({ loop: false, volume: this.audioController.soundVolume*.75});//Its hella loud
 
     // Create NPCs
     this.setupNPCs();
+    this.npcs["Duncan"].angle = -90;
+    this.npcs["Duncan"].setDepth(4);
+
+    // Create bed
+    this.add.image(width * 0.15, height * 0.8, 'bed').setScale(.5).setDepth(3);
     
     // Setup dialogue
     this.setupSceneDialogue1();
-
-    this.unlockExit = false;
   
     // Handle scene resize
     this.scale.on('resize', this.onResize, this);
@@ -159,28 +161,44 @@ export class Act2Scene1Duncan extends BaseGameScene {
       this.scale.off('resize', this.onResize, this);
     });
 
-    // Start the scene after a short delay
-    this.time.delayedCall(1500, () =>  
-      this.start()
-    );
+    this.physics.add.existing(this.npcs["Duncan"], true);
+    this.physics.world.enable(this.npcs["Duncan"]);
+    this.npcs["Duncan"].body.setSize(80, 80);
+    this.npcs["Duncan"].body.setOffset(0.5);
+
+    this.physics.add.existing(this.player, true);
+    this.physics.world.enable(this.player);
+    this.player.setCollideWorldBounds(true);
+    this.player.body.setOffset(0.5);
+
+    // Setup a collider for the player and Duncan
+    this.physics.add.overlap(this.player, this.npcs["Duncan"], this.handleInteraction, null, this);
 
   }
 
-  start(){
-    // Start dialogue for cutscenes
-    if (this.isCutscene && this.dialogueManager) {
-      // For cutscenes, automatically start dialogue
+  // Handles macbeth 'interacting' with sleeping Duncan
+  handleInteraction() {
+    // Check if player is close to Duncan
+    console.log("Standing by Duncan");
+
+    if(this.keys.interact.isDown){
+      console.log("Press E on Duncan");
+    }
+    
+    if(this.dialogueManager && this.keys.interact.isDown){
+      console.log("Press E on Duncan");
       this.dialogueManager.startDialogue("Macbeth", () => {
-          
-          // Once he walks up to duncan, darken the screen, and play the stabbing sound effect
-          this.sound.add('stabbing').play({ loop: false, volume: this.audioController.soundVolume});
-          
-          //this.cameras.main.fade(1000, 0, 0, 0);
+        console.log("Interacting with Duncan");
+        // Once he walks up to duncan, darken the screen, and play the stabbing sound effect
+        this.cameras.main.fade(7000, 0, 0, 0);
+        this.sound.add('stabbing').play({ loop: false, volume: this.audioController.soundVolume});
 
-          //this.switchScene(this.nextSceneKey);//
-
+        this.time.delayedCall(1500, () =>  
+          this.switchScene(this.nextSceneKey)
+        );
       });
     }
+
   }
 
   setupPlayer() {
@@ -227,7 +245,7 @@ export class Act2Scene1Duncan extends BaseGameScene {
         y: height * 0.8,
         texture: 'duncan_idle_atlas',
         frame: 'sprite1',
-        scale: 3,
+        scale: 2,
         animationKey: 'duncan_idle',
         interactive: true,
         displayName: 'Duncan'
@@ -236,7 +254,6 @@ export class Act2Scene1Duncan extends BaseGameScene {
 
     // Use the base class method to create NPCs
     this.createNPCs(npcConfigs);
-    this.npcs["Duncan"].angle = -90;
   }
 
   setupSceneDialogue1() {
@@ -257,11 +274,11 @@ export class Act2Scene1Duncan extends BaseGameScene {
     }
   }
 
-  setupSceneDialogue2() {
-    if (!this.cache.json.exists('Act2Scene1DataPart2')) return;
+  setupSceneDialogue2() {//Idk if we even want to include his long monologue after, itll need to be broken up
+    if (!this.cache.json.exists('Act2Scene1DataDuncan2')) return;
     
     try {
-      const dialogueData = this.cache.json.get('Act2Scene1DataPart2');
+      const dialogueData = this.cache.json.get('Act2Scene1DataDuncan2');
       
       // REPLACE: Map character names to portrait texture keys
       const portraitMap = {
@@ -446,7 +463,7 @@ export class Act2Scene1Duncan extends BaseGameScene {
 
     
     if (this.player) {
-      const speed = 100;
+      const speed = 150;
       
       // Handle player movement (Macbeth)
       if (this.keys.left.isDown && this.keys.right.isDown) {

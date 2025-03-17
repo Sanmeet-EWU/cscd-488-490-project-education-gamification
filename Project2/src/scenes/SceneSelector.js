@@ -21,7 +21,7 @@ export class SceneSelector extends BaseScene {
 
     const availableScenes = [
       'Act1Scene1','Act1Scene2','Act1Scene3Part1','Act1Scene3Part2', 'Act1Scene3Part3', 'Act1Scene4',
-      'Act1Scene5','Act1Scene6','Act1Scene7','Act2Scene1','Act2Scene2','Act2Scene3',
+      'Act1Scene5','Act1Scene6','Act1Scene7','Act2Scene1','Act2Scene1Duncan','Act2Scene2','Act2Scene3',
       'Act2Scene4','Act3Scene1','Act3Scene2','Act3Scene3','Act3Scene4','Act4Scene1',
       'Act4Scene2','Act4Scene3','Act5Scene1','Act5Scene2','Act5Scene3','Act5Scene4',
       'Act5Scene5','Act5Scene6','Act5Scene7','Act5Scene8Part1','Act5Scene8Part2','Act1Minigame','Act1Scene2Minigame'

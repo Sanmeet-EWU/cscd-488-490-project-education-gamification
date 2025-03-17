@@ -153,6 +153,10 @@ export class Act2Scene1 extends BaseGameScene {
     this.createAnimations();
     
     //Usually we spawn the player here, however macbeth joins mid scene
+    if (this.player) {
+      this.player.destroy();
+      this.player = null;
+    }
 
     // Create NPCs
     this.setupNPCs();
@@ -511,14 +515,14 @@ export class Act2Scene1 extends BaseGameScene {
 
 
     // Check for exit
-    if(this.unlockExit && this.player.x > this.scale.width * .95){
+    if(this.unlockExit && this.player.x > this.scale.width * .80){
       console.log("exit")
       this.switchScene(this.nextSceneKey);
     }
 
     
     if (this.player) {
-      const speed = 130;
+      const speed = 160;
       
       // Handle player movement (Macbeth)
       if (this.keys.left.isDown && this.keys.right.isDown) {
