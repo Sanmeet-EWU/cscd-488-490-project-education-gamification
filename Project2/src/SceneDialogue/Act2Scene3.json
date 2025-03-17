@@ -1,34 +1,8 @@
 {
     "Act2Scene3": [
         {
-            "speaker": "Porter",
-            "text": "Here’s a knocking indeed! Anon, anon!",
-            "responses": [{ "text": "...", "next": "Porter" }]
-        },
-        {
-            "speaker": "Porter",
-            "text": "I pray you, remember the porter.",
-            "translation": "Please, remember to leave me a tip.",
-            "responses": [{ "text": "...", "next": "Macduff" }]
-        },
-        {
-            "speaker": "Macduff",
-            "text": "Was it so late, friend, ere you went to bed That you do lie so late?",
-            "responses": [{ "text": "...", "next": "Porter" }]
-        },
-        {
-            "speaker": "Porter",
-            "text": "Faith, sir, we were carousing till the second cock.",
-            "responses": [{ "text": "...", "next": "Macduff" }]
-        },
-        {
             "speaker": "Macduff",
             "text": "Is thy master stirring?",
-            "responses": [{ "text": "...", "next": "Macduff" }]
-        },
-        {
-            "speaker": "Macduff",
-            "text": "Our knocking has awaked him. Here he comes.",
             "responses": [{ "text": "...", "next": "Lennox" }]
         },
         {

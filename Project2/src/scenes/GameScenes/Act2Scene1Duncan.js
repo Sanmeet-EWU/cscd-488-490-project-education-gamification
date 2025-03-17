@@ -190,10 +190,15 @@ export class Act2Scene1Duncan extends BaseGameScene {
       this.dialogueManager.startDialogue("Macbeth", () => {
         console.log("Interacting with Duncan");
         // Once he walks up to duncan, darken the screen, and play the stabbing sound effect
-        this.cameras.main.fade(7000, 0, 0, 0);
-        this.sound.add('stabbing').play({ loop: false, volume: this.audioController.soundVolume});
+        this.cameras.main.fade(1000, 0, 0, 0);
+
 
         this.time.delayedCall(1500, () =>  
+          this.sound.add('stabbing').play({ loop: false, volume: this.audioController.soundVolume})
+        );
+      
+        // Wait for the sound effect to finish, then switch to the next scene
+        this.time.delayedCall(7000, () =>  
           this.switchScene(this.nextSceneKey)
         );
       });

@@ -13,15 +13,16 @@ export class Act2Scene2 extends BaseGameScene {
   preload() {
     // REPLACE: Load your scene specific assets
     
+    
     // Background
     if (!this.textures.exists('Act2Scene2Bg')) {
       //this.load.svg('Act2Scene1Bg', 'assets/act2/Act2Scene1BG.svg', { width: 2560, height: 1440 });
-      this.load.svg('Act2Scene2Bg', 'assets/act2/Act1Scene5.svg', { width: 2560, height: 1440 });
+      this.load.svg('Act2Scene2Bg', 'assets/act1/Act1Scene5.svg', { width: 2560, height: 1440 });
     }
     
     // Dialogue JSON 1
     if (!this.cache.json.exists('Act2Scene2Data')) {
-      this.load.json('Act2Scene1Data2', 'SceneDialogue/Act2Scene2.json');
+      this.load.json('Act2Scene2Data', 'SceneDialogue/Act2Scene2.json');
     }
     // Dialogue JSON 2
     // if (!this.cache.json.exists('Act2Scene1DataPart2')) {
@@ -97,7 +98,20 @@ export class Act2Scene2 extends BaseGameScene {
     
     // Check required assets
     const requiredAssets = [
-      'Act2Scene2Bg'
+      
+      'macbeth_idle_sheet',
+      'macbeth_run_sheet',
+      'macbeth_idle_json',
+      'macbeth_run_json',
+      'lady_macbeth_idle_sheet',
+      'lady_macbeth_idle_json',
+      'lady_macbeth_walk_sheet',
+      'lady_macbeth_walk_json',
+      'guardImg',
+      'guardData',
+      'macbethportrait',
+      'ladymacbethportrait',
+      'darkHallway'
     ];
     const missing = this.checkRequiredAssets(requiredAssets);
     if (missing.length > 0) {
@@ -110,19 +124,21 @@ export class Act2Scene2 extends BaseGameScene {
       }).setOrigin(0.5);
       return;
     }
+
+    
   
     // Fade in scene
     this.cameras.main.fadeIn(1000, 0, 0, 0);
-  
+
     // Setup background
     this.background = this.add.image(0, 0, 'Act2Scene2Bg')
       .setOrigin(0, 0)
       .setDisplaySize(width, height)
       .setDepth(-1)
-      .setTint(0x808080);
+      .setTint(0x505050);//Darken the scene a bit, takes place at night or dusk
       
 
-    this.physics.world.setBounds(0, 0, width, height * .85)//setting the Y higher up to act as the floor
+    this.physics.world.setBounds(0, 0, width, height * .9)//setting the Y higher up to act as the floor
     
 
     // Play scene music
@@ -133,6 +149,8 @@ export class Act2Scene2 extends BaseGameScene {
     // Create floor for characters to stand on
     //this.createFloor();//Screw the floor
     
+    
+
     // Create animations
     this.createAnimations();
     
@@ -146,7 +164,7 @@ export class Act2Scene2 extends BaseGameScene {
     this.setupNPCs();
     
     // Setup dialogue
-    this.setupSceneDialogue1();
+    this.setupSceneDialogue1(); // This should be broken up to handle lady macbeth leaving for a sec ot plant the daggers and coming back
 
     this.unlockExit = false;
   
@@ -157,11 +175,6 @@ export class Act2Scene2 extends BaseGameScene {
     this.events.on('shutdown', () => {
       this.scale.off('resize', this.onResize, this);
     });
-
-    // Start the scene after a short delay
-    this.time.delayedCall(1500, () =>  
-      this.start()
-    );
 
   }
 
@@ -223,19 +236,18 @@ export class Act2Scene2 extends BaseGameScene {
       {
         key: "Lady Macbeth",
         x: width * 0.2,
-        y: height * 0.8,
+        y: height * 0.9,
         texture: 'lady_macbeth_idle_atlas',
         frame: 'sprite1',
         scale: 3,
         animationKey: 'lady_macbeth_idle',
         interactive: true,
-        displayName: 'Duncan'
+        displayName: 'Lady Macbeth'
       }
     ];
 
     // Use the base class method to create NPCs
     this.createNPCs(npcConfigs);
-    this.npcs["Duncan"].angle = -90;
   }
 
   setupSceneDialogue1() {
@@ -279,7 +291,7 @@ export class Act2Scene2 extends BaseGameScene {
 
   createAnimations() {
     this.setupMacbethAtlas();
-    this.setupLadyMacbethAlas();
+    this.setupLadyMacbethAtlas();
     this.setupGuardAtlas();
   }
 
@@ -472,7 +484,7 @@ export class Act2Scene2 extends BaseGameScene {
 
     
     if (this.player) {
-      const speed = 100;
+      const speed = 160;
       
       // Handle player movement (Macbeth)
       if (this.keys.left.isDown && this.keys.right.isDown) {

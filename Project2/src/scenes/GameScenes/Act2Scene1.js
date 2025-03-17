@@ -111,7 +111,7 @@ export class Act2Scene1 extends BaseGameScene {
     // Call parent create method
     super.create(data);
     const { width, height } = this.scale;
-    this.nextSceneKey = 'Act2Scene1Duncan';
+    this.nextSceneKey = 'Act2Scene1Duncan';//macbeth will leave to go off duncan
     
     // Check required assets
     const requiredAssets = [
