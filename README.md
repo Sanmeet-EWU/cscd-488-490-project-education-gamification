@@ -4,7 +4,7 @@
    * Our goal is to boost student engagement and understanding of the Macbeth play
    * This is not a replacement for Macbeth, but a tool to supplement learning
 
-The current live site is: ![https://macbethrpg.netlify.app](https://macbethrpg.netlify.app)
+The current live site is: [https://macbethrpg.netlify.app](https://macbethrpg.netlify.app)
 
 ## How to install:
 * clone the repo
