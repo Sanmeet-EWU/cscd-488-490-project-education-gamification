@@ -2,14 +2,22 @@ import { BaseGameScene } from '../BaseGameScene.js';
 
 export class Act2Scene4 extends BaseGameScene {
   constructor() {
-    // REPLACE: 'TEMPLATESCENE' with your actual scene key (e.g., 'Act2Scene1')
     super('Act2Scene4');
     
     // Set to true if this is a cutscene without player movement
-    this.isCutscene = true;
+    this.isCutscene = false;
   }
 
-  // Oldman, macduff, and ross 
+  //Characters: Oldman, Macduff, and Ross 
+
+/*
+  Synopsis:
+
+  An old man and Ross exchange accounts of recent unnatural happenings. 
+  Macduff joins them to report that Malcolm and Donalbain are now accused of having bribed the servants who supposedly killed Duncan. 
+  Macduff also announces that Macbeth has been chosen king.
+  Ross leaves for Scone and Macbeth’s coronation, but Macduff resolves to stay at his own castle at Fife.
+*/
   preload() {
 
     // Background
@@ -59,17 +67,17 @@ export class Act2Scene4 extends BaseGameScene {
     }
 
     // Load Old Man sprite sheets and JSON data
-    if (!this.textures.exists('oldman_idle_sheet')) {
-        this.load.image('oldman_idle_sheet', 'assets/characters/Old_man_idle.png');
+    if (!this.textures.exists('old_man_idle_sheet')) {
+        this.load.image('old_man_idle_sheet', 'assets/characters/Old_man_idle.png');
     }
-    if (!this.textures.exists('oldman_walk_sheet')) {
-        this.load.image('oldman_walk_sheet', 'assets/characters/Old_man_walk.png');
+    if (!this.textures.exists('old_man_walk_sheet')) {
+        this.load.image('old_man_walk_sheet', 'assets/characters/Old_man_walk.png');
     }
-    if (!this.cache.json.exists('oldman_idle_json')) {
-        this.load.json('oldman_idle_json', 'assets/characters/Old_man_idle.json');
+    if (!this.cache.json.exists('old_man_idle_json')) {
+        this.load.json('old_man_idle_json', 'assets/characters/Old_man_idle.json');
     }
-    if (!this.cache.json.exists('oldman_walk_json')) {
-        this.load.json('oldman_walk_json', 'assets/characters/Old_man_walk.json');
+    if (!this.cache.json.exists('old_man_walk_json')) {
+        this.load.json('old_man_walk_json', 'assets/characters/Old_man_walk.json');
     }
 
     // Backup guard
@@ -86,7 +94,7 @@ export class Act2Scene4 extends BaseGameScene {
     this.load.image("oldmanportrait", "assets/portraits/OldMan.png");
     
     // Scene music
-    this.load.audio('darkHallway', 'assets/audio/dark_hallway_synth_bg.mp3');//idk what good music would be, figure out later
+    this.load.audio('act1scene5Music', 'assets/audio/act1scene5.mp3');
     
     // Error handling for asset loading
     this.load.on('loaderror', (fileObj) => {
@@ -102,12 +110,15 @@ export class Act2Scene4 extends BaseGameScene {
     
     // Check required assets
     const requiredAssets = [
+        'old_man_idle_sheet',
+        'old_man_idle_json',
+        'macduff_idle_sheet',
+        'macduff_idle_json',
         'Act1Scene6Bg',
         'Act2Scene4Data',
         'rossportrait',
         'macduffportrait',
-        'oldmanportrait',
-        'darkHallway'
+        'oldmanportrait'
     ];
     const missing = this.checkRequiredAssets(requiredAssets);
     if (missing.length > 0) {
@@ -136,8 +147,8 @@ export class Act2Scene4 extends BaseGameScene {
     
 
     // Play scene music
-    if (this.audioController && this.cache.audio.exists('darkHallway')) {//Still sort of uneasy feeling during the play
-      this.audioController.playMusic('darkHallway', this, { volume: 1.5, loop: true });
+    if (this.audioController && this.cache.audio.exists('act1scene5Music')) {//Idk could use somwthing else
+      this.audioController.playMusic('act1scene5Music', this, { volume: 0.8, loop: true });
     }
 
     // Create floor for characters to stand on
@@ -215,7 +226,8 @@ export class Act2Scene4 extends BaseGameScene {
     // Position Macbeth on center
     if (this.player) {
         const { width, height } = this.scale;
-        this.player.setPosition(width * 0.7, height * 0.85);
+        this.player.setPosition(width * 0.4, height * 0.85);
+        this.player.flipX = true;
     }
   }
 
@@ -224,21 +236,21 @@ export class Act2Scene4 extends BaseGameScene {
 
     const npcConfigs = [
       {
-        key: "Old Man",
-        x: width * 0.55,
-        y: height * 0.8,
+        key: 'Old Man',
+        x: width * 0.3,
+        y: height * 0.85,
         texture: 'old_man_idle_atlas',
         frame: 'sprite1',
-        scale: 3,
+        scale: 4.5,
         animationKey: 'old_man_idle',
         interactive: true,
         displayName: 'Old Man'
       },
       {
-        key: "Macduff",
+        key: 'Macduff',
         x: width * 0.7,
-        y: height * 0.8,
-        texture: 'Macduff_idle_atlas',
+        y: height * 0.85,
+        texture: 'macduff_idle_atlas',
         frame: 'sprite1',
         scale: 3,
         animationKey: 'macduff_idle',
@@ -249,6 +261,7 @@ export class Act2Scene4 extends BaseGameScene {
 
     // Use the base class method to create NPCs
     this.createNPCs(npcConfigs);
+    
     // this.npcs["Old Man"].flipX = true;
     // this.npcs["Macduff"].flipX = true;
   }
